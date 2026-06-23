@@ -1,0 +1,42 @@
+RETROFAB SIMULATION
+===================
+
+Author	: Itizso
+Website	: https://itizso.itch.io/retrofab
+
+
+SOFTWARE LICENSE AGREEMENT
+==========================
+
+  This application and every included file and document (the "Software") is
+  released under the "Creative Commons Attribution-NonCommercial-NoDerivatives"
+  license 4.0 available at:
+  
+       https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+
+  In addition to the constraints set by the CC license, you must respect
+  the following rules:
+
+  a. do not charge for the use or download of the Software.
+  b. do not offer the Software on a pay-per-play basis.
+  c. do not distribute the Software through pre-paid access websites.
+  d. do not use the Software in publications of any form unless written
+     consent is obtained from the author.
+  e. do not distribute the Software through mirror websites, unless
+     written consent is obtained from the author.
+  f. do not distribute older versions of the Software after newer ones 
+     have been made available by the author.
+  g. redistribution of the Software must retain this document in its
+     entirety, including the copyright notice, license conditions and 
+     all disclaimers.
+
+
+DISCLAIMER
+==========
+
+  This Software is provided "as is" and any expressed or implied 
+  warranties, including, but not limited to, the implied warranties of 
+  merchantability and fitness for a particular purpose are disclaimed. 
+  In no event shall the copyright holder be liable for any direct, 
+  indirect, incidental, special, exemplary, or consequential damages 
+  arising in any way out of the use of this software.

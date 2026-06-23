@@ -1,0 +1,5 @@
+# Live LCD overrides for --pin (no rebuild). One sprite per line:
+#   name  lcd_x  lcd_y
+# Run: ./cupcake-sdl.exe --pin --pin-solo
+# Values below are baked into cupcake_sprite_lcd.h — comment out to use header only.
+# marge1 0 115

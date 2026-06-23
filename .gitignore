@@ -1,0 +1,27 @@
+# Build outputs
+build-pc/
+build-test/
+build-cupcake/
+*.o
+*.d
+*.exe
+*.elf
+
+# Python
+__pycache__/
+*.pyc
+
+# Generated test exports
+test/output/
+
+# Local HAR extract, installers, and other scratch (obtain from itch.io locally)
+ignore/
+
+# Accidental mkdir artifact
+-p/
+
+# IDE / OS
+.vs/
+.vscode/
+.idea/
+**/.DS_Store
