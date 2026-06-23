@@ -158,6 +158,7 @@ void cupcake_play_state_reset(cupcake_play_state_t *p)
     p->grid.group_visible = 1;
     p->aircakes.group_visible = 1;
     p->bart.pos = 2;
+    p->bart.visible = cupcake_bart_position_layers(2);
     p->bart.miss_index = -1;
     p->scoreboard.phase = 1;
 }
@@ -455,6 +456,50 @@ void cupcake_miss_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_
         snprintf(name, sizeof name, "miss%d", i);
         fn(name, ctx);
     }
+}
+
+void cupcake_bart_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx)
+{
+    static const char *const names[] = {
+        "bart0", "bart1", "bart2", "bart3", "bart4",
+        "bart5", "bart6", "bart7", "bart8", "bart9",
+    };
+    int i;
+
+    if (!p || !fn)
+        return;
+
+    for (i = 0; i < 10; i++) {
+        if (p->bart.visible & (uint16_t)(1u << (unsigned)i))
+            fn(names[i], ctx);
+    }
+}
+
+void cupcake_play_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx)
+{
+    if (!p || !fn)
+        return;
+
+    /* JS onSnapshot entity order: couch, maggie, marge, pacifier, cake, aircakes, bart, miss. */
+    cupcake_couch_draw_visible(p, fn, ctx);
+    cupcake_maggie_draw_visible(p, fn, ctx);
+    cupcake_marge_draw_visible(p, fn, ctx);
+    cupcake_pacifier_draw_visible(p, fn, ctx);
+
+    if (p->bart.miss_index == 6 || p->bart.miss_index == 9) {
+        if (p->aircakes.group_visible)
+            cupcake_aircakes_draw_visible(p, fn, ctx);
+        cupcake_bart_draw_visible(p, fn, ctx);
+        cupcake_miss_draw_visible(p, fn, ctx);
+        return;
+    }
+
+    if (p->grid.group_visible)
+        cupcake_grid_draw_visible(p, fn, ctx);
+    if (p->aircakes.group_visible)
+        cupcake_aircakes_draw_visible(p, fn, ctx);
+    cupcake_bart_draw_visible(p, fn, ctx);
+    cupcake_miss_draw_visible(p, fn, ctx);
 }
 
 void cupcake_timer_export(const cupcake_timer_t *tm, cupcake_timer_saved_t *out)

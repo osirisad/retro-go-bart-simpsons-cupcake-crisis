@@ -836,10 +836,10 @@ Fix multi-part sprite mapping; composite draw pass; LCD audit and alignment veri
 | Task | Title | Status |
 |------|-------|--------|
 | TASK-61 | Redo sprite rect/mask mapping — full material parity | [Done - Sprint 10] |
-| TASK-37 | Play-mode composite draw pass | [Backlog - Sprint 10] |
-| TASK-45 | LCD position audit — close deltas vs mesh formula | [Backlog - Sprint 10] |
-| TASK-46 | Sprite coverage — all 96 materials blittable | [Backlog - Sprint 10] |
-| TASK-50 | Marge1 hair LCD clamp verification | [Backlog - Sprint 10] |
+| TASK-37 | Play-mode composite draw pass | [Done - Sprint 10] |
+| TASK-45 | LCD position audit — close deltas vs mesh formula | [Done - Sprint 10] |
+| TASK-46 | Sprite coverage — all 96 materials blittable | [Done - Sprint 10] |
+| TASK-50 | Marge1 hair LCD clamp verification | [Done - Sprint 10] |
 
 ---
 
@@ -863,13 +863,13 @@ Fix multi-part sprite mapping; composite draw pass; LCD audit and alignment veri
 
     Type: Feature
 
-    Status: [Backlog - Sprint 10]
+    Status: [Done - Sprint 10]
 
     Acceptance Criteria: Single play draw order reproduces visible sprite set from JS snapshot (`onSnapshot` names: bart, cake, maggie, marge, couch, pacifier). Couch, Maggie, Marge, pacifiers, grid, aircakes, Bart, miss icons, scoreboard digits layer correctly (no z-fighting; verify against browser capture).
 
-    Work Summary: 
+    Work Summary: `cupcake_play_draw_visible()` in `cupcake_state.c` — draw order couch → maggie → marge → pacifier → grid → aircakes → bart → miss; couch-miss path skips grid/aircakes. `cupcake_game.c` calls it from play/start/over. `make test-play-draw`.
 
-    Feedback/Notes: 
+    Feedback/Notes:
 
 ---
 
@@ -877,13 +877,13 @@ Fix multi-part sprite mapping; composite draw pass; LCD audit and alignment veri
 
     Type: Bug Fix
 
-    Status: [Backlog - Sprint 10]
+    Status: [Done - Sprint 10]
 
     Acceptance Criteria: Run `tools/compare_lcd.py` and `tools/audit_sprites.py`; all gameplay sprites used in demo.model have Δ ≤ 1px vs mesh-centroid formula OR documented intentional override in `lcd_tune.txt`. No demo.model name fails `host_sprite_rect_ok`.
 
-    Work Summary: 
+    Work Summary: Added `tools/audit_lcd_positions.py` — audits 45 demo.model sprites; skips `gen_lcd_positions.py` MANUAL_LCD overrides (marge1, maggie0–3) and `assets/lcd_tune.txt`. Passes with TASK-61 union-bbox rects.
 
-    Feedback/Notes: 
+    Feedback/Notes:
 
 ---
 
@@ -891,13 +891,13 @@ Fix multi-part sprite mapping; composite draw pass; LCD audit and alignment veri
 
     Type: Bug Fix
 
-    Status: [Backlog - Sprint 10]
+    Status: [Done - Sprint 10]
 
     Acceptance Criteria: Every material in `sprites.json` maps to valid rect + mask in generated headers (or explicit exclude list with reason, e.g. score-digit-only materials). `test/export_sprites.py` contact sheet shows 96 entries.
 
-    Work Summary: 
+    Work Summary: Added `tools/audit_sprite_coverage.py`. 93 generated sprites cover all materials with visible atlas pixels. Excluded: `sprites` (atlas), `TEMP4` (unused), `digit02`/`digit12` (0 visible pixels — unused 7-segment middle segments).
 
-    Feedback/Notes: 
+    Feedback/Notes:
 
 ---
 
@@ -905,13 +905,13 @@ Fix multi-part sprite mapping; composite draw pass; LCD audit and alignment veri
 
     Type: Bug Fix
 
-    Status: [Backlog - Sprint 10]
+    Status: [Done - Sprint 10]
 
     Acceptance Criteria: `cupcake_sprite_lcd_resolve_y` keeps Marge hair inside 800px LCD in all gameplay frames. Validate with `--pin marge1` and demo frames that include `marge1`.
 
-    Work Summary: 
+    Work Summary: `make test-marge-lcd` — header `lcd_y=115` + 390px height fits LCD; clamp min_y verified for extreme negatives after TASK-61 union bbox (hair_rows=31).
 
-    Feedback/Notes: 
+    Feedback/Notes:
 
 ---
 

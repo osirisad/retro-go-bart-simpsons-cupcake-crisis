@@ -297,82 +297,11 @@ static void draw_sprite_cb(const char *name, void *ctx)
     draw_sprite_auto(name);
 }
 
-static void draw_cupcakes_grid(const cupcake_play_state_t *p)
-{
-    cupcake_grid_draw_visible(p, draw_sprite_cb, NULL);
-}
-
-static void draw_aircakes_play(const cupcake_play_state_t *p)
-{
-    cupcake_aircakes_draw_visible(p, draw_sprite_cb, NULL);
-}
-
-static void draw_couch_play(const cupcake_play_state_t *p)
-{
-    cupcake_couch_draw_visible(p, draw_sprite_cb, NULL);
-}
-
-static void draw_maggie_play(const cupcake_play_state_t *p)
-{
-    cupcake_maggie_draw_visible(p, draw_sprite_cb, NULL);
-}
-
-static void draw_marge_play(const cupcake_play_state_t *p)
-{
-    cupcake_marge_draw_visible(p, draw_sprite_cb, NULL);
-}
-
-static void draw_pacifier_play(const cupcake_play_state_t *p)
-{
-    cupcake_pacifier_draw_visible(p, draw_sprite_cb, NULL);
-}
-
-static void draw_miss_play(const cupcake_play_state_t *p)
-{
-    cupcake_miss_draw_visible(p, draw_sprite_cb, NULL);
-}
-
-static void draw_bart_from_state(const cupcake_bart_state_t *b)
-{
-    static const char *const names[] = {
-        "bart0", "bart1", "bart2", "bart3", "bart4",
-        "bart5", "bart6", "bart7", "bart8", "bart9",
-    };
-    int i;
-
-    if (!b)
-        return;
-    for (i = 0; i < 10; i++) {
-        if (b->visible & (uint16_t)(1u << (unsigned)i))
-            draw_sprite_auto(names[i]);
-    }
-}
-
 static void draw_bart_play(const cupcake_play_state_t *p)
 {
     if (!p)
         return;
-
-    /* TASK-37 draw order: couch, maggie, marge, pacifier, grid, aircakes, bart, miss. */
-    draw_couch_play(p);
-    draw_maggie_play(p);
-    draw_marge_play(p);
-    draw_pacifier_play(p);
-
-    if (p->bart.miss_index == 6 || p->bart.miss_index == 9) {
-        if (p->aircakes.group_visible)
-            draw_aircakes_play(p);
-        draw_bart_from_state(&p->bart);
-        draw_miss_play(p);
-        return;
-    }
-
-    if (p->grid.group_visible)
-        draw_cupcakes_grid(p);
-    if (p->aircakes.group_visible)
-        draw_aircakes_play(p);
-    draw_bart_from_state(&p->bart);
-    draw_miss_play(p);
+    cupcake_play_draw_visible(p, draw_sprite_cb, NULL);
 }
 
 static int btn_pressed(int index)

@@ -403,6 +403,22 @@ test-entities-draw: $(TEST_ENTITIES_DRAW)
 $(TEST_ENTITIES_DRAW): test/cupcake_entities_draw_test.c src/cupcake_state.c src/cupcake_timer.c src/cupcake_rng.c | $(TEST_BUILD)
 	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
 
+TEST_PLAY_DRAW = $(TEST_BUILD)/cupcake_play_draw_test$(EXE)
+
+test-play-draw: $(TEST_PLAY_DRAW)
+	$(TEST_PLAY_DRAW)
+
+$(TEST_PLAY_DRAW): test/cupcake_play_draw_test.c src/cupcake_state.c src/cupcake_timer.c src/cupcake_rng.c | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
+TEST_MARGE_LCD = $(TEST_BUILD)/cupcake_marge_lcd_test$(EXE)
+
+test-marge-lcd: $(TEST_MARGE_LCD)
+	$(TEST_MARGE_LCD)
+
+$(TEST_MARGE_LCD): test/cupcake_marge_lcd_test.c | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
 TEST_MISS_COUNTER = $(TEST_BUILD)/cupcake_miss_counter_test$(EXE)
 
 test-miss-counter: $(TEST_MISS_COUNTER)
@@ -411,7 +427,7 @@ test-miss-counter: $(TEST_MISS_COUNTER)
 $(TEST_MISS_COUNTER): test/cupcake_miss_counter_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
 	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
 
-test: test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test-miss-counter
+test: test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test-play-draw test-marge-lcd test-miss-counter
 
 $(TEST_TIMER): test/cupcake_timer_test.c src/cupcake_timer.c | $(TEST_BUILD)
 	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
@@ -428,7 +444,7 @@ gen:
 clean:
 	rm -rf $(BUILD)
 
-.PHONY: all run clean gen force-rebuild test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test-miss-counter test
+.PHONY: all run clean gen force-rebuild test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test-play-draw test-marge-lcd test-miss-counter test
 
 # Use if alignment edits in .h seem "cached" (also close cupcake-sdl.exe before make).
 force-rebuild:

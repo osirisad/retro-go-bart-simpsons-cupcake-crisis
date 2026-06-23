@@ -188,6 +188,8 @@ void cupcake_couch_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw
 void cupcake_marge_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx);
 void cupcake_pacifier_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx);
 void cupcake_miss_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx);
+void cupcake_bart_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx);
+void cupcake_play_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx);
 
 /* JS entity.step() — full logic in later entity tasks; wired from game timer OT. */
 void cupcake_cupcakes_step(cupcake_play_state_t *p);
