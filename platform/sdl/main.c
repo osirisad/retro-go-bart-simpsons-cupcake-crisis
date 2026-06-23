@@ -348,8 +348,10 @@ int main(int argc, char **argv)
     atlas_tex = texture_from_rgba(renderer, atlas_pixels, atlas_w, atlas_h);
     lcd_tex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING,
                                 CUPCAKE_LCD_W, CUPCAKE_LCD_H);
-    if (lcd_tex)
+    if (lcd_tex) {
         SDL_SetTextureBlendMode(lcd_tex, SDL_BLENDMODE_BLEND);
+        SDL_SetTextureScaleMode(lcd_tex, SDL_ScaleModeNearest);
+    }
 
     stbi_image_free(bezel_px);
 
@@ -404,7 +406,7 @@ int main(int argc, char **argv)
             "  --pin marge1 = pin one sprite; --pin off to clear\n"
             "  --pin-solo = only pinned sprite(s) on LCD (best for alignment)\n"
             "  --lcd-border = green outline of 1024x800 sprite buffer (auto with --pin)\n"
-            "  --debug = lcd border + extra sprite overlay\n\n",
+            "  --debug = lcd border + sprite stderr log\n\n",
             atlas_file_loaded);
 
     while (run_loop) {

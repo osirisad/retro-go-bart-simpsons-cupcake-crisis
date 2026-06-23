@@ -5,4 +5,4 @@ if not exist build-pc\cupcake-sdl.exe (
   echo Building...
   mingw32-make 2>nul || make
 )
-build-pc\cupcake-sdl.exe
+build-pc\cupcake-sdl.exe %*

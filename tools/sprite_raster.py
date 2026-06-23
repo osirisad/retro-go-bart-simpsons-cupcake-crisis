@@ -372,53 +372,88 @@ def largest_cc_bbox(mask: list[bytearray]) -> tuple[int, int, int, int] | None:
         for x in range(ATLAS_W):
             if not row[x] or srow[x]:
                 continue
-            stack = [(x, y)]
-            srow[x] = 1
-            n = 0
-            x0, y0, x1, y1 = x, y, x + 1, y + 1
-            while stack:
-                cx, cy = stack.pop()
-                n += 1
-                x0, y0 = min(x0, cx), min(y0, cy)
-                x1, y1 = max(x1, cx + 1), max(y1, cy + 1)
-                if cy > 0 and mask[cy - 1][cx] and not seen[cy - 1][cx]:
-                    seen[cy - 1][cx] = 1
-                    stack.append((cx, cy - 1))
-                if cy + 1 < ATLAS_H and mask[cy + 1][cx] and not seen[cy + 1][cx]:
-                    seen[cy + 1][cx] = 1
-                    stack.append((cx, cy + 1))
-                if cx > 0 and mask[cy][cx - 1] and not seen[cy][cx - 1]:
-                    seen[cy][cx - 1] = 1
-                    stack.append((cx - 1, cy))
-                if cx + 1 < ATLAS_W and mask[cy][cx + 1] and not seen[cy][cx + 1]:
-                    seen[cy][cx + 1] = 1
-                    stack.append((cx + 1, cy))
+            n, box = _cc_flood(mask, seen, x, y)
             if n > best_n:
                 best_n = n
-                best_box = (x0, y0, x1 - x0, y1 - y0)
+                best_box = box
     if best_n < MIN_PIX:
         return None
     return best_box
 
 
+def _cc_flood(
+    mask: list[bytearray],
+    seen: list[bytearray],
+    sx: int,
+    sy: int,
+) -> tuple[int, tuple[int, int, int, int]]:
+    """4-connected flood from (sx,sy); returns (pixel_count, (x,y,w,h))."""
+    stack = [(sx, sy)]
+    seen[sy][sx] = 1
+    n = 0
+    x0, y0, x1, y1 = sx, sy, sx + 1, sy + 1
+    while stack:
+        cx, cy = stack.pop()
+        n += 1
+        x0, y0 = min(x0, cx), min(y0, cy)
+        x1, y1 = max(x1, cx + 1), max(y1, cy + 1)
+        if cy > 0 and mask[cy - 1][cx] and not seen[cy - 1][cx]:
+            seen[cy - 1][cx] = 1
+            stack.append((cx, cy - 1))
+        if cy + 1 < ATLAS_H and mask[cy + 1][cx] and not seen[cy + 1][cx]:
+            seen[cy + 1][cx] = 1
+            stack.append((cx, cy + 1))
+        if cx > 0 and mask[cy][cx - 1] and not seen[cy][cx - 1]:
+            seen[cy][cx - 1] = 1
+            stack.append((cx - 1, cy))
+        if cx + 1 < ATLAS_W and mask[cy][cx + 1] and not seen[cy][cx + 1]:
+            seen[cy][cx + 1] = 1
+            stack.append((cx + 1, cy))
+    return n, (x0, y0, x1 - x0, y1 - y0)
+
+
+def union_cc_bbox(mask: list[bytearray], min_pix: int = MIN_PIX) -> tuple[int, int, int, int] | None:
+    """Union bbox of every 4-connected component with at least min_pix pixels."""
+    x0 = y0 = ATLAS_W
+    x1 = y1 = 0
+    found = False
+    seen = [bytearray(ATLAS_W) for _ in range(ATLAS_H)]
+
+    for y in range(ATLAS_H):
+        row = mask[y]
+        srow = seen[y]
+        for x in range(ATLAS_W):
+            if not row[x] or srow[x]:
+                continue
+            n, box = _cc_flood(mask, seen, x, y)
+            if n < min_pix:
+                continue
+            bx, by, bw, bh = box
+            found = True
+            x0 = min(x0, bx)
+            y0 = min(y0, by)
+            x1 = max(x1, bx + bw)
+            y1 = max(y1, by + bh)
+    if not found:
+        return None
+    return (x0, y0, x1 - x0, y1 - y0)
+
+
 def sprite_draw_bbox(
     mask: list[bytearray],
     *,
-    pad: int = 16,
-    max_up: int = 120,
+    pad: int = PAD,
 ) -> tuple[int, int, int, int] | None:
-    """Largest-CC box, extended upward for detached parts (e.g. Marge hair)."""
-    box = largest_cc_bbox(mask)
+    """Union of all significant CCs — matches JS material.visible (body + bubble, etc.)."""
+    box = union_cc_bbox(mask)
     if not box:
         return None
     x, y, w, h = box
-    y0 = y
-    x_left = max(0, x - pad)
-    x_right = min(ATLAS_W, x + w + pad)
-    for row in range(y - 1, max(0, y - max_up), -1):
-        if any(mask[row][col] for col in range(x_left, x_right)):
-            y0 = row
-    return (x, y0, w, y + h - y0)
+    x0 = max(0, x - pad)
+    y0 = max(0, y - pad)
+    x1 = min(ATLAS_W, x + w + pad)
+    y1 = min(ATLAS_H, y + h + pad)
+    return (x0, y0, x1 - x0, y1 - y0)
 
 
 def build_mask(atlas, triangles: list[list[tuple[int, int]]]) -> list[bytearray]:

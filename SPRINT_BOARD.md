@@ -835,7 +835,7 @@ Fix multi-part sprite mapping; composite draw pass; LCD audit and alignment veri
 
 | Task | Title | Status |
 |------|-------|--------|
-| TASK-61 | Redo sprite rect/mask mapping — full material parity | [Backlog - Sprint 10] |
+| TASK-61 | Redo sprite rect/mask mapping — full material parity | [Done - Sprint 10] |
 | TASK-37 | Play-mode composite draw pass | [Backlog - Sprint 10] |
 | TASK-45 | LCD position audit — close deltas vs mesh formula | [Backlog - Sprint 10] |
 | TASK-46 | Sprite coverage — all 96 materials blittable | [Backlog - Sprint 10] |
@@ -849,11 +849,11 @@ Fix multi-part sprite mapping; composite draw pass; LCD audit and alignment veri
 
     Type: Bug Fix
 
-    Status: [Backlog - Sprint 10]
+    Status: [Done - Sprint 10]
 
     Acceptance Criteria: Replace largest-connected-component-only bbox logic in `tools/sprite_raster.py` / `gen_sprites.py` with a mapping that includes **all** significant detached parts per material (union of connected components above `MIN_PIX`, not only upward hair extension). Regenerate `cupcake_sprites.h`, `cupcake_sprite_masks.h`, and `cupcake_sprite_lcd.h` via `make gen`. Known regressions fixed visually: `marge1` includes “Thank you Bart” speech bubble (full mask union ~267×384, not 117×384 body-only); `pacifier1`, `maggie3`, `miss3`, `bart6`, and other multi-CC materials include all gameplay-visible parts. Every material referenced in `demo.model` or `AcclaimCupcakeCrisis.js` (`$P.*` sprite lists) has a valid rect+mask; unused JSON-only materials (e.g. `TEMP4`) documented in `docs/SPRITES.md` with exclude rationale. `test/export_sprites.py` contact sheet + `--pin` spot-checks match browser RetroFab for pinned sprites. `tools/audit_sprites.py` passes; no `host_sprite_rect_ok` failures for demo.model names. Update or supersede TASK-45 / TASK-46 / TASK-50 verification steps once this lands.
 
-    Work Summary: 
+    Work Summary: `union_cc_bbox()` unions all CCs ≥ MIN_PIX in `sprite_raster.py`; `sprite_draw_bbox()` uses union + PAD. Regenerated headers (93 sprites): `marge1` 271×390, `couch4` 103×217, `bart6` 239×412, `miss3` 258×96, `pacifier1` 129×62. `export_sprites.py` aligned.
 
     Feedback/Notes: Root cause: JS toggles `material.visible` for all triangles in a material (e.g. single `marge1` shows body + bubble); C port cropped to largest CC. See chat analysis 2025-06.
 

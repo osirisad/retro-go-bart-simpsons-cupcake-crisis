@@ -5,7 +5,7 @@ Export RetroFab sprite UV crops for visual review (no game build required).
   python test/export_sprites.py
 
 Outputs under test/output/:
-  sprites_png/raster/<name>.png       — triangle-masked crop (largest connected region)
+  sprites_png/raster/<name>.png       — triangle-masked crop (significant CC union)
   sprites_png/marked_atlas.png      — green=raster bbox, red=naive UV corner box
   sprites_png/contact_sheet.png     — thumbnail grid
   index.html                        — full gallery (all materials with UV faces)
@@ -30,6 +30,7 @@ from sprite_raster import (  # noqa: E402
     crop_masked,
     largest_cc_bbox,
     naive_uv_bbox,
+    sprite_draw_bbox,
 )
 
 SPRITES_JSON = ROOT / "ignore" / "har_extracted" / "sim-acclaim-cupcakecrisis" / "game" / "sprites.json"
@@ -103,7 +104,7 @@ def export_atlas(atlas_key: str, atlas_path: Path, tris: dict, demo: set[str]) -
     for n, name in enumerate(sorted(tris.keys())):
         triangles = tris[name]
         mask = build_mask(atlas, triangles)
-        box = largest_cc_bbox(mask)
+        box = sprite_draw_bbox(mask)
         naive = naive_uv_bbox(triangles)
         entry: dict = {
             "name": name,
