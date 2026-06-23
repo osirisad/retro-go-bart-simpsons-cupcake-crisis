@@ -749,11 +749,11 @@ Miss counter, cupcake/couch miss sequences, entity hide during miss, game-over b
 
 | Task | Title | Status |
 |------|-------|--------|
-| TASK-33 | Miss counter (`$P.M_`) display and logic | [Backlog - Sprint 9] |
-| TASK-34 | `onM_Cupcake` miss sequence | [Backlog - Sprint 9] |
-| TASK-35 | `onM_Couch` miss sequence | [Backlog - Sprint 9] |
-| TASK-36 | `onM_` branch — miss limit vs phase restart | [Backlog - Sprint 9] |
-| TASK-56 | Hide entity groups during miss sequences | [Backlog - Sprint 9] |
+| TASK-33 | Miss counter (`$P.M_`) display and logic | [Done - Sprint 9] |
+| TASK-34 | `onM_Cupcake` miss sequence | [Done - Sprint 9] |
+| TASK-35 | `onM_Couch` miss sequence | [Done - Sprint 9] |
+| TASK-36 | `onM_` branch — miss limit vs phase restart | [Done - Sprint 9] |
+| TASK-56 | Hide entity groups during miss sequences | [Done - Sprint 9] |
 
 ---
 
@@ -763,11 +763,11 @@ Miss counter, cupcake/couch miss sequences, entity hide during miss, game-over b
 
     Type: Feature
 
-    Status: [Backlog - Sprint 9]
+    Status: [Done - Sprint 9]
 
     Acceptance Criteria: `miss.start(n)` shows `miss1`–`miss3` up to count. `increase`/`decrease` toggle sprites. Phase complete may decrease miss count. Draw miss indicators in play/over modes.
 
-    Work Summary: 
+    Work Summary: `cupcake_miss_start(p, n)` mirrors JS optional initial count. `cupcake_miss_draw_visible` draws miss1..count in play/over via composite draw. `make test-miss-counter`.
 
     Feedback/Notes: 
 
@@ -777,11 +777,11 @@ Miss counter, cupcake/couch miss sequences, entity hide during miss, game-over b
 
     Type: Feature
 
-    Status: [Backlog - Sprint 9]
+    Status: [Done - Sprint 9]
 
     Acceptance Criteria: Pause, 0.5s timer: play `miss` SFX, show aircake 0 or 9 based on lane, hide cupcakes, Bart `bart9`. After 1.75s schedule `onM_`. Matches JS timing.
 
-    Work Summary: 
+    Work Summary: `cupcake_on_m_cupcake` + miss timer callbacks; phase restart resume via named `CUPCAKE_TMR_PHASE`. `make test-bart-miss`.
 
     Feedback/Notes: 
 
@@ -791,11 +791,11 @@ Miss counter, cupcake/couch miss sequences, entity hide during miss, game-over b
 
     Type: Feature
 
-    Status: [Backlog - Sprint 9]
+    Status: [Done - Sprint 9]
 
     Acceptance Criteria: Pause, timer `rate 0.4`, `ticks 6 - bart.position`: force Bart toward lane 4 with `move` SFX each step; then hide cupcakes/aircakes, Bart `bart6`, `whoa` SFX, 2s delay → `onM_`.
 
-    Work Summary: 
+    Work Summary: `cupcake_on_m_couch` + couch miss OT (slide to lane 5). Couch spawn end triggers miss when Bart not sitting. `make test-bart-miss`, `make test-couch-step`.
 
     Feedback/Notes: 
 
@@ -805,11 +805,11 @@ Miss counter, cupcake/couch miss sequences, entity hide during miss, game-over b
 
     Type: Feature
 
-    Status: [Backlog - Sprint 9]
+    Status: [Done - Sprint 9]
 
     Acceptance Criteria: `miss.increase()`; if count == 3 → `onGameOver`; else `onPhaseRestart`. Entity visibility reset consistent with JS.
 
-    Work Summary: 
+    Work Summary: `cupcake_on_m_` → `cupcake_miss_increase()` branches to `cupcake_on_game_over` or `cupcake_on_phase_restart` (0.75s interstitial restores grid/aircakes).
 
     Feedback/Notes: 
 
@@ -819,11 +819,11 @@ Miss counter, cupcake/couch miss sequences, entity hide during miss, game-over b
 
     Type: Feature
 
-    Status: [Backlog - Sprint 9]
+    Status: [Done - Sprint 9]
 
     Acceptance Criteria: JS sets `cupcakes.visible=false` and `aircakes.visible=false` during miss animations; C port equivalent hides those groups until phase restart. Pacifier/Marge/Couch timers stopped appropriately.
 
-    Work Summary: 
+    Work Summary: Miss sequences hide grid (cupcake miss OT) and grid+aircakes (couch miss end). `cupcake_miss_sequence_begin` stops couch timer and hides marge/pacifier; `cupcake_pause` also pauses couch spawn timer.
 
     Feedback/Notes: 
 

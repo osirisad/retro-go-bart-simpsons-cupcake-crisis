@@ -71,6 +71,22 @@ static void test_step_no_miss_on_couch(void)
         fail("step: floor cupcake kept when bart on couch");
 }
 
+static void test_step_no_miss_when_bart_throwing(void)
+{
+    cupcake_play_state_t p;
+
+    memset(&p, 0, sizeof p);
+    p.bart.pos = 0;
+    p.bart.count = 2;
+    cupcake_grid_set_visible(&p.grid, 1, 1, 1);
+    cupcake_grid_set_visible(&p.grid, 1, 2, 1);
+
+    cupcake_cupcakes_step(&p);
+
+    if (!cupcake_grid_is_visible(&p.grid, 1, 1))
+        fail("step: held cupcakes kept when bart throwing to Marge");
+}
+
 static void test_step_miss_other_lane(void)
 {
     cupcake_play_state_t *p;
@@ -106,6 +122,7 @@ int main(void)
     test_cupcakes_start_hides_grid();
     test_step_no_miss_when_bart_in_lane();
     test_step_no_miss_on_couch();
+    test_step_no_miss_when_bart_throwing();
     test_step_miss_other_lane();
     test_step_only_slot1_misses();
 

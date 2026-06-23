@@ -150,6 +150,30 @@ static void test_action_marge_collect_floor_cupcake(void)
         fail("action collect: count 1 when floor cupcake remains at lane 1");
 }
 
+static void test_action_no_miss_without_marge(void)
+{
+    cupcake_play_state_t *p;
+    cupcake_timers_t *tm;
+
+    enter_play(&p);
+    tm = cupcake_timers();
+    p->marge.visible = 0;
+    p->bart.count = 2;
+    cupcake_bart_set_position(p, 1);
+    cupcake_grid_set_visible(&p->grid, 1, 1, 1);
+    cupcake_grid_set_visible(&p->grid, 1, 2, 1);
+
+    press_action();
+    if (p->bart.pos != 0)
+        fail("action throw: bart at position 0");
+
+    cupcake_timers_update(tm, cupcake_game_tick_rate_sec(p));
+    if (cupcake_timer_active(tm, CUPCAKE_TMR_MISS))
+        fail("action without marge: no miss during throw");
+    if (p->bart.count != 2)
+        fail("action without marge: cupcake count unchanged after game tick");
+}
+
 static void test_action_no_collect_without_marge(void)
 {
     cupcake_play_state_t *p;
@@ -177,6 +201,7 @@ int main(void)
     test_action_rate_with_marge();
     test_action_marge_collect_count_reset();
     test_action_marge_collect_floor_cupcake();
+    test_action_no_miss_without_marge();
     test_action_no_collect_without_marge();
 
     if (g_fail)

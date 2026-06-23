@@ -147,6 +147,9 @@ static void test_spawn_animation_frames_and_sfx(void)
     tm = cupcake_timers();
 
     p->couch.counter = p->couch.next - 1;
+    /* Bart sitting so couch4 animation does not cascade into onM_Couch. */
+    cupcake_couch_set_frame_visible(&p->couch, 3, 1);
+    cupcake_bart_set_position(p, 5);
     cupcake_couch_step(p, (int)p->game_tick);
     reset_sfx();
 
@@ -188,7 +191,8 @@ static void test_spawn_end_triggers_miss(void)
     cupcake_bart_set_position(p, 2);
     p->couch.counter = p->couch.next - 1;
     cupcake_couch_step(p, (int)p->game_tick);
-    advance_couch_timer(tm, 4);
+    /* couch0+couch1 on spawn; three 3s steps reach couch4 and onM_Couch. */
+    advance_couch_timer(tm, 3);
 
     if (!cupcake_timer_active(tm, CUPCAKE_TMR_MISS))
         fail("spawn end: onM_Couch miss timer when Bart not sitting");

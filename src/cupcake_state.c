@@ -298,11 +298,15 @@ void cupcake_maggie_start(cupcake_play_state_t *p)
     p->maggie.index = 0;
 }
 
-void cupcake_miss_start(cupcake_play_state_t *p)
+void cupcake_miss_start(cupcake_play_state_t *p, int initial)
 {
     if (!p)
         return;
-    p->miss.count = 0;
+    if (initial < 0)
+        initial = 0;
+    if (initial > CUPCAKE_MISS_MAX)
+        initial = CUPCAKE_MISS_MAX;
+    p->miss.count = (uint8_t)initial;
 }
 
 void cupcake_miss_decrease(cupcake_play_state_t *p)

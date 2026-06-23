@@ -170,7 +170,8 @@ int cupcake_bart_miss_index(const cupcake_play_state_t *p);
 /* JS marge.collect() — full delivery bonus in TASK-29; move side effects in TASK-17. */
 int cupcake_marge_collect(cupcake_play_state_t *p);
 void cupcake_maggie_start(cupcake_play_state_t *p);
-void cupcake_miss_start(cupcake_play_state_t *p);
+/* JS miss.start(n) — optional initial count shows miss1..missn. */
+void cupcake_miss_start(cupcake_play_state_t *p, int initial);
 void cupcake_miss_decrease(cupcake_play_state_t *p);
 void cupcake_cupcakes_start(cupcake_play_state_t *p);
 void cupcake_aircakes_start(cupcake_play_state_t *p);

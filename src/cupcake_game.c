@@ -420,11 +420,23 @@ void cupcake_miss_increase(void)
         cupcake_on_phase_restart();
 }
 
+static void cupcake_miss_sequence_begin(void)
+{
+    cupcake_play_state_t *p = &g.play;
+
+    cupcake_pause();
+    cupcake_timer_stop(&g_timers, CUPCAKE_TMR_COUCH);
+    p->marge.visible = 0;
+    p->pacifier.visible = 0;
+}
+
 void cupcake_pause(void)
 {
     g.play.enabled = 0;
     if (cupcake_timer_active(&g_timers, CUPCAKE_TMR_GAME))
         cupcake_timer_pause(&g_timers, CUPCAKE_TMR_GAME);
+    if (cupcake_timer_active(&g_timers, CUPCAKE_TMR_COUCH))
+        cupcake_timer_pause(&g_timers, CUPCAKE_TMR_COUCH);
 }
 
 void cupcake_resume(void)
@@ -432,6 +444,9 @@ void cupcake_resume(void)
     if (g.play.mode == CUPCAKE_MODE_PLAY &&
         cupcake_timer_active(&g_timers, CUPCAKE_TMR_GAME))
         cupcake_timer_resume(&g_timers, CUPCAKE_TMR_GAME);
+    if (g.play.mode == CUPCAKE_MODE_PLAY &&
+        cupcake_timer_active(&g_timers, CUPCAKE_TMR_COUCH))
+        cupcake_timer_resume(&g_timers, CUPCAKE_TMR_COUCH);
     if (g.play.mode == CUPCAKE_MODE_PLAY)
         g.play.enabled = 1;
 }
@@ -770,7 +785,7 @@ void cupcake_on_m_cupcake(int lane)
     cupcake_timer_config_t cfg;
 
     g_miss_cupcake_lane = lane;
-    cupcake_pause();
+    cupcake_miss_sequence_begin();
     memset(&cfg, 0, sizeof cfg);
     cfg.rate_sec = 0.5f;
     cfg.max_ticks = 1;
@@ -790,7 +805,7 @@ void cupcake_cupcakes_step(cupcake_play_state_t *p)
     for (lane = 1; lane <= 4; lane++) {
         if (!cupcake_grid_is_visible(&p->grid, lane, 1))
             continue;
-        if (p->bart.pos == lane || p->bart.pos == 5)
+        if (p->bart.pos == lane || p->bart.pos == 0 || p->bart.pos == 5)
             continue;
         cupcake_grid_set_visible(&p->grid, lane, 1, 0);
         cupcake_on_m_cupcake(lane);
@@ -802,7 +817,7 @@ static void tmr_miss_couch_ot(void *ctx, int tick)
     cupcake_play_state_t *p = &g.play;
 
     (void)ctx;
-    if (tick > 0 && tick < 6 && p->bart.pos < 4) {
+    if (tick > 0 && tick < 6 && p->bart.pos < 5) {
         cupcake_bart_set_position(p, (int)p->bart.pos + 1);
         host_sfx("move");
     }
@@ -831,7 +846,7 @@ void cupcake_on_m_couch(void)
     if (ticks < 1)
         ticks = 1;
 
-    cupcake_pause();
+    cupcake_miss_sequence_begin();
     memset(&cfg, 0, sizeof cfg);
     cfg.rate_sec = 0.4f;
     cfg.max_ticks = ticks;
@@ -1408,7 +1423,7 @@ static void tmr_start_seq_on_start(void *ctx, int tick)
     p->scoreboard.score = 0;
     cupcake_bart_start(p, 2);
     cupcake_maggie_start(p);
-    cupcake_miss_start(p);
+    cupcake_miss_start(p, 0);
     host_sfx("start");
 }
 
