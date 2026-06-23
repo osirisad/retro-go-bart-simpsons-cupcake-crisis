@@ -42,7 +42,7 @@ static void cb_end(void *ctx, int tick)
 static void cb_schedule(void *ctx, int tick)
 {
     (void)ctx;
-    if (tick == 1)
+    if (tick == 0)
         g_scheduled = 1;
 }
 

@@ -185,7 +185,7 @@ void cupcake_play_state_start_phase(cupcake_play_state_t *p, int bart_lane)
     cupcake_bart_start(p, bart_lane);
     cupcake_cupcakes_start(p);
     cupcake_aircakes_start(p);
-    cupcake_maggie_start(p, 0);
+    cupcake_maggie_start(p);
     cupcake_marge_start(p);
     cupcake_couch_start(p);
     cupcake_pacifier_start(p);
@@ -279,14 +279,6 @@ int cupcake_bart_miss_index(const cupcake_play_state_t *p)
     return (int)p->bart.miss_index;
 }
 
-int cupcake_marge_collect(cupcake_play_state_t *p)
-{
-    if (!p || !p->marge.visible || p->bart.count == 0 || p->bart.pos != 0)
-        return 0;
-    /* scoreboard.addBonus delivery — TASK-29 */
-    return 1;
-}
-
 void cupcake_bart_start(cupcake_play_state_t *p, int pos)
 {
     if (!p)
@@ -297,14 +289,13 @@ void cupcake_bart_start(cupcake_play_state_t *p, int pos)
         cupcake_bart_set_position(p, pos);
 }
 
-void cupcake_maggie_start(cupcake_play_state_t *p, int step_now)
+void cupcake_maggie_start(cupcake_play_state_t *p)
 {
     if (!p)
         return;
     p->maggie.visible = 0;
     p->maggie.loop = 0;
     p->maggie.index = 0;
-    (void)step_now; /* maggie.step() wired in TASK-28 */
 }
 
 void cupcake_miss_start(cupcake_play_state_t *p)
@@ -389,32 +380,77 @@ void cupcake_couch_set_frame_visible(cupcake_couch_state_t *c, int index, int on
         c->frame_visible &= (uint8_t)~(1u << (unsigned)index);
 }
 
-void cupcake_maggie_step(cupcake_play_state_t *p)
+void cupcake_maggie_sprite_name(int index, char *buf, size_t bufsz)
 {
-    (void)p; /* TASK-28 */
-}
-
-void cupcake_marge_step(cupcake_play_state_t *p, int tick)
-{
-    (void)p;
-    (void)tick; /* TASK-29 */
-}
-
-void cupcake_couch_step(cupcake_play_state_t *p, int tick)
-{
-    (void)tick;
-    if (!p || p->couch.onscreen)
+    if (!buf || bufsz == 0)
         return;
-    if (p->couch.next > 0)
-        p->couch.next--;
+    buf[0] = '\0';
+    if (index < 0 || index > 3)
+        return;
+    snprintf(buf, bufsz, "maggie%d", index);
 }
 
-void cupcake_pacifier_step(cupcake_play_state_t *p)
+void cupcake_maggie_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx)
 {
-    if (!p || p->pacifier.visible)
+    char name[16];
+
+    if (!p || !fn || !p->maggie.visible)
         return;
-    if (p->pacifier.next > 0)
-        p->pacifier.next--;
+
+    /* JS Maggie.step always shows maggie0; maggie1..3 overlay when index > 0. */
+    fn("maggie0", ctx);
+    if (p->maggie.index > 0) {
+        cupcake_maggie_sprite_name((int)p->maggie.index, name, sizeof name);
+        if (name[0])
+            fn(name, ctx);
+    }
+}
+
+void cupcake_couch_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx)
+{
+    int i;
+    char name[16];
+
+    if (!p || !fn || !p->couch.onscreen)
+        return;
+
+    for (i = 0; i <= 4; i++) {
+        if (!(p->couch.frame_visible & (1u << (unsigned)i)))
+            continue;
+        snprintf(name, sizeof name, "couch%d", i);
+        fn(name, ctx);
+    }
+}
+
+void cupcake_marge_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx)
+{
+    if (!p || !fn || !p->marge.visible)
+        return;
+    fn("marge1", ctx);
+}
+
+void cupcake_pacifier_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx)
+{
+    char name[16];
+
+    if (!p || !fn || !p->pacifier.visible || p->pacifier.index < 1 || p->pacifier.index > 2)
+        return;
+    snprintf(name, sizeof name, "pacifier%d", (int)p->pacifier.index);
+    fn(name, ctx);
+}
+
+void cupcake_miss_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx)
+{
+    int i;
+    char name[16];
+
+    if (!p || !fn)
+        return;
+
+    for (i = 1; i <= (int)p->miss.count && i <= 3; i++) {
+        snprintf(name, sizeof name, "miss%d", i);
+        fn(name, ctx);
+    }
 }
 
 void cupcake_timer_export(const cupcake_timer_t *tm, cupcake_timer_saved_t *out)

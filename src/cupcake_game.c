@@ -34,7 +34,6 @@ typedef struct {
 
 static cupcake_start_ctx_t g_start_ctx;
 
-static int g_sit_bonus_points;
 static int g_miss_cupcake_lane;
 
 static void cupcake_on_phase_start(int game_timer_start_tick);
@@ -50,6 +49,10 @@ static void tmr_miss_cupcake_ot(void *ctx, int tick);
 static void tmr_miss_cupcake_end(void *ctx, int tick);
 static void tmr_miss_couch_ot(void *ctx, int tick);
 static void tmr_miss_couch_end(void *ctx, int tick);
+static void tmr_couch_spawn_on_start(void *ctx, int tick);
+static void tmr_couch_spawn_ot(void *ctx, int tick);
+static void tmr_couch_spawn_end(void *ctx, int tick);
+static void couch_entity_start(cupcake_play_state_t *p, int spawn_anim);
 static void tmr_phase_complete_start(void *ctx, int tick);
 static void tmr_phase_complete_end(void *ctx, int tick);
 static void tmr_sit_bonus_on_start(void *ctx, int tick);
@@ -58,6 +61,8 @@ static void tmr_bart_action_on_start(void *ctx, int tick);
 static void tmr_bart_action_on_end(void *ctx, int tick);
 static void sched_on_m(void *ctx, int tick);
 static void sched_phase_restart_resume(void *ctx, int tick);
+static void sched_maggie_index_reset(void *ctx, int tick);
+static void sched_marge_start_after_delivery(void *ctx, int tick);
 static void cupcake_game_timer_start(int start_tick);
 static void cupcake_stop(void);
 static void cupcake_on_demo(void);
@@ -302,6 +307,31 @@ static void draw_aircakes_play(const cupcake_play_state_t *p)
     cupcake_aircakes_draw_visible(p, draw_sprite_cb, NULL);
 }
 
+static void draw_couch_play(const cupcake_play_state_t *p)
+{
+    cupcake_couch_draw_visible(p, draw_sprite_cb, NULL);
+}
+
+static void draw_maggie_play(const cupcake_play_state_t *p)
+{
+    cupcake_maggie_draw_visible(p, draw_sprite_cb, NULL);
+}
+
+static void draw_marge_play(const cupcake_play_state_t *p)
+{
+    cupcake_marge_draw_visible(p, draw_sprite_cb, NULL);
+}
+
+static void draw_pacifier_play(const cupcake_play_state_t *p)
+{
+    cupcake_pacifier_draw_visible(p, draw_sprite_cb, NULL);
+}
+
+static void draw_miss_play(const cupcake_play_state_t *p)
+{
+    cupcake_miss_draw_visible(p, draw_sprite_cb, NULL);
+}
+
 static void draw_bart_from_state(const cupcake_bart_state_t *b)
 {
     static const char *const names[] = {
@@ -322,15 +352,27 @@ static void draw_bart_play(const cupcake_play_state_t *p)
 {
     if (!p)
         return;
-    if (p->aircakes.group_visible)
-        draw_aircakes_play(p);
+
+    /* TASK-37 draw order: couch, maggie, marge, pacifier, grid, aircakes, bart, miss. */
+    draw_couch_play(p);
+    draw_maggie_play(p);
+    draw_marge_play(p);
+    draw_pacifier_play(p);
+
     if (p->bart.miss_index == 6 || p->bart.miss_index == 9) {
+        if (p->aircakes.group_visible)
+            draw_aircakes_play(p);
         draw_bart_from_state(&p->bart);
+        draw_miss_play(p);
         return;
     }
-    draw_bart_from_state(&p->bart);
+
     if (p->grid.group_visible)
         draw_cupcakes_grid(p);
+    if (p->aircakes.group_visible)
+        draw_aircakes_play(p);
+    draw_bart_from_state(&p->bart);
+    draw_miss_play(p);
 }
 
 static int btn_pressed(int index)
@@ -465,6 +507,226 @@ static void sched_on_m(void *ctx, int tick)
     (void)ctx;
     (void)tick;
     cupcake_on_m_();
+}
+
+static void sched_maggie_index_reset(void *ctx, int tick)
+{
+    cupcake_play_state_t *p = &g.play;
+
+    (void)ctx;
+    (void)tick;
+    p->maggie.index = 0;
+}
+
+static int cupcake_couch_slot3_visible(const cupcake_play_state_t *p)
+{
+    if (!p)
+        return 0;
+    return (p->couch.frame_visible & (1u << 3)) ? 1 : 0;
+}
+
+static void tmr_couch_spawn_on_start(void *ctx, int tick)
+{
+    cupcake_play_state_t *p = &g.play;
+
+    (void)ctx;
+    (void)tick;
+    p->couch.onscreen = 1;
+    p->couch.anim = 0;
+    cupcake_couch_set_frame_visible(&p->couch, 0, 1);
+}
+
+static void tmr_couch_spawn_ot(void *ctx, int tick)
+{
+    cupcake_play_state_t *p = &g.play;
+
+    (void)ctx;
+    if (tick < 1 || tick > 4)
+        return;
+    host_sfx("couch");
+    cupcake_couch_set_frame_visible(&p->couch, tick, 1);
+    p->couch.anim = (uint8_t)tick;
+    if (tick == 3)
+        p->maggie.visible = 0;
+}
+
+static void tmr_couch_spawn_end(void *ctx, int tick)
+{
+    cupcake_play_state_t *p = &g.play;
+
+    (void)ctx;
+    (void)tick;
+    if (p->bart.pos != 5)
+        cupcake_on_m_couch();
+}
+
+static void couch_spawn_timer_start(void)
+{
+    cupcake_timer_config_t cfg;
+
+    memset(&cfg, 0, sizeof cfg);
+    cfg.rate_sec = 3.f;
+    cfg.start_tick = 1;
+    cfg.max_ticks = 4;
+    cfg.on_start = tmr_couch_spawn_on_start;
+    cfg.on_tick = tmr_couch_spawn_ot;
+    cfg.on_end = tmr_couch_spawn_end;
+    cupcake_timer_start(&g_timers, CUPCAKE_TMR_COUCH, &cfg);
+}
+
+static void couch_entity_start(cupcake_play_state_t *p, int spawn_anim)
+{
+    int can_anim;
+
+    if (!p)
+        return;
+    can_anim = spawn_anim && !p->couch.onscreen;
+    cupcake_timer_stop(&g_timers, CUPCAKE_TMR_COUCH);
+    cupcake_couch_start(p);
+    if (can_anim)
+        couch_spawn_timer_start();
+}
+
+void cupcake_couch_step(cupcake_play_state_t *p, int tick)
+{
+    (void)tick;
+    if (!p || p->couch.onscreen)
+        return;
+    p->couch.counter++;
+    if (p->couch.counter >= p->couch.next && !p->marge.visible)
+        couch_entity_start(p, 1);
+}
+
+void cupcake_maggie_step(cupcake_play_state_t *p)
+{
+    float delay;
+
+    if (!p)
+        return;
+
+    p->maggie.visible = 0;
+
+    if (!cupcake_couch_slot3_visible(p)) {
+        p->maggie.index = p->maggie.loop;
+        p->maggie.visible = 1;
+
+        if (p->maggie.loop == 3) {
+            cupcake_aircake_set_visible(&p->aircakes, 8, 1);
+            delay = 0.75f * cupcake_game_tick_rate_sec(p);
+            cupcake_timers_schedule(&g_timers, delay, sched_maggie_index_reset, NULL);
+        }
+
+        if (p->maggie.loop > 0)
+            host_sfx("throw");
+
+        p->maggie.loop++;
+        if (p->maggie.loop >= 4)
+            p->maggie.loop = 0;
+    } else {
+        p->maggie.loop = 0;
+    }
+}
+
+static void sched_marge_start_after_delivery(void *ctx, int tick)
+{
+    (void)ctx;
+    (void)tick;
+    cupcake_marge_start(&g.play);
+}
+
+typedef struct {
+    int five_delivery;
+} marge_bonus_ctx_t;
+
+static marge_bonus_ctx_t g_marge_bonus_ctx;
+
+static void cupcake_bart_give_cupcakes_to_marge(cupcake_play_state_t *p)
+{
+    int pos;
+
+    if (!p)
+        return;
+    pos = (int)p->bart.pos;
+    p->bart.count = 0;
+    cupcake_bart_set_position(p, pos);
+}
+
+static void marge_bonus_on_tick(void *ctx, int tick)
+{
+    cupcake_play_state_t *p = &g.play;
+    marge_bonus_ctx_t *mc = (marge_bonus_ctx_t *)ctx;
+
+    if (!mc || !mc->five_delivery || tick != 5)
+        return;
+    cupcake_bart_give_cupcakes_to_marge(p);
+    cupcake_marge_start(p);
+}
+
+static void marge_bonus_on_end(void *ctx)
+{
+    cupcake_play_state_t *p = &g.play;
+    marge_bonus_ctx_t *mc = (marge_bonus_ctx_t *)ctx;
+    float delay;
+
+    if (!mc || mc->five_delivery)
+        return;
+    cupcake_bart_give_cupcakes_to_marge(p);
+    delay = 0.5f * cupcake_game_tick_rate_sec(p);
+    cupcake_timers_schedule(&g_timers, delay, sched_marge_start_after_delivery, NULL);
+}
+
+int cupcake_marge_collect(cupcake_play_state_t *p)
+{
+    int count, extra, point_ticks;
+    float rate;
+    cupcake_scoreboard_bonus_cfg_t cfg;
+
+    if (!p || !p->marge.visible || p->bart.count == 0 || p->bart.pos != 0)
+        return 0;
+
+    count = (int)p->bart.count;
+    extra = (count == 5) ? 5 : 0;
+    g_marge_bonus_ctx.five_delivery = extra ? 1 : 0;
+
+    if (!extra)
+        host_sfx("deliver");
+
+    rate = extra ? 0.025f : 0.06f;
+    point_ticks = count + extra;
+
+    memset(&cfg, 0, sizeof cfg);
+    cfg.rate_sec = rate;
+    cfg.point_ticks = point_ticks;
+    cfg.increment = 100;
+    cfg.play_points_sfx = extra ? 0 : 1;
+    cfg.play_five_on_first = extra ? 1 : 0;
+    cfg.on_tick = marge_bonus_on_tick;
+    cfg.on_end = marge_bonus_on_end;
+    cfg.user_ctx = &g_marge_bonus_ctx;
+
+    cupcake_scoreboard_add_bonus_ex(p, &g_timers, &cfg);
+    return 1;
+}
+
+void cupcake_marge_step(cupcake_play_state_t *p, int tick)
+{
+    if (!p)
+        return;
+
+    if (p->marge.visible) {
+        if (p->marge.loop == 2) {
+            p->marge.loop = 0;
+            p->marge.visible = 0;
+        } else {
+            p->marge.loop++;
+        }
+    } else if (p->bart.count > 0 && tick > 6 &&
+               (tick % 6 == 5 ||
+                (tick % 6 == 0 && cupcake_rand(3) == 0)) &&
+               !p->couch.onscreen) {
+        p->marge.visible = 1;
+        host_sfx("marge");
+    }
 }
 
 static void cupcake_on_m_(void)
@@ -626,6 +888,8 @@ static void sched_phase_restart_resume(void *ctx, int tick)
     (void)tick;
 
     p->scoreboard.score = p->points;
+    p->grid.group_visible = 1;
+    p->aircakes.group_visible = 1;
     cupcake_pacifier_start(p);
     cupcake_resume();
 }
@@ -633,6 +897,7 @@ static void sched_phase_restart_resume(void *ctx, int tick)
 void cupcake_on_phase_restart(void)
 {
     cupcake_play_state_t *p = &g.play;
+    cupcake_timer_config_t cfg;
 
     /* JS onPhaseRestart ordering. */
     cupcake_scoreboard_set_phase(p, (int)p->phase);
@@ -640,7 +905,12 @@ void cupcake_on_phase_restart(void)
     cupcake_on_phase_start(1);
     cupcake_pause();
     host_sfx("stop");
-    cupcake_timers_schedule(&g_timers, 0.75f, sched_phase_restart_resume, NULL);
+
+    memset(&cfg, 0, sizeof cfg);
+    cfg.delay_sec = 0.75f;
+    cfg.max_ticks = 1;
+    cfg.on_start = sched_phase_restart_resume;
+    cupcake_timer_start(&g_timers, CUPCAKE_TMR_PHASE, &cfg);
 }
 
 static void tmr_sit_bonus_on_start(void *ctx, int tick)
@@ -653,14 +923,16 @@ static void tmr_sit_bonus_on_start(void *ctx, int tick)
 static void tmr_sit_bonus_end(void *ctx, int tick)
 {
     cupcake_play_state_t *p = &g.play;
+    int bonus_ticks;
 
     (void)ctx;
     (void)tick;
 
-    cupcake_couch_start(p);
+    bonus_ticks = cupcake_couch_sit_bonus_ticks(&p->couch);
+    couch_entity_start(p, 0);
     cupcake_resume();
-    if (g_sit_bonus_points > 0)
-        cupcake_scoreboard_add_bonus(0.03f, g_sit_bonus_points, 100);
+    if (bonus_ticks > 0)
+        cupcake_scoreboard_add_bonus(0.03f, bonus_ticks, 100);
 }
 
 static void cupcake_bart_sit(cupcake_play_state_t *p)
@@ -670,17 +942,21 @@ static void cupcake_bart_sit(cupcake_play_state_t *p)
     if (!p || p->bart.pos != 4 || !p->couch.onscreen)
         return;
 
+    /* Stop couch spawn animation so onEnd cannot fire onM_Couch after sit. */
+    cupcake_timer_stop(&g_timers, CUPCAKE_TMR_COUCH);
+
     cupcake_bart_set_position(p, 5);
     cupcake_pause();
 
     if (p->couch.frame_visible & (1u << 4)) {
+        couch_entity_start(p, 0);
         cupcake_resume();
         return;
     }
 
     bonus_ticks = cupcake_couch_sit_bonus_ticks(&p->couch);
     if (bonus_ticks <= 0) {
-        cupcake_couch_start(p);
+        couch_entity_start(p, 0);
         cupcake_resume();
         return;
     }
@@ -718,7 +994,6 @@ void cupcake_bart_sit_bonus(int couch_bonus_points)
     if (couch_bonus_points <= 0)
         return;
 
-    g_sit_bonus_points = couch_bonus_points;
     cupcake_pause();
     memset(&cfg, 0, sizeof cfg);
     cfg.rate_sec = 2.f;
@@ -937,6 +1212,29 @@ void cupcake_pacifier_on_loop3(cupcake_play_state_t *p)
         cupcake_pacifier_start(p);
 }
 
+void cupcake_pacifier_step(cupcake_play_state_t *p)
+{
+    if (!p)
+        return;
+
+    p->pacifier.counter++;
+    if (p->pacifier.counter < p->pacifier.next)
+        return;
+
+    if (p->pacifier.loop < 3) {
+        p->pacifier.index = (uint8_t)(p->pacifier.loop == 1 ? 1 : 2);
+        p->pacifier.visible = 1;
+    }
+
+    if (p->pacifier.loop == 1)
+        host_sfx("pacifier1");
+
+    if (p->pacifier.loop == 3)
+        cupcake_pacifier_on_loop3(p);
+    else
+        p->pacifier.loop++;
+}
+
 static void cupcake_bart_move(cupcake_play_state_t *p, cupcake_move_t dir)
 {
     int dest;
@@ -1077,12 +1375,13 @@ static void cupcake_on_phase_start(int game_timer_start_tick)
     p->game_tick = 0;
     p->scoreboard.score = p->points;
     cupcake_bart_start(p, 2);
-    cupcake_maggie_start(p, 1);
+    cupcake_maggie_start(p);
+    cupcake_maggie_step(p);
     cupcake_cupcakes_start(p);
     cupcake_aircakes_start(p);
     cupcake_pacifier_start(p);
     cupcake_marge_start(p);
-    cupcake_couch_start(p);
+    couch_entity_start(p, 0);
     if (p->scoreboard.level == 0)
         cupcake_scoreboard_set_phase(p, (int)p->phase);
     cupcake_game_timer_start(game_timer_start_tick);
@@ -1108,7 +1407,7 @@ static void tmr_start_seq_on_start(void *ctx, int tick)
     p->points = 0;
     p->scoreboard.score = 0;
     cupcake_bart_start(p, 2);
-    cupcake_maggie_start(p, 0);
+    cupcake_maggie_start(p);
     cupcake_miss_start(p);
     host_sfx("start");
 }
@@ -1163,8 +1462,12 @@ static void cupcake_timers_restore(void)
 
     t = &g_timers.named[CUPCAKE_TMR_PHASE];
     if (t->active) {
-        t->cfg.on_start = tmr_phase_complete_start;
-        t->cfg.on_end = tmr_phase_complete_end;
+        if (t->cfg.delay_sec >= 0.74f && t->cfg.delay_sec <= 0.76f) {
+            t->cfg.on_start = sched_phase_restart_resume;
+        } else {
+            t->cfg.on_start = tmr_phase_complete_start;
+            t->cfg.on_end = tmr_phase_complete_end;
+        }
     }
 
     t = &g_timers.named[CUPCAKE_TMR_ACTION];
@@ -1178,18 +1481,23 @@ static void cupcake_timers_restore(void)
         }
     }
 
+    t = &g_timers.named[CUPCAKE_TMR_COUCH];
+    if (t->active) {
+        t->cfg.on_start = tmr_couch_spawn_on_start;
+        t->cfg.on_tick = tmr_couch_spawn_ot;
+        t->cfg.on_end = tmr_couch_spawn_end;
+    }
+
     cupcake_scoreboard_timers_restore(&g.play, &g_timers);
 
     for (i = 0; i < CUPCAKE_TMR_SCHEDULE_MAX; i++) {
         cupcake_timer_t *s = &g_timers.schedule[i];
         if (!s->active)
             continue;
-        if (s->cfg.rate_sec >= 0.74f && s->cfg.rate_sec <= 0.76f)
-            s->cfg.on_tick = sched_phase_restart_resume;
-        else if (s->cfg.rate_sec >= 1.74f && s->cfg.rate_sec <= 1.76f)
-            s->cfg.on_tick = sched_on_m;
+        if (s->cfg.rate_sec >= 1.74f && s->cfg.rate_sec <= 1.76f)
+            s->cfg.on_start = sched_on_m;
         else if (s->cfg.rate_sec >= 1.99f && s->cfg.rate_sec <= 2.01f)
-            s->cfg.on_tick = sched_on_m;
+            s->cfg.on_start = sched_on_m;
     }
 
     if (g.play.mode == CUPCAKE_MODE_PLAY && !g.play.enabled &&

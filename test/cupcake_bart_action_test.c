@@ -128,13 +128,22 @@ static void test_action_marge_collect_count_reset(void)
     run_action_timer(tm, rate);
     if (p->bart.count != 1)
         fail("action collect: count 1 when stack slot 1 visible on lane 1");
+}
 
-    cupcake_grid_clear(&p->grid);
-    p->bart.count = 0;
-    cupcake_bart_set_position(p, 1);
+static void test_action_marge_collect_floor_cupcake(void)
+{
+    cupcake_play_state_t *p;
+    cupcake_timers_t *tm;
+    float rate;
+
+    enter_play(&p);
+    tm = cupcake_timers();
+    p->marge.visible = 1;
     cupcake_grid_set_visible(&p->grid, 1, 1, 1);
     p->bart.count = 2;
     cupcake_bart_set_position(p, 1);
+    rate = cupcake_game_tick_rate_sec(p) * 0.5f;
+
     press_action();
     run_action_timer(tm, rate);
     if (p->bart.count != 1)
@@ -167,6 +176,7 @@ int main(void)
     test_action_rate_without_marge();
     test_action_rate_with_marge();
     test_action_marge_collect_count_reset();
+    test_action_marge_collect_floor_cupcake();
     test_action_no_collect_without_marge();
 
     if (g_fail)

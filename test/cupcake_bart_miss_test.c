@@ -94,6 +94,32 @@ static void test_miss_pose_until_on_m(void)
         fail("miss pose: cleared after phase restart");
 }
 
+static void test_miss_resume_after_life_lost(void)
+{
+    cupcake_play_state_t *p;
+    cupcake_timers_t *tm;
+
+    enter_play(&p);
+    tm = cupcake_timers();
+    cupcake_bart_set_position(p, 2);
+    p->grid.group_visible = 1;
+    cupcake_grid_set_visible(&p->grid, 2, 1, 1);
+
+    cupcake_on_m_cupcake(2);
+    cupcake_timers_update(tm, 0.5f);
+    cupcake_timers_update(tm, 1.75f);
+    cupcake_timers_update(tm, 0.75f);
+
+    if (p->miss.count != 1)
+        fail("miss resume: one life lost");
+    if (cupcake_is_paused() || !p->enabled)
+        fail("miss resume: gameplay resumed");
+    if (!cupcake_timer_active(tm, CUPCAKE_TMR_GAME))
+        fail("miss resume: game timer running");
+    if (!p->aircakes.group_visible)
+        fail("miss resume: aircakes group restored");
+}
+
 static void test_bart_start_clears_miss(void)
 {
     cupcake_play_state_t p;
@@ -112,6 +138,7 @@ int main(void)
     test_miss_cupcake_shows_bart9();
     test_miss_couch_shows_bart6();
     test_miss_pose_until_on_m();
+    test_miss_resume_after_life_lost();
     test_bart_start_clears_miss();
 
     if (g_fail)

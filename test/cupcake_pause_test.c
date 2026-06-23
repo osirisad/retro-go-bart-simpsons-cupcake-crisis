@@ -98,10 +98,13 @@ static void test_phase_restart_interstitial(void)
 static void test_sit_bonus_and_add_bonus_pause(void)
 {
     cupcake_timers_t *tm;
+    cupcake_play_state_t *p;
     const cupcake_state_t *st;
 
     setup_play_with_game_timer();
     tm = cupcake_timers();
+    p = cupcake_play_state();
+    cupcake_couch_set_frame_visible(&p->couch, 2, 1);
 
     cupcake_bart_sit_bonus(2);
     if (!cupcake_is_paused())

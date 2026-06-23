@@ -169,7 +169,7 @@ void cupcake_bart_clear_miss_pose(cupcake_play_state_t *p);
 int cupcake_bart_miss_index(const cupcake_play_state_t *p);
 /* JS marge.collect() — full delivery bonus in TASK-29; move side effects in TASK-17. */
 int cupcake_marge_collect(cupcake_play_state_t *p);
-void cupcake_maggie_start(cupcake_play_state_t *p, int step_now);
+void cupcake_maggie_start(cupcake_play_state_t *p);
 void cupcake_miss_start(cupcake_play_state_t *p);
 void cupcake_miss_decrease(cupcake_play_state_t *p);
 void cupcake_cupcakes_start(cupcake_play_state_t *p);
@@ -180,6 +180,13 @@ void cupcake_couch_start(cupcake_play_state_t *p);
 /* Bonus tick count from visible couch frame at sit time (couch3→1, couch2→2, couch1→4). */
 int cupcake_couch_sit_bonus_ticks(const cupcake_couch_state_t *c);
 void cupcake_couch_set_frame_visible(cupcake_couch_state_t *c, int index, int on);
+
+void cupcake_maggie_sprite_name(int index, char *buf, size_t bufsz);
+void cupcake_maggie_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx);
+void cupcake_couch_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx);
+void cupcake_marge_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx);
+void cupcake_pacifier_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx);
+void cupcake_miss_draw_visible(const cupcake_play_state_t *p, cupcake_grid_draw_fn fn, void *ctx);
 
 /* JS entity.step() — full logic in later entity tasks; wired from game timer OT. */
 void cupcake_cupcakes_step(cupcake_play_state_t *p);

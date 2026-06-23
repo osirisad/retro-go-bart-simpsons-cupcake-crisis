@@ -168,6 +168,35 @@ static void test_sit_couch4_no_bonus_timer(void)
         fail("sit couch4: no bonus timer");
     if (cupcake_is_paused())
         fail("sit couch4: resumed without bonus");
+    if (p->couch.onscreen)
+        fail("sit couch4: couch restarted off-screen");
+}
+
+static void advance_couch_timer(cupcake_timers_t *tm, int ticks)
+{
+    int i;
+
+    cupcake_timers_update(tm, 0.001f);
+    for (i = 0; i < ticks; i++)
+        cupcake_timers_update(tm, 3.f);
+}
+
+static void test_sit_before_couch4_no_miss(void)
+{
+    cupcake_play_state_t *p;
+    cupcake_timers_t *tm;
+
+    enter_play(&p);
+    tm = cupcake_timers();
+    p->couch.counter = p->couch.next - 1;
+    cupcake_couch_step(p, (int)p->game_tick);
+    cupcake_couch_set_frame_visible(&p->couch, 2, 1);
+    cupcake_bart_set_position(p, 4);
+    cupcake_on_move(CUPCAKE_MOVE_UP);
+
+    advance_couch_timer(tm, 4);
+    if (cupcake_timer_active(tm, CUPCAKE_TMR_MISS))
+        fail("sit before couch4: couch miss not triggered");
 }
 
 int main(void)
@@ -178,6 +207,7 @@ int main(void)
     test_sit_bonus_points_by_frame();
     test_sit_restarts_couch();
     test_sit_couch4_no_bonus_timer();
+    test_sit_before_couch4_no_miss();
 
     if (g_fail)
         return 1;

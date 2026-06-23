@@ -648,12 +648,12 @@ Secondary characters and hazard spawns that interact with Bart and the tick loop
 
 | Task | Title | Status |
 |------|-------|--------|
-| TASK-27 | Maggie throw cycle | [Backlog - Sprint 8] |
-| TASK-28 | Marge appear / hide stepping | [Backlog - Sprint 8] |
-| TASK-29 | Marge `collect` delivery bonus | [Backlog - Sprint 8] |
-| TASK-30 | Couch spawn timer and animation | [Backlog - Sprint 8] |
-| TASK-31 | Couch sit bonus integration | [Backlog - Sprint 8] |
-| TASK-32 | Pacifier spawn cycle | [Backlog - Sprint 8] |
+| TASK-27 | Maggie throw cycle | [Done - Sprint 8] |
+| TASK-28 | Marge appear / hide stepping | [Done - Sprint 8] |
+| TASK-29 | Marge `collect` delivery bonus | [Done - Sprint 8] |
+| TASK-30 | Couch spawn timer and animation | [Done - Sprint 8] |
+| TASK-31 | Couch sit bonus integration | [Done - Sprint 8] |
+| TASK-32 | Pacifier spawn cycle | [Done - Sprint 8] |
 
 ---
 
@@ -663,11 +663,11 @@ Secondary characters and hazard spawns that interact with Bart and the tick loop
 
     Type: Feature
 
-    Status: [Backlog - Sprint 8]
+    Status: [Done - Sprint 8]
 
     Acceptance Criteria: `maggie.start` / `step`: cycles `maggie0`–`maggie3` when couch slot 3 not visible. Loop 3 shows `aircakes[8]` and schedules index reset after `0.75 * game.rate`. `throw` SFX when loop > 0. Suppressed while `couch[3]` visible.
 
-    Work Summary: 
+    Work Summary: `cupcake_maggie_step()` mirrors JS (index=loop, loop 3 throws cake8 + schedules index reset, throw SFX when loop>0, couch3 suppresses). Phase start calls `maggie_start()` then `maggie_step()` per JS `start(1)`. `make test-maggie-step`.
 
     Feedback/Notes: 
 
@@ -677,11 +677,11 @@ Secondary characters and hazard spawns that interact with Bart and the tick loop
 
     Type: Feature
 
-    Status: [Backlog - Sprint 8]
+    Status: [Done - Sprint 8]
 
     Acceptance Criteria: `marge.step(tick)`: when off-screen, Bart has cupcakes, tick > 6, and `(tick % 6 == 5 || tick % 6 == 0 && rand(3)==0)`, and couch not on-screen → show `marge1`, play `marge` SFX. On-screen loop hides after 2 steps. Not visible when couch on-screen.
 
-    Work Summary: 
+    Work Summary: `cupcake_marge_step()` in `cupcake_game.c` mirrors JS appear/hide rules (`visible` + `loop`, couch.onscreen gate, tick%6 cadence). `make test-marge-step`.
 
     Feedback/Notes: 
 
@@ -691,11 +691,11 @@ Secondary characters and hazard spawns that interact with Bart and the tick loop
 
     Type: Feature
 
-    Status: [Backlog - Sprint 8]
+    Status: [Done - Sprint 8]
 
     Acceptance Criteria: When `marge1` visible, Bart at position 0, and count > 0: run `addBonus` for count (+ extra +500 if count==5), `deliver`/`five`/`points` SFX rules, `giveCupcakesToMarge`, reschedule `marge.start` after delay. Return value affects Bart action/move count reset per JS.
 
-    Work Summary: 
+    Work Summary: `cupcake_marge_collect()` runs `addBonus` (rate 0.06 / 0.025, ticks count or count+5). Five-delivery tick 5 calls `giveCupcakesToMarge` + `marge.start`; normal path onEnd + 0.5×game.rate schedule. `deliver`/`five`/`points` SFX via bonus cfg. `make test-marge-collect`.
 
     Feedback/Notes: 
 
@@ -705,11 +705,11 @@ Secondary characters and hazard spawns that interact with Bart and the tick loop
 
     Type: Feature
 
-    Status: [Backlog - Sprint 8]
+    Status: [Done - Sprint 8]
 
     Acceptance Criteria: `couch.start`: counter, `next = 20+rand(20)` (25 if record mode). `step`: spawn when counter ≥ next and Marge off-screen. Animated spawn: 3s rate, 4 ticks, `couch0`–`couch4`, `couch` SFX each step; couch3 hides Maggie; end calls `onM_Couch` if Bart not sitting. `onscreen` flag exposed.
 
-    Work Summary: 
+    Work Summary: `cupcake_couch_step()` increments counter and calls `couch_entity_start(p,1)` when ready. Couch spawn uses `CUPCAKE_TMR_COUCH` (3s, start_tick 1, 4 ticks) with frame/SFX OT chain and Maggie hide at couch3; `onEnd` calls `cupcake_on_m_couch()` unless Bart at lane 5. `couch_entity_start()` stops couch timer on reset/sit/phase. `make test-couch-step`.
 
     Feedback/Notes: 
 
@@ -719,13 +719,13 @@ Secondary characters and hazard spawns that interact with Bart and the tick loop
 
     Type: Feature
 
-    Status: [Backlog - Sprint 8]
+    Status: [Done - Sprint 8]
 
     Acceptance Criteria: Bart `sit()` reads visible couch frame for bonus multiplier, restarts couch via `couch.start()`, does not trigger couch miss if sit before `couch4`.
 
-    Work Summary: 
+    Work Summary: `cupcake_bart_sit()` stops couch spawn timer on sit; couch4 path calls `couch_entity_start()` + resume (no bonus). Bonus points read from visible couch frame at 2s timer `onEnd` (JS parity). Extended `make test-bart-sit` with sit-before-couch4 miss guard.
 
-    Feedback/Notes: 
+    Feedback/Notes:
 
 ---
 
@@ -733,13 +733,13 @@ Secondary characters and hazard spawns that interact with Bart and the tick loop
 
     Type: Feature
 
-    Status: [Backlog - Sprint 8]
+    Status: [Done - Sprint 8]
 
     Acceptance Criteria: Port `$P.Pacifier`: `start` resets counter/loop/next (`20+rand(20)`, 15 record). `step`: on interval show pacifier1 then pacifier2; loop 3 auto-catch if Bart at lane 2 else restart. `pacifier1` SFX on loop 1. `pacifier2` visible at index 2 for lane-2 catch on move.
 
-    Work Summary: 
+    Work Summary: `cupcake_pacifier_step()` in `cupcake_game.c` mirrors JS counter/loop chain (3 consecutive ticks after counter≥next). `make test-pacifier-step`.
 
-    Feedback/Notes: 
+    Feedback/Notes:
 
 ---
 

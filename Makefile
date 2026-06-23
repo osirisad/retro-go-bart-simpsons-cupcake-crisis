@@ -355,7 +355,55 @@ test-aircakes-draw: $(TEST_AIRCAKES_DRAW)
 $(TEST_AIRCAKES_DRAW): test/cupcake_aircakes_draw_test.c src/cupcake_state.c src/cupcake_timer.c src/cupcake_rng.c | $(TEST_BUILD)
 	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
 
-test: test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw
+TEST_MAGGIE_STEP = $(TEST_BUILD)/cupcake_maggie_step_test$(EXE)
+
+test-maggie-step: $(TEST_MAGGIE_STEP)
+	$(TEST_MAGGIE_STEP)
+
+$(TEST_MAGGIE_STEP): test/cupcake_maggie_step_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
+TEST_MARGE_STEP = $(TEST_BUILD)/cupcake_marge_step_test$(EXE)
+
+test-marge-step: $(TEST_MARGE_STEP)
+	$(TEST_MARGE_STEP)
+
+$(TEST_MARGE_STEP): test/cupcake_marge_step_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
+TEST_MARGE_COLLECT = $(TEST_BUILD)/cupcake_marge_collect_test$(EXE)
+
+test-marge-collect: $(TEST_MARGE_COLLECT)
+	$(TEST_MARGE_COLLECT)
+
+$(TEST_MARGE_COLLECT): test/cupcake_marge_collect_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
+TEST_COUCH_STEP = $(TEST_BUILD)/cupcake_couch_step_test$(EXE)
+
+test-couch-step: $(TEST_COUCH_STEP)
+	$(TEST_COUCH_STEP)
+
+$(TEST_COUCH_STEP): test/cupcake_couch_step_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
+TEST_PACIFIER_STEP = $(TEST_BUILD)/cupcake_pacifier_step_test$(EXE)
+
+test-pacifier-step: $(TEST_PACIFIER_STEP)
+	$(TEST_PACIFIER_STEP)
+
+$(TEST_PACIFIER_STEP): test/cupcake_pacifier_step_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
+TEST_ENTITIES_DRAW = $(TEST_BUILD)/cupcake_entities_draw_test$(EXE)
+
+test-entities-draw: $(TEST_ENTITIES_DRAW)
+	$(TEST_ENTITIES_DRAW)
+
+$(TEST_ENTITIES_DRAW): test/cupcake_entities_draw_test.c src/cupcake_state.c src/cupcake_timer.c src/cupcake_rng.c | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
+test: test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw
 
 $(TEST_TIMER): test/cupcake_timer_test.c src/cupcake_timer.c | $(TEST_BUILD)
 	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
@@ -372,7 +420,7 @@ gen:
 clean:
 	rm -rf $(BUILD)
 
-.PHONY: all run clean gen force-rebuild test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test
+.PHONY: all run clean gen force-rebuild test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test
 
 # Use if alignment edits in .h seem "cached" (also close cupcake-sdl.exe before make).
 force-rebuild:

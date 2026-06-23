@@ -206,9 +206,10 @@ int cupcake_timers_schedule(cupcake_timers_t *tm, float delay_sec, cupcake_timer
         return -1;
 
     memset(&cfg, 0, sizeof cfg);
-    cfg.rate_sec = delay_sec;
+    cfg.delay_sec = delay_sec;
+    cfg.rate_sec = delay_sec; /* restore matching after save/load */
     cfg.max_ticks = 1;
-    cfg.on_tick = fn;
+    cfg.on_start = fn;
     cfg.user = ctx;
     timer_begin(tm, &tm->schedule[i], &cfg, 0.f);
     return i;
