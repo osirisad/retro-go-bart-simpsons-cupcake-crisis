@@ -18,7 +18,7 @@ pacman -Syu
 # If it asks to close the window, close it, reopen MINGW64, then:
 pacman -Su
 
-pacman -S --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-SDL2 mingw-w64-x86_64-make
+pacman -S --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-make
 ```
 
 Type `Y` when asked to install packages.

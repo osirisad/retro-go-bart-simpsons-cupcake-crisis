@@ -48,12 +48,13 @@ Assets are not committed to git. After obtaining a HAR capture from itch.io:
 
 ```bash
 python tools/extract_har.py path/to/capture.har
+python tools/extract_audio.py
 python tools/gen_sprites.py
 python tools/gen_lcd_positions.py
 python tools/gen_demo_data.py
 ```
 
-Extract output goes to `ignore/har_extracted/`. See [HAR.md](HAR.md).
+Extract output goes to `ignore/har_extracted/`; audio copies go to `assets/audio/`. See [HAR.md](HAR.md) and [AUDIO.md](AUDIO.md).
 
 ## Host comparison
 

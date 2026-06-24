@@ -14,6 +14,7 @@
 #include "cupcake_sprite_lcd.h"
 #include "cupcake_input.h"
 #include "host_draw.h"
+#include "host_audio.h"
 #include "sprite_blit.h"
 
 static float win_scale = 0.5f;
@@ -98,6 +99,14 @@ static const char *asset_path(const char *name)
     return buf;
 }
 
+static const char *assets_base_dir(void)
+{
+    const char *base = getenv("CUPCAKE_ASSETS");
+    if (!base || !base[0])
+        base = "assets";
+    return base;
+}
+
 static uint8_t *load_image_rgba(const char *path, int *w, int *h)
 {
     int comp;
@@ -176,8 +185,11 @@ static int cupcake_cb_wrap(cupcake_cb_type_t type, const char *str_arg, int int_
     case CUPCAKE_CB_BTN:
         return !!(buttons & (1u << int_arg0));
     case CUPCAKE_CB_SFX:
-        if (str_arg && debug_draw)
-            fprintf(stderr, "[sfx] %s\n", str_arg);
+        if (str_arg) {
+            if (debug_draw)
+                fprintf(stderr, "[sfx] %s\n", str_arg);
+            host_audio_play(str_arg);
+        }
         return 0;
     default:
         return 0;
@@ -293,7 +305,7 @@ int main(int argc, char **argv)
 
     parse_args(argc, argv);
 
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
         fprintf(stderr, "SDL_Init: %s\n", SDL_GetError());
         return 1;
     }
@@ -379,6 +391,9 @@ int main(int argc, char **argv)
     cupcake_init();
     cupcake_set_callback(cupcake_cb_wrap);
 
+    if (host_audio_init(assets_base_dir()) != 0)
+        fprintf(stderr, "Warning: SFX disabled — run: python tools/extract_audio.py\n");
+
     if (pin_tune_file_arg) {
         if (cupcake_set_debug_pin_from_tune(1) == 0)
             fprintf(stderr, "Warning: --pin but no sprites in assets/lcd_tune.txt\n");
@@ -421,6 +436,7 @@ int main(int argc, char **argv)
         SDL_Delay(33);
     }
 
+    host_audio_shutdown();
     free(atlas_pixels);
     free(lcd_pixels);
     SDL_DestroyTexture(lcd_tex);

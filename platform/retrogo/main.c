@@ -15,6 +15,7 @@
 #include "cupcake.h"
 #include "cupcake_port.h"
 #include "host_draw.h"
+#include "host_audio.h"
 #include "cupcake_input.h"
 
 #ifndef LINUX_EMU
@@ -56,6 +57,14 @@ static uint8_t *load_image_rgba(const char *path, int *w, int *h)
     return stbi_load(path, w, h, &comp, 4);
 }
 
+static const char *assets_base_dir(void)
+{
+    const char *base = getenv("CUPCAKE_ASSETS");
+    if (!base || !base[0])
+        base = "/home/odroid/cupcake";
+    return base;
+}
+
 static int cupcake_cb_wrap(cupcake_cb_type_t type, const char *str_arg, int int_arg0,
                            int int_arg1)
 {
@@ -68,7 +77,8 @@ static int cupcake_cb_wrap(cupcake_cb_type_t type, const char *str_arg, int int_
     case CUPCAKE_CB_BTN:
         return !!(buttons & (1u << int_arg0));
     case CUPCAKE_CB_SFX:
-        (void)str_arg;
+        if (str_arg)
+            host_audio_play(str_arg);
         return 0;
     default:
         return 0;
@@ -152,7 +162,7 @@ int main(int argc, char **argv)
     (void)argc;
     (void)argv;
 
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
         return 1;
 
     window = SDL_CreateWindow("cupcake", SDL_WINDOWPOS_UNDEFINED,
@@ -193,6 +203,10 @@ int main(int argc, char **argv)
     cupcake_init();
     cupcake_set_callback(cupcake_cb_wrap);
 
+    if (host_audio_init(assets_base_dir()) != 0)
+        fprintf(stderr, "Warning: SFX disabled — copy assets/audio/ to %s/audio\n",
+                assets_base_dir());
+
     while (run_loop) {
         input_read_gamepad();
         host_clear_lcd(&host, 20, 24, 28);
@@ -203,8 +217,13 @@ int main(int argc, char **argv)
         SDL_UpdateTexture(fb_texture, NULL, fb_data, WIN_W * sizeof(uint16_t));
         SDL_RenderCopy(renderer, fb_texture, NULL, NULL);
         SDL_RenderPresent(renderer);
+#if defined(CUPCAKE_AUDIO_ODROID) && !defined(LINUX_EMU)
+        host_audio_pump(odroid_audio_sample_rate_get() / 30);
+#endif
         SDL_Delay(33);
     }
+
+    host_audio_shutdown();
 
     stbi_image_free(atlas_pixels);
     free(lcd_pixels);

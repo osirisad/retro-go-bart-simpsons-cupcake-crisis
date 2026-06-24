@@ -37,6 +37,20 @@ Only `sprites.json` and other JSON/models/audio were recorded. Atlas files must 
 
 Port copies live in `assets/sprites.png` and `assets/sprites-color.png`.
 
+## Audio in the HAR
+
+All **17 SFX** from `game.model` are present in a typical full capture:
+
+`sim-acclaim-cupcakecrisis/game/audio/*.mp3` and `points.wav` / `step.wav`.
+
+Extract to the port with:
+
+```bash
+make extract-audio
+```
+
+See [AUDIO.md](AUDIO.md) for playback setup (SDL_mixer + optional ffmpeg WAV conversion).
+
 ## Face parsing bug (fixed in tools)
 
 `sprites.json` uses **Three.js JSON Model format 3** face bitmasks (`42`, `43`, `40`, …).

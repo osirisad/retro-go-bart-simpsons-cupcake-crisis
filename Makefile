@@ -13,6 +13,8 @@ SRCS = \
 	platform/cupcake_input.c \
 	platform/sdl/main.c \
 	platform/host_draw.c \
+	platform/host_audio.c \
+	platform/host_audio_catalog.c \
 	platform/stb/stb_image_impl.c
 
 CC       ?= gcc
@@ -23,13 +25,24 @@ LDFLAGS  ?= -lm
 SDL2_CFLAGS ?= $(shell pkg-config --cflags sdl2 2>/dev/null)
 SDL2_LIBS   ?= $(shell pkg-config --libs sdl2 2>/dev/null)
 
+SDL2_MIXER_CFLAGS ?= $(shell pkg-config --cflags SDL2_mixer 2>/dev/null)
+SDL2_MIXER_LIBS   ?= $(shell pkg-config --libs SDL2_mixer 2>/dev/null)
+
 ifeq ($(SDL2_LIBS),)
-  SDL2_CFLAGS ?= -IC:/msys64/mingw64/include/SDL2 -Dmain=SDL_main
-  SDL2_LIBS   ?= -LC:/msys64/mingw64/lib -lSDL2main -lSDL2
+  SDL2_CFLAGS := -IC:/msys64/mingw64/include/SDL2 -Dmain=SDL_main
+  SDL2_LIBS   := -LC:/msys64/mingw64/lib -lSDL2main -lSDL2
 endif
 
-CFLAGS  += $(SDL2_CFLAGS) $(INCLUDES)
-LDFLAGS += $(SDL2_LIBS)
+# pkg-config on MSYS2 often omits cflags for SDL2_mixer while still returning -lSDL2_mixer
+ifeq ($(SDL2_MIXER_CFLAGS),)
+  SDL2_MIXER_CFLAGS := -IC:/msys64/mingw64/include/SDL2
+endif
+ifeq ($(SDL2_MIXER_LIBS),)
+  SDL2_MIXER_LIBS := -LC:/msys64/mingw64/lib -lSDL2_mixer
+endif
+
+CFLAGS  += $(SDL2_CFLAGS) $(SDL2_MIXER_CFLAGS) $(INCLUDES)
+LDFLAGS += $(SDL2_LIBS) $(SDL2_MIXER_LIBS)
 
 OBJS = $(addprefix $(BUILD)/,$(notdir $(SRCS:.c=.o)))
 
@@ -444,6 +457,10 @@ gen:
 # Bake assets/lcd_tune.txt -> src/cupcake_sprite_lcd.h (no PIL; safe after alignment edits).
 bake-lcd:
 	python tools/bake_lcd_tune.py
+
+# Audio from itch HAR (assets/audio/ — gitignored). Auto-builds id.wav when ffmpeg is on PATH.
+extract-audio:
+	python tools/extract_audio.py
 
 clean:
 	rm -rf $(BUILD)

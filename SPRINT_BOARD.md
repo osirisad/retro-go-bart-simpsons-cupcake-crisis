@@ -10,7 +10,7 @@ Gap analysis comparing the original JavaScript game (`assets/build.js`, logic sl
 | Entities | `$P.Bart`, `Cupcakes`, `Aircakes`, `Maggie`, `Marge`, `Couch`, `Pacifier`, `M_` | Draw helpers only; no simulation |
 | Demo | `demo.model` → `cupcake_demo.h` | Replay works (~163 frames @ 0.25s) |
 | Sprites | `sprites.json` + atlas | `cupcake_sprites.h`, masks, LCD positions — generated |
-| Audio | `game.model` sounds block (17 clips) | `CUPCAKE_CB_SFX` stub (stderr on PC) |
+| Audio | `game.model` sounds block (17 clips) | SDL_mixer (PC + retro-go emu); odroid PCM mixer on device |
 | Scoreboard | `scoreboard.*` + `digit**` materials | Unified `cupcake_scoreboard_draw()` — demo/start/play/over + CON overlay |
 | Hosts | N/A | SDL + retro-go shells load atlas/bezel |
 
@@ -921,10 +921,10 @@ Ship SFX assets; SDL and retro-go playback; stop/fade on mode transitions.
 
 | Task | Title | Status |
 |------|-------|--------|
-| TASK-38 | Extract and ship game audio assets | [Backlog - Sprint 11] |
-| TASK-39 | SDL host audio playback for `CUPCAKE_CB_SFX` | [Backlog - Sprint 11] |
-| TASK-40 | retro-go host audio playback | [Backlog - Sprint 11] |
-| TASK-41 | Stop / fade sounds on mode transitions | [Backlog - Sprint 11] |
+| TASK-38 | Extract and ship game audio assets | [Done - Sprint 11] |
+| TASK-39 | SDL host audio playback for `CUPCAKE_CB_SFX` | [Done - Sprint 11] |
+| TASK-40 | retro-go host audio playback | [Done - Sprint 11] |
+| TASK-41 | Stop / fade sounds on mode transitions | [Done - Sprint 11] |
 
 ---
 
@@ -934,11 +934,11 @@ Ship SFX assets; SDL and retro-go playback; stop/fade on mode transitions.
 
     Type: Feature
 
-    Status: [Backlog - Sprint 11]
+    Status: [Done - Sprint 11]
 
     Acceptance Criteria: All 17 files from `game.model` present under `assets/audio/`: bonus, couch, cupcake, deliver, five, marge, miss, move, over, pacifier1, pacifier2, phase, points, start, step, throw, whoa (mp3/wav as original). Document extraction path from HAR if not in repo.
 
-    Work Summary: 
+    Work Summary: `tools/extract_audio.py` pulls clips from the itch HAR (or `ignore/har_extracted/`); `make extract-audio`. Optional ffmpeg pass builds `{id}.wav` for SDL. Documented in `docs/AUDIO.md` and `docs/HAR.md`.
 
     Feedback/Notes: 
 
@@ -948,11 +948,11 @@ Ship SFX assets; SDL and retro-go playback; stop/fade on mode transitions.
 
     Type: Feature
 
-    Status: [Backlog - Sprint 11]
+    Status: [Done - Sprint 11]
 
     Acceptance Criteria: PC host loads and plays SFX by id; respects volume hints from `game.model` where practical; does not block game loop. Multiple concurrent one-shots allowed (points ticks).
 
-    Work Summary: 
+    Work Summary: `platform/host_audio.c` (SDL_mixer): loads `assets/audio/{id}.wav`, volumes from game.model, 16 channels, `stop` → `Mix_HaltChannel(-1)`. Wired in `platform/sdl/main.c`. Requires `SDL2_mixer` + `make extract-audio`.
 
     Feedback/Notes: 
 
@@ -962,11 +962,11 @@ Ship SFX assets; SDL and retro-go playback; stop/fade on mode transitions.
 
     Type: Feature
 
-    Status: [Backlog - Sprint 11]
+    Status: [Done - Sprint 11]
 
     Acceptance Criteria: `platform/retrogo/main.c` plays SFX via odroid audio API (mirror Celeste port pattern). Assets loaded from device `CUPCAKE_ASSETS` path.
 
-    Work Summary: 
+    Work Summary: `platform/retrogo/main.c` wires `CUPCAKE_CB_SFX` → `host_audio_play()`. LINUX_EMU build uses SDL_mixer (same as PC). Device firmware path: compile `host_audio.c` with `-DCUPCAKE_AUDIO_ODROID` (PCM voice mixer + `odroid_audio_submit`, `host_audio_pump` per frame). `Makefile.cupcake` links `host_audio` + SDL2_mixer.
 
     Feedback/Notes: 
 
@@ -976,11 +976,11 @@ Ship SFX assets; SDL and retro-go playback; stop/fade on mode transitions.
 
     Type: Feature
 
-    Status: [Backlog - Sprint 11]
+    Status: [Done - Sprint 11]
 
     Acceptance Criteria: `stop()` and phase/miss handlers call equivalent of JS `sounds.stop()` before new music/SFX. No overlapping `phase`/`over`/`start` clips after fast input.
 
-    Work Summary: 
+    Work Summary: `host_sfx("stop")` → `Mix_HaltChannel(-1)` / voice pool clear. Called from `cupcake_stop()`, game over, phase complete/restart, demo/select, quick start, and `cupcake_on_start()` before intro SFX.
 
     Feedback/Notes: 
 

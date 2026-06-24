@@ -1533,6 +1533,7 @@ void cupcake_on_start(int phase, int show_level)
         cupcake_scoreboard_set_phase(p, phase > 0 ? phase : 1);
     }
 
+    host_sfx("stop");
     cupcake_timers_stop(&g_timers);
 
     memset(&cfg, 0, sizeof cfg);

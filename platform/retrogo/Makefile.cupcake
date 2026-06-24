@@ -7,6 +7,7 @@
 # Copy assets to device:
 #   /home/odroid/cupcake/sprites-color.png
 #   /home/odroid/cupcake/sprites.png
+#   /home/odroid/cupcake/audio/*.wav  (make extract-audio in port tree)
 
 TARGET = retro-go-cupcake
 
@@ -32,6 +33,8 @@ $(CUPCAKE_PORT)/src/cupcake_timer.c \
 $(CUPCAKE_PORT)/src/cupcake_rng.c \
 $(CUPCAKE_PORT)/src/cupcake_state.c \
 $(CUPCAKE_PORT)/platform/host_draw.c \
+$(CUPCAKE_PORT)/platform/host_audio.c \
+$(CUPCAKE_PORT)/platform/host_audio_catalog.c \
 $(CUPCAKE_PORT)/platform/cupcake_input.c \
 $(CUPCAKE_PORT)/platform/stb/stb_image_impl.c \
 $(CUPCAKE_PORT)/platform/retrogo/main.c
@@ -45,9 +48,10 @@ CFLAGS = -std=c99 -Wall -DTARGET_GNW -DLINUX_EMU \
 	-I../Core/Inc/retro-go \
 	-I../retro-go-stm32/components/odroid \
 	$(shell sdl2-config --cflags 2>/dev/null) \
+	$(shell pkg-config --cflags SDL2_mixer 2>/dev/null) \
 	$(OPT)
 
-LIBS = -lm $(shell sdl2-config --libs 2>/dev/null)
+LIBS = -lm $(shell sdl2-config --libs 2>/dev/null) $(shell pkg-config --libs SDL2_mixer 2>/dev/null)
 
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
