@@ -6,7 +6,15 @@ Manual sign-off against [itch.io](https://itizso.itch.io/acclaim-bart-simpsons-c
 
 - [ ] Demo loops continuously with hi-score on scoreboard
 - [ ] Select cycles level 0 → L-1 → L-2 → attract (demo freezes on L-1/L-2)
+- [ ] Level overlay shows **only** L-N (no hi-score digits underneath)
 - [ ] Action with level selected runs start intro then play
+
+## Scoreboard display
+
+- [ ] Start intro: P-N overlay (or L-N on quick-start), **no** score digits yet
+- [ ] ~3.16s: brief flash of level hi-score on digit row
+- [ ] ~6.32s: overlay clears; run score shows `00` (`alwayson:2`); grows without extra leading zeros (e.g. `100` not `0100`)
+- [ ] Phase complete / restart: score hides, P-N overlay ~0.75s, then score returns
 
 ## Level 1 play
 

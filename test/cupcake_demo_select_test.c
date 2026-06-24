@@ -103,6 +103,8 @@ static void test_level_select_draws_label(void)
     memset(&play, 0, sizeof play);
     play.mode = CUPCAKE_MODE_DEMO;
     play.level = 1;
+    play.scoreboard.level = 1;
+    play.scoreboard.disp = CUPCAKE_SB_DISP_LEVEL;
 
     g_sprite_count = 0;
     cupcake_scoreboard_draw_demo_level(&play, capture_sprite, NULL);

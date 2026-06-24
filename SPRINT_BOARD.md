@@ -1096,6 +1096,7 @@ Post-ship parity fixes found during manual playtesting.
 |------|-------|--------|
 | TASK-62 | Phase 2 must not start until phase music ends | [Done - Sprint 13] |
 | TASK-63 | G&W button map: Select level cycle + Sound mute | [Done - Sprint 13] |
+| TASK-64 | Scoreboard display mode parity (L/P vs digits) | [Done - Sprint 13] |
 
 ---
 
@@ -1126,6 +1127,20 @@ Post-ship parity fixes found during manual playtesting.
     Work Summary: Added `CUPCAKE_BTN_SOUND` + `CUPCAKE_CB_SOUND_TOGGLE` (`onRelease` parity). `host_audio_toggle_mute()` / `host_audio_is_muted()`. Fixed `cupcake_input_from_odroid()`: removed START/X→Level1/2; map TIME+PAUSE. Updated `docs/INPUT_MAPPING.md` with attract level-select flow. `make test-input`.
 
     Feedback/Notes:
+
+---
+
+[TASK-64] Scoreboard display mode parity (L/P vs digits)
+
+    Type: Bug
+
+    Status: [Done - Sprint 13]
+
+    Acceptance Criteria: Match JS `AcclaimSuperplayScoreboard`: attract shows hi-score (`alwayson:2`); Select cycles L-1 → L-2 → hi-score with overlay only (no digits underneath); start intro shows P-N (or L-N quick-start) then brief level hi-score flash, then run score `00` with `alwayson:2`; phase restart hides score and shows P-N for 0.75s, then restores score. Digits and L/P overlays are mutually exclusive.
+
+    Work Summary: Added `scoreboard.disp` mode (`VALUE` / `SCORE` / `LEVEL` / `PHASE`) and `cupcake_scoreboard_show_value` / `show_run_score`. `cupcake_scoreboard_draw` renders digits or overlay, not both. Fixed start intro: removed erroneous `show_run_score` from `tmr_start_seq_on_start` that overwrote P-N/L-N overlay. Tests: `test-scoreboard`, `test-level-indicator`, `test-phase-indicator`, `test-demo-scoreboard`.
+
+    Feedback/Notes: JS reference: `onDemo` → `scoreboard.start({alwayson:2})`; `onSelect` level cycle; `onStart` tick0 overlay, tick1 hi-score flash, tick2 `value=0` + `onPhaseStart`; `onPhaseRestart` → `scoreboard.phase` then 0.75s → `scoreboard.score=points`.
 
 ---
 

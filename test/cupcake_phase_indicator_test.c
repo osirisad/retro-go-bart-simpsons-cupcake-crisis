@@ -70,6 +70,7 @@ static void test_play_draws_phase_overlay(void)
     play.mode = CUPCAKE_MODE_PLAY;
     play.scoreboard.phase = 1;
     play.scoreboard.level = 0;
+    play.scoreboard.disp = CUPCAKE_SB_DISP_PHASE;
 
     g_sprite_count = 0;
     cupcake_scoreboard_draw(&play, capture_sprite, NULL);
@@ -113,6 +114,8 @@ static void test_phase_complete_updates_scoreboard_phase(void)
         fail("phase complete: play phase incremented");
     if (p->scoreboard.phase != 2)
         fail("phase complete: scoreboard.phase updated on restart");
+    if (p->scoreboard.disp != CUPCAKE_SB_DISP_PHASE)
+        fail("phase complete: phase overlay during interstitial");
 }
 
 static void test_set_phase_clamps(void)
@@ -140,6 +143,8 @@ static void test_con_continue_preserves_phase_on_scoreboard(void)
     cupcake_on_start((int)p->phase, 0);
     if (p->scoreboard.phase != 4)
         fail("CON continue: scoreboard shows resumed phase");
+    if (p->scoreboard.disp != CUPCAKE_SB_DISP_PHASE)
+        fail("CON continue: phase overlay during start intro");
 }
 
 static void test_quick_start_phase_complete_clears_level_overlay(void)

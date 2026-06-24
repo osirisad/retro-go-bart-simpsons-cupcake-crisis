@@ -81,7 +81,7 @@ static void test_draw_text_phase_level_con(void)
         fail("text CON: N segments");
 }
 
-static void test_draw_play_mode_score_and_phase(void)
+static void test_draw_play_mode_score_only(void)
 {
     cupcake_play_state_t play;
 
@@ -89,13 +89,32 @@ static void test_draw_play_mode_score_and_phase(void)
     play.mode = CUPCAKE_MODE_PLAY;
     play.scoreboard.score = 250;
     play.scoreboard.phase = 2;
+    play.scoreboard.disp = CUPCAKE_SB_DISP_SCORE;
 
     reset_sprites();
     cupcake_scoreboard_draw(&play, capture_sprite, NULL);
     if (!has_sprite("digit00") || !has_sprite("digit10"))
         fail("play draw: score digits");
+    if (has_sprite("digit40") || has_sprite("digit42"))
+        fail("play draw: no phase overlay with score display");
+}
+
+static void test_draw_play_mode_phase_only(void)
+{
+    cupcake_play_state_t play;
+
+    memset(&play, 0, sizeof play);
+    play.mode = CUPCAKE_MODE_PLAY;
+    play.scoreboard.score = 250;
+    play.scoreboard.phase = 2;
+    play.scoreboard.disp = CUPCAKE_SB_DISP_PHASE;
+
+    reset_sprites();
+    cupcake_scoreboard_draw(&play, capture_sprite, NULL);
+    if (has_sprite("digit00") || has_sprite("digit10"))
+        fail("phase overlay: score digits hidden");
     if (!has_sprite("digit40") || !has_sprite("digit42"))
-        fail("play draw: phase overlay P-2");
+        fail("phase overlay: P-2 drawn");
 }
 
 static void test_draw_demo_con_overlay(void)
@@ -138,13 +157,16 @@ static void test_start_intro_shows_hiscore_then_play_score(void)
         fail("start tick2: run score reset");
     if (p->scoreboard.phase != 1)
         fail("start tick2: phase indicator set");
+    if (p->scoreboard.disp != CUPCAKE_SB_DISP_SCORE)
+        fail("start tick2: run score display");
 }
 
 int main(void)
 {
     test_draw_digits_full_score();
     test_draw_text_phase_level_con();
-    test_draw_play_mode_score_and_phase();
+    test_draw_play_mode_score_only();
+    test_draw_play_mode_phase_only();
     test_draw_demo_con_overlay();
     test_start_intro_shows_hiscore_then_play_score();
 

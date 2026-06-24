@@ -918,6 +918,7 @@ static void sched_phase_restart_finish(void *ctx, int tick)
     p->grid.group_visible = 1;
     p->aircakes.group_visible = 1;
     cupcake_pacifier_start(p);
+    cupcake_scoreboard_show_run_score(p);
     cupcake_resume();
 }
 
@@ -1042,6 +1043,7 @@ void cupcake_add_points(int points)
 
     p->points += (uint32_t)points;
     p->scoreboard.score = p->points;
+    cupcake_scoreboard_show_run_score(p);
     host_on_score_change();
 }
 
@@ -1105,8 +1107,7 @@ static void cupcake_on_demo(void)
     cupcake_stop();
     cupcake_play_state_start_demo(p);
     cupcake_scoreboard_set_level(p, 0);
-    p->scoreboard.value = p->scoreboard.hi_score[0];
-    p->scoreboard.score = p->scoreboard.hi_score[0];
+    cupcake_scoreboard_show_value(p, p->scoreboard.hi_score[0]);
     g.demo_frame = 0;
     g.demo_tick = 0;
 }
@@ -1130,6 +1131,7 @@ static void cupcake_on_select(void)
         cupcake_scoreboard_set_level(p, (int)p->level);
     } else {
         p->scoreboard.value = p->scoreboard.hi_score[0];
+        cupcake_scoreboard_show_value(p, p->scoreboard.hi_score[0]);
         cupcake_on_demo();
     }
 }
@@ -1365,10 +1367,11 @@ void cupcake_apply_debug_start(void)
     p->scoreboard.value = points;
     p->scoreboard.show_con = 0;
     cupcake_scoreboard_set_level(p, 0);
-    cupcake_scoreboard_set_phase(p, phase);
+    p->scoreboard.phase = (uint8_t)cupcake_phase_clamp(phase);
     cupcake_set_threshold(10000);
     host_sfx("stop");
     cupcake_on_phase_start(1);
+    cupcake_scoreboard_show_run_score(p);
     cupcake_resume();
     host_on_score_change();
 
@@ -1495,8 +1498,6 @@ static void cupcake_on_phase_start(int game_timer_start_tick)
     cupcake_pacifier_start(p);
     cupcake_marge_start(p);
     couch_entity_start(p, 0);
-    if (p->scoreboard.level == 0)
-        cupcake_scoreboard_set_phase(p, (int)p->phase);
     cupcake_game_timer_start(game_timer_start_tick);
     fprintf(stderr, "Phase start: level %u phase %u (play mode)\n", p->level, p->phase);
 }
@@ -1518,7 +1519,6 @@ static void tmr_start_seq_on_start(void *ctx, int tick)
     }
 
     p->points = 0;
-    p->scoreboard.score = 0;
     cupcake_bart_start(p, 2);
     cupcake_maggie_start(p);
     cupcake_miss_start(p, 0);
@@ -1538,9 +1538,11 @@ static void tmr_start_seq_on_tick(void *ctx, int tick)
         if (lvl > CUPCAKE_LEVEL_MAX)
             lvl = 0;
         p->scoreboard.score = p->scoreboard.hi_score[lvl];
+        cupcake_scoreboard_show_run_score(p);
     } else if (tick == 2) {
         p->scoreboard.value = 0;
         cupcake_on_phase_start(phase > 0 ? 0 : 1);
+        cupcake_scoreboard_show_run_score(p);
         cupcake_resume();
     }
 }

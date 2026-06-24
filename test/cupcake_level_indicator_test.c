@@ -57,6 +57,7 @@ static void test_attract_hides_level(void)
     play.mode = CUPCAKE_MODE_DEMO;
     play.level = 0;
     play.scoreboard.value = 100;
+    play.scoreboard.disp = CUPCAKE_SB_DISP_VALUE;
     g_sprite_count = 0;
     cupcake_scoreboard_draw(&play, capture_sprite, NULL);
     if (has_sprite("digit44"))
@@ -79,7 +80,24 @@ static void test_demo_select_shows_level(void)
         fail("demo select: L-1 overlay drawn");
 }
 
-static void test_quick_start_shows_level_in_play(void)
+static void test_quick_start_shows_level_during_intro(void)
+{
+    cupcake_play_state_t play;
+
+    cupcake_init();
+    press_button(CUPCAKE_BTN_LEVEL2);
+    if (cupcake_play_state()->scoreboard.disp != CUPCAKE_SB_DISP_LEVEL)
+        fail("quick start intro: level overlay");
+
+    play = *cupcake_play_state();
+    play.mode = CUPCAKE_MODE_START;
+    g_sprite_count = 0;
+    cupcake_scoreboard_draw(&play, capture_sprite, NULL);
+    if (!has_sprite("digit44") || !has_sprite("digit22"))
+        fail("quick start intro: L-2 overlay drawn");
+}
+
+static void test_quick_start_play_shows_score_not_level(void)
 {
     cupcake_play_state_t play;
 
@@ -87,15 +105,17 @@ static void test_quick_start_shows_level_in_play(void)
     press_button(CUPCAKE_BTN_LEVEL2);
     cupcake_timers_update(cupcake_timers(), 3.16f);
     cupcake_timers_update(cupcake_timers(), 3.16f);
-    if (cupcake_play_state()->scoreboard.level != 2)
-        fail("quick start: scoreboard.level persists in play");
+    if (cupcake_play_state()->scoreboard.disp != CUPCAKE_SB_DISP_SCORE)
+        fail("quick start play: run score display");
 
     play = *cupcake_play_state();
     play.mode = CUPCAKE_MODE_PLAY;
     g_sprite_count = 0;
     cupcake_scoreboard_draw(&play, capture_sprite, NULL);
-    if (!has_sprite("digit44") || !has_sprite("digit22"))
-        fail("quick start play: L-2 overlay drawn");
+    if (!has_sprite("digit00"))
+        fail("quick start play: score digits");
+    if (has_sprite("digit44"))
+        fail("quick start play: no level overlay");
 }
 
 static void test_normal_start_hides_level(void)
@@ -111,6 +131,8 @@ static void test_normal_start_hides_level(void)
         fail("normal start: level overlay cleared");
     if (p->scoreboard.phase != 1)
         fail("normal start: phase overlay shown instead");
+    if (p->scoreboard.disp != CUPCAKE_SB_DISP_PHASE)
+        fail("normal start: phase display mode");
 }
 
 static void test_set_level_clamps(void)
@@ -134,6 +156,7 @@ static void test_level_overrides_phase_in_draw(void)
     play.mode = CUPCAKE_MODE_PLAY;
     play.scoreboard.level = 1;
     play.scoreboard.phase = 3;
+    play.scoreboard.disp = CUPCAKE_SB_DISP_LEVEL;
 
     g_sprite_count = 0;
     cupcake_scoreboard_draw(&play, capture_sprite, NULL);
@@ -147,7 +170,8 @@ int main(void)
 {
     test_attract_hides_level();
     test_demo_select_shows_level();
-    test_quick_start_shows_level_in_play();
+    test_quick_start_shows_level_during_intro();
+    test_quick_start_play_shows_score_not_level();
     test_normal_start_hides_level();
     test_set_level_clamps();
     test_level_overrides_phase_in_draw();

@@ -17,6 +17,14 @@
 
 typedef void (*cupcake_scoreboard_draw_fn)(const char *sprite_name, void *ctx);
 
+/* JS scoreboard: hi-score / run score digits vs L-N / P-N text — mutually exclusive. */
+typedef enum {
+    CUPCAKE_SB_DISP_VALUE = 0, /* demo hi-score (value field) */
+    CUPCAKE_SB_DISP_SCORE = 1, /* run score (score field) */
+    CUPCAKE_SB_DISP_LEVEL = 2, /* L-N overlay only */
+    CUPCAKE_SB_DISP_PHASE = 3, /* P-N overlay only */
+} cupcake_sb_disp_t;
+
 
 
 /* JS scoreboard.setValue: rightmost slot = index 0, optional alwayson pad. */
@@ -68,6 +76,12 @@ void cupcake_scoreboard_set_phase(cupcake_play_state_t *play, int phase);
 
 /* JS scoreboard.level — 0 hidden (attract), 1..2 shows L-N overlay. */
 void cupcake_scoreboard_set_level(cupcake_play_state_t *play, int level);
+
+/* Show hi-score digits (demo attract). */
+void cupcake_scoreboard_show_value(cupcake_play_state_t *play, uint32_t value);
+
+/* Show run score digits (play / start tick 1–2). */
+void cupcake_scoreboard_show_run_score(cupcake_play_state_t *play);
 
 
 

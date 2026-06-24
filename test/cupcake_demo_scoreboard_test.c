@@ -75,6 +75,7 @@ static void test_demo_draws_segments_for_hiscore(void)
     play.mode = CUPCAKE_MODE_DEMO;
     play.level = 0;
     play.scoreboard.value = 10;
+    play.scoreboard.disp = CUPCAKE_SB_DISP_VALUE;
 
     g_sprite_count = 0;
     cupcake_scoreboard_draw_demo_hiscore(&play, capture_sprite, NULL);

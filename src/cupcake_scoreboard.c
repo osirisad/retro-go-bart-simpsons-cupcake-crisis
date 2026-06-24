@@ -197,6 +197,7 @@ void cupcake_scoreboard_set_phase(cupcake_play_state_t *play, int phase)
     if (!play)
         return;
     play->scoreboard.phase = (uint8_t)cupcake_phase_clamp(phase);
+    play->scoreboard.disp = CUPCAKE_SB_DISP_PHASE;
 }
 
 void cupcake_scoreboard_set_level(cupcake_play_state_t *play, int level)
@@ -208,6 +209,23 @@ void cupcake_scoreboard_set_level(cupcake_play_state_t *play, int level)
     if (level > CUPCAKE_LEVEL_MAX)
         level = CUPCAKE_LEVEL_MAX;
     play->scoreboard.level = (uint8_t)level;
+    if (level >= 1)
+        play->scoreboard.disp = CUPCAKE_SB_DISP_LEVEL;
+}
+
+void cupcake_scoreboard_show_value(cupcake_play_state_t *play, uint32_t value)
+{
+    if (!play)
+        return;
+    play->scoreboard.value = value;
+    play->scoreboard.disp = CUPCAKE_SB_DISP_VALUE;
+}
+
+void cupcake_scoreboard_show_run_score(cupcake_play_state_t *play)
+{
+    if (!play)
+        return;
+    play->scoreboard.disp = CUPCAKE_SB_DISP_SCORE;
 }
 
 static void draw_level_overlay(int level, cupcake_scoreboard_draw_fn draw, void *ctx)
@@ -233,9 +251,10 @@ static void draw_overlay(const cupcake_scoreboard_state_t *sb, cupcake_scoreboar
         return;
     }
 
-    if (sb->level >= 1 && sb->level <= CUPCAKE_LEVEL_MAX) {
+    if (sb->disp == CUPCAKE_SB_DISP_LEVEL && sb->level >= 1 && sb->level <= CUPCAKE_LEVEL_MAX) {
         draw_level_overlay((int)sb->level, draw, ctx);
-    } else if (sb->phase >= 1 && sb->phase <= CUPCAKE_PHASE_MAX) {
+    } else if (sb->disp == CUPCAKE_SB_DISP_PHASE && sb->phase >= 1 &&
+               sb->phase <= CUPCAKE_PHASE_MAX) {
         snprintf(label, sizeof label, "P-%u", (unsigned)sb->phase);
         cupcake_scoreboard_draw_text(label, draw, ctx);
     }
@@ -253,19 +272,28 @@ void cupcake_scoreboard_draw(const cupcake_play_state_t *play, cupcake_scoreboar
 
     switch (play->mode) {
     case CUPCAKE_MODE_DEMO:
-        if (play->level == 0) {
+        if (sb->show_con) {
             cupcake_scoreboard_draw_digits(sb->value, 2, 5, draw, ctx);
-            if (sb->show_con)
-                cupcake_scoreboard_draw_text("CON", draw, ctx);
-        } else if (!sb->show_con) {
-            draw_level_overlay(sb->level >= 1 ? (int)sb->level : (int)play->level, draw, ctx);
+            cupcake_scoreboard_draw_text("CON", draw, ctx);
+        } else if (sb->disp == CUPCAKE_SB_DISP_LEVEL) {
+            draw_level_overlay((int)sb->level, draw, ctx);
+        } else {
+            cupcake_scoreboard_draw_digits(sb->value, 2, 5, draw, ctx);
         }
         break;
     case CUPCAKE_MODE_START:
     case CUPCAKE_MODE_PLAY:
     case CUPCAKE_MODE_OVER:
-        cupcake_scoreboard_draw_digits(sb->score, 2, 5, draw, ctx);
-        draw_overlay(sb, draw, ctx);
+        if (sb->show_con) {
+            cupcake_scoreboard_draw_digits(sb->score, 2, 5, draw, ctx);
+            cupcake_scoreboard_draw_text("CON", draw, ctx);
+        } else if (sb->disp == CUPCAKE_SB_DISP_LEVEL) {
+            draw_level_overlay((int)sb->level, draw, ctx);
+        } else if (sb->disp == CUPCAKE_SB_DISP_PHASE) {
+            draw_overlay(sb, draw, ctx);
+        } else {
+            cupcake_scoreboard_draw_digits(sb->score, 2, 5, draw, ctx);
+        }
         break;
     }
 }
@@ -273,17 +301,14 @@ void cupcake_scoreboard_draw(const cupcake_play_state_t *play, cupcake_scoreboar
 void cupcake_scoreboard_draw_demo_level(const cupcake_play_state_t *play,
                                         cupcake_scoreboard_draw_fn draw, void *ctx)
 {
-    int level;
-
     if (!play || !draw)
         return;
-    if (play->mode != CUPCAKE_MODE_DEMO || play->level < 1 || play->level > CUPCAKE_LEVEL_MAX)
+    if (play->mode != CUPCAKE_MODE_DEMO || play->scoreboard.show_con)
         return;
-    if (play->scoreboard.show_con)
+    if (play->scoreboard.disp != CUPCAKE_SB_DISP_LEVEL)
         return;
 
-    level = play->scoreboard.level >= 1 ? (int)play->scoreboard.level : (int)play->level;
-    draw_level_overlay(level, draw, ctx);
+    draw_level_overlay((int)play->scoreboard.level, draw, ctx);
 }
 
 void cupcake_scoreboard_draw_demo_hiscore(const cupcake_play_state_t *play,
@@ -291,7 +316,9 @@ void cupcake_scoreboard_draw_demo_hiscore(const cupcake_play_state_t *play,
 {
     if (!play || !draw)
         return;
-    if (play->mode != CUPCAKE_MODE_DEMO || play->level != 0 || play->scoreboard.show_con)
+    if (play->mode != CUPCAKE_MODE_DEMO || play->scoreboard.show_con)
+        return;
+    if (play->scoreboard.disp != CUPCAKE_SB_DISP_VALUE)
         return;
 
     cupcake_scoreboard_draw_digits(play->scoreboard.value, 2, 5, draw, ctx);
@@ -315,6 +342,7 @@ static void bonus_apply_tick(cupcake_play_state_t *play, const cupcake_scoreboar
 
     play->points += (uint32_t)inc;
     play->scoreboard.score = play->points;
+    cupcake_scoreboard_show_run_score(play);
 
     if (cfg->play_points_sfx && g_scoreboard_host.sfx)
         g_scoreboard_host.sfx("points");

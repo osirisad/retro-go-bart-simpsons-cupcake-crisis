@@ -84,6 +84,7 @@ typedef struct {
     uint8_t phase;         /* 1..6 display */
     uint8_t level;         /* 0 demo, 1..2 play */
     uint8_t show_con;      /* scoreboard.text == "CON" */
+    uint8_t disp;          /* cupcake_sb_disp_t — digits vs L/P overlay */
     uint8_t bonus_active;
     float bonus_rate;
     uint16_t bonus_points_left;
