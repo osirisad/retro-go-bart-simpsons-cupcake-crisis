@@ -87,13 +87,15 @@ static void test_hides_prior_layers(void)
 static void test_stack_lane_mapping(void)
 {
     if (cupcake_bart_stack_lane(0) != 1)
-        fail("stack lane: pos 0 -> lane 1");
-    if (cupcake_bart_stack_lane(2) != 2)
-        fail("stack lane: pos 2 -> lane 2");
-    if (cupcake_bart_stack_lane(4) != 4)
-        fail("stack lane: pos 4 -> lane 4");
-    if (cupcake_bart_stack_lane(5) != 4)
-        fail("stack lane: pos 5 -> lane 4");
+        fail("stack lane: pos 0 -> row 0 / lane 1");
+    if (cupcake_bart_stack_lane(1) != 2)
+        fail("stack lane: pos 1 -> row 1 / lane 2");
+    if (cupcake_bart_stack_lane(2) != 3)
+        fail("stack lane: pos 2 -> row 2 / lane 3");
+    if (cupcake_bart_stack_lane(4) != 5)
+        fail("stack lane: pos 4 -> row 4 / lane 5");
+    if (cupcake_bart_stack_lane(5) != 5)
+        fail("stack lane: pos 5 -> row 4 / lane 5");
 }
 
 static void test_stack_moves_with_position(void)
@@ -105,18 +107,18 @@ static void test_stack_moves_with_position(void)
     p.bart.count = 3;
     cupcake_bart_set_position(&p, 4);
     for (slot = 1; slot <= 3; slot++) {
-        if (!cupcake_grid_is_visible(&p.grid, 4, slot))
-            fail("stack: slots 1-3 on lane 4 at pos 4");
+        if (!cupcake_grid_is_visible(&p.grid, 5, slot))
+            fail("stack: slots 1-3 on lane 5 at pos 4");
     }
-    if (cupcake_grid_is_visible(&p.grid, 4, 4))
+    if (cupcake_grid_is_visible(&p.grid, 5, 4))
         fail("stack: slot 4 hidden when count 3");
 
     cupcake_bart_set_position(&p, 2);
-    if (cupcake_grid_is_visible(&p.grid, 4, 1))
-        fail("stack: prior lane 4 cleared");
+    if (cupcake_grid_is_visible(&p.grid, 5, 1))
+        fail("stack: prior lane 5 cleared");
     for (slot = 1; slot <= 3; slot++) {
-        if (!cupcake_grid_is_visible(&p.grid, 2, slot))
-            fail("stack: slots 1-3 on lane 2 after move");
+        if (!cupcake_grid_is_visible(&p.grid, 3, slot))
+            fail("stack: slots 1-3 on lane 3 after move");
     }
 }
 
@@ -127,8 +129,8 @@ static void test_stack_on_couch_lane(void)
     memset(&p, 0, sizeof p);
     p.bart.count = 2;
     cupcake_bart_set_position(&p, 5);
-    if (!cupcake_grid_is_visible(&p.grid, 4, 1) || !cupcake_grid_is_visible(&p.grid, 4, 2))
-        fail("stack: couch pos 5 uses lane 4");
+    if (!cupcake_grid_is_visible(&p.grid, 5, 1) || !cupcake_grid_is_visible(&p.grid, 5, 2))
+        fail("stack: couch pos 5 uses lane 5 (cake41 row)");
 }
 
 static void test_move_uses_setter(void)
@@ -147,9 +149,9 @@ static void test_move_uses_setter(void)
     cupcake_on_move(CUPCAKE_MOVE_RIGHT);
     if (!cupcake_bart_material_visible(p, 3))
         fail("move: lane 3 material after right");
-    if (!cupcake_grid_is_visible(&p->grid, 3, 1) || !cupcake_grid_is_visible(&p->grid, 3, 2))
+    if (!cupcake_grid_is_visible(&p->grid, 4, 1) || !cupcake_grid_is_visible(&p->grid, 4, 2))
         fail("move: held stack follows lane change");
-    if (cupcake_grid_is_visible(&p->grid, 2, 1))
+    if (cupcake_grid_is_visible(&p->grid, 3, 1))
         fail("move: old lane stack hidden");
 }
 

@@ -87,13 +87,13 @@ static void test_catch_cupcake(void)
     cupcake_play_state_t *p;
 
     enter_play(&p);
-    cupcake_grid_set_visible(&p->grid, 3, 1, 1);
+    cupcake_grid_set_visible(&p->grid, 4, 1, 1);
     cupcake_on_move(CUPCAKE_MOVE_RIGHT);
     if (p->bart.pos != 3)
         fail("catch: moved to lane 3");
     if (p->bart.count != 1)
         fail("catch: count incremented");
-    if (!cupcake_grid_is_visible(&p->grid, 3, 1))
+    if (!cupcake_grid_is_visible(&p->grid, 4, 1))
         fail("catch: held stack slot 1 shown on lane");
     if (p->points != 100u)
         fail("catch: +100 points");
@@ -108,7 +108,7 @@ static void test_full_stack_triggers_miss(void)
     enter_play(&p);
     p->bart.count = 5;
     cupcake_bart_set_position(p, 2);
-    cupcake_grid_set_visible(&p->grid, 3, 1, 1);
+    cupcake_grid_set_visible(&p->grid, 4, 1, 1);
     cupcake_on_move(CUPCAKE_MOVE_RIGHT);
     if (p->bart.pos != 3)
         fail("full stack: moved to lane 3");
@@ -160,10 +160,27 @@ static void test_marge_collect_keeps_one_cupcake(void)
     p->marge.visible = 1;
     p->bart.count = 3;
     cupcake_bart_set_position(p, 0);
-    cupcake_grid_set_visible(&p->grid, 1, 1, 1);
+    cupcake_grid_set_visible(&p->grid, 2, 1, 1);
     cupcake_on_move(CUPCAKE_MOVE_RIGHT);
     if (p->bart.count != 2)
         fail("marge collect + catch: count 1 then catch to 2");
+}
+
+static void test_no_false_catch_on_own_stack(void)
+{
+    cupcake_play_state_t *p;
+
+    enter_play(&p);
+    cupcake_bart_set_position(p, 2);
+    p->bart.count = 1;
+    cupcake_bart_set_position(p, 2);
+    cupcake_on_move(CUPCAKE_MOVE_RIGHT);
+    if (p->bart.pos != 3)
+        fail("own stack: moved to lane 3");
+    if (p->bart.count != 1)
+        fail("own stack: count unchanged after lane change");
+    if (!last_sfx_is("move"))
+        fail("own stack: normal move SFX");
 }
 
 int main(void)
@@ -175,6 +192,7 @@ int main(void)
     test_catch_pacifier();
     test_marge_collect_on_move();
     test_marge_collect_keeps_one_cupcake();
+    test_no_false_catch_on_own_stack();
 
     if (g_fail)
         return 1;

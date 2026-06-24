@@ -13,8 +13,12 @@
 #define CUPCAKE_LCD_H         CUPCAKE_LCD_ATLAS_H
 
 /*
- * Alignment tuning: uncomment to always draw one sprite (demo frozen).
- * PC: ./cupcake-sdl.exe --pin --pin-solo  (pins all lines in assets/lcd_tune.txt)
+ * Alignment tuning:
+ *   run-align.bat              static pin sheet (edit assets/lcd_tune.txt)
+ *   ./cupcake-sdl.exe --align  same (--pin --pin-solo + LCD border)
+ * Live override: lcd_tune.txt reloaded each frame (same coords as header after bake).
+ * Bake into cupcake_sprite_lcd.h:  make bake-lcd   (or make gen when PIL available)
+ * Regenerate tune layout only:     python tools/gen_lcd_tune_align.py
  */
 /* #define CUPCAKE_DEBUG_PIN_SPRITE_STR "marge1" */
 

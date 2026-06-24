@@ -69,7 +69,7 @@ static void test_cake1_lands_on_grid(void)
 
     if (cupcake_aircake_is_visible(&p.aircakes, 1))
         fail("cake1 land: flying cake hidden");
-    if (!cupcake_grid_is_visible(&p.grid, 1, 1))
+    if (!cupcake_grid_is_visible(&p.grid, 2, 1))
         fail("cake1 land: floor slot on lane 1");
 }
 

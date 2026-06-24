@@ -24,11 +24,12 @@ SPRITES_JSON = os.path.join(
 )
 SPRITES_H = os.path.join(ROOT, "src", "cupcake_sprites.h")
 OUT_H = os.path.join(ROOT, "src", "cupcake_sprite_lcd.h")
+TUNE_TXT = os.path.join(ROOT, "assets", "lcd_tune.txt")
 
 LCD_W = 1024
 LCD_H = 800
 
-# Hand-tuned anchors preserved across regen (lcd_y is in full 1024x800 bezel space).
+# Fallback when assets/lcd_tune.txt is missing (prefer editing lcd_tune.txt + make gen).
 MANUAL_LCD: dict[str, tuple[int, int]] = {
     "marge1": (0, 115),
     "maggie0": (705, 243),
@@ -36,6 +37,22 @@ MANUAL_LCD: dict[str, tuple[int, int]] = {
     "maggie2": (855, 253),
     "maggie3": (720, 192),
 }
+
+
+def load_lcd_tune() -> dict[str, tuple[int, int]]:
+    """Parse assets/lcd_tune.txt — same format as runtime live override."""
+    out: dict[str, tuple[int, int]] = {}
+    if not os.path.isfile(TUNE_TXT):
+        return out
+    with open(TUNE_TXT, encoding="utf-8") as f:
+        for raw in f:
+            line = raw.split("#", 1)[0].strip()
+            if not line:
+                continue
+            parts = line.split()
+            if len(parts) >= 3:
+                out[parts[0]] = (int(parts[1]), int(parts[2]))
+    return out
 
 
 def load_sprite_sizes() -> dict[str, tuple[int, int]]:
@@ -62,13 +79,14 @@ def main() -> None:
     # Mesh X/Y linear map (RetroFab uses 3D camera; see docs/HOST_WEB.md for exact parity).
     extents = collect_mesh_lcd_extents(data, xmin, xmax, ymin, ymax, LCD_W, LCD_H)
     sizes = load_sprite_sizes()
+    manual = {**MANUAL_LCD, **load_lcd_tune()}
     entries: list[tuple[str, int, int]] = []
 
     for name in sorted(extents.keys()):
         if name not in sizes:
             continue
-        if name in MANUAL_LCD:
-            entries.append((name, *MANUAL_LCD[name]))
+        if name in manual:
+            entries.append((name, *manual[name]))
             continue
         w, h = sizes[name]
         min_lx, min_ly, max_lx, max_ly = extents[name]

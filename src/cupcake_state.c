@@ -203,11 +203,13 @@ int cupcake_phase_clamp(int phase)
 
 int cupcake_bart_stack_lane(int pos)
 {
+    /* JS: cupcakes[Math.min(4, position)][slot] — 0-based grid row, not Bart lane index.
+     * Row 0=cake01 (lane 1) … row 4=cake41 (lane 5). pos 0→row 0; pos 1→row 1; … pos 5→row 4. */
     if (pos < 1)
         return 1;
-    if (pos > 4)
-        return 4;
-    return pos;
+    if (pos >= 5)
+        return 5;
+    return pos + 1;
 }
 
 uint16_t cupcake_bart_position_layers(int pos)

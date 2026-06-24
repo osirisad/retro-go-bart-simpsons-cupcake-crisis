@@ -81,8 +81,8 @@ static void test_draws_floor_and_held_stack(void)
     reset_sprites();
     cupcake_grid_draw_visible(&p, capture_sprite, NULL);
 
-    if (!has_sprite("cake11") || !has_sprite("cake12"))
-        fail("draw: bart held stack on lane 2");
+    if (!has_sprite("cake21") || !has_sprite("cake22"))
+        fail("draw: bart held stack on lane 3 (pos 2)");
     if (!has_sprite("cake01"))
         fail("draw: floor cupcake on lane 1");
     if (has_sprite("cake31"))

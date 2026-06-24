@@ -441,10 +441,14 @@ gen:
 	python tools/gen_lcd_positions.py
 	python tools/gen_demo_data.py
 
+# Bake assets/lcd_tune.txt -> src/cupcake_sprite_lcd.h (no PIL; safe after alignment edits).
+bake-lcd:
+	python tools/bake_lcd_tune.py
+
 clean:
 	rm -rf $(BUILD)
 
-.PHONY: all run clean gen force-rebuild test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test-play-draw test-marge-lcd test-miss-counter test
+.PHONY: all run clean gen bake-lcd force-rebuild test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test-play-draw test-marge-lcd test-miss-counter test
 
 # Use if alignment edits in .h seem "cached" (also close cupcake-sdl.exe before make).
 force-rebuild:

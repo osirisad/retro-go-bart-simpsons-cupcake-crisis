@@ -49,11 +49,11 @@ static void test_step_no_miss_when_bart_in_lane(void)
 
     memset(&p, 0, sizeof p);
     p.bart.pos = 2;
-    cupcake_grid_set_visible(&p.grid, 2, 1, 1);
+    cupcake_grid_set_visible(&p.grid, 3, 1, 1);
 
     cupcake_cupcakes_step(&p);
 
-    if (!cupcake_grid_is_visible(&p.grid, 2, 1))
+    if (!cupcake_grid_is_visible(&p.grid, 3, 1))
         fail("step: floor cupcake kept when bart in lane");
 }
 
@@ -63,11 +63,11 @@ static void test_step_no_miss_on_couch(void)
 
     memset(&p, 0, sizeof p);
     p.bart.pos = 5;
-    cupcake_grid_set_visible(&p.grid, 3, 1, 1);
+    cupcake_grid_set_visible(&p.grid, 4, 1, 1);
 
     cupcake_cupcakes_step(&p);
 
-    if (!cupcake_grid_is_visible(&p.grid, 3, 1))
+    if (!cupcake_grid_is_visible(&p.grid, 4, 1))
         fail("step: floor cupcake kept when bart on couch");
 }
 
@@ -87,17 +87,32 @@ static void test_step_no_miss_when_bart_throwing(void)
         fail("step: held cupcakes kept when bart throwing to Marge");
 }
 
+static void test_step_no_miss_on_held_stack_lane(void)
+{
+    cupcake_play_state_t p;
+
+    memset(&p, 0, sizeof p);
+    p.bart.pos = 2;
+    p.bart.count = 2;
+    cupcake_bart_set_position(&p, 2);
+
+    cupcake_cupcakes_step(&p);
+
+    if (!cupcake_grid_is_visible(&p.grid, 3, 1) || !cupcake_grid_is_visible(&p.grid, 3, 2))
+        fail("step: held stack on stack lane not treated as floor miss");
+}
+
 static void test_step_miss_other_lane(void)
 {
     cupcake_play_state_t *p;
 
     enter_play(&p);
     cupcake_bart_set_position(p, 2);
-    cupcake_grid_set_visible(&p->grid, 3, 1, 1);
+    cupcake_grid_set_visible(&p->grid, 4, 1, 1);
 
     cupcake_cupcakes_step(p);
 
-    if (cupcake_grid_is_visible(&p->grid, 3, 1))
+    if (cupcake_grid_is_visible(&p->grid, 4, 1))
         fail("step miss: floor slot cleared");
     if (!cupcake_is_paused())
         fail("step miss: game paused");
@@ -123,6 +138,7 @@ int main(void)
     test_step_no_miss_when_bart_in_lane();
     test_step_no_miss_on_couch();
     test_step_no_miss_when_bart_throwing();
+    test_step_no_miss_on_held_stack_lane();
     test_step_miss_other_lane();
     test_step_only_slot1_misses();
 

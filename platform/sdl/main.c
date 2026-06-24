@@ -68,7 +68,11 @@ static void parse_args(int argc, char **argv)
                 pin_tune_file_arg = 1;
         } else if (!strcmp(argv[i], "--pin-solo"))
             pin_solo_arg = 1;
-        else if (!strcmp(argv[i], "--scale") && i + 1 < argc)
+        else if (!strcmp(argv[i], "--align")) {
+            pin_tune_file_arg = 1;
+            pin_solo_arg = 1;
+            show_lcd_border = 1;
+        } else if (!strcmp(argv[i], "--scale") && i + 1 < argc)
             win_scale = (float)atof(argv[++i]);
         else if (strncmp(argv[i], "--scale=", 8) == 0)
             win_scale = (float)atof(argv[i] + 8);
@@ -404,7 +408,9 @@ int main(int argc, char **argv)
             "  Arrows / WASD = move (play, when enabled)\n"
             "  --pin = pin all sprites in assets/lcd_tune.txt (demo frozen)\n"
             "  --pin marge1 = pin one sprite; --pin off to clear\n"
-            "  --pin-solo = only pinned sprite(s) on LCD (best for alignment)\n"
+            "  --pin-solo = only pinned sprite(s) on LCD (demo/attract tuning)\n"
+            "  --align = --pin --pin-solo + green LCD border (edit assets/lcd_tune.txt)\n"
+            "  Start play (Action) to preview catches with tune coords; pin sheet is demo-only.\n"
             "  --lcd-border = green outline of 1024x800 sprite buffer (auto with --pin)\n"
             "  --debug = lcd border + sprite stderr log\n\n",
             atlas_file_loaded);

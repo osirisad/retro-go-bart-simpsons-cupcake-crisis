@@ -75,7 +75,7 @@ static void cupcake_handle_input(void);
 /* Host update rate (~30 Hz); demo.model 0.25s uses 8 ticks/frame. */
 #define CUPCAKE_TICK_DT (1.f / 30.f)
 
-#define CUPCAKE_PIN_MAX 32
+#define CUPCAKE_PIN_MAX 128
 
 typedef struct {
     char name[32];
@@ -88,6 +88,13 @@ static cupcake_pin_entry_t debug_pin_tune[CUPCAKE_PIN_MAX];
 static int debug_pin_tune_count;
 static int debug_pin_freeze_demo;
 static int debug_pin_solo;
+
+static cupcake_pin_entry_t g_lcd_tune_override[CUPCAKE_PIN_MAX];
+static int g_lcd_tune_override_count;
+static int g_lcd_tune_logged;
+
+static int load_lcd_tune_entries(cupcake_pin_entry_t *out, int max_entries);
+static void tune_file_path(char *buf, size_t bufsz);
 
 static int debug_pin_is_active(void)
 {
@@ -129,9 +136,49 @@ static void host_on_score_change(void)
         cupcake_on_phase_complete();
 }
 
+static void refresh_lcd_tune_override(void)
+{
+    char path[512];
+    int n;
+
+    n = load_lcd_tune_entries(g_lcd_tune_override, CUPCAKE_PIN_MAX);
+    if (!g_lcd_tune_logged) {
+        g_lcd_tune_logged = 1;
+        tune_file_path(path, sizeof path);
+        if (n > 0)
+            fprintf(stderr, "lcd_tune: %d sprites from %s (live reload)\n", n, path);
+        else
+            fprintf(stderr,
+                    "lcd_tune: not loaded (%s missing?) — using cupcake_sprite_lcd.h\n", path);
+    }
+    g_lcd_tune_override_count = n;
+}
+
+static int lcd_tune_lookup(const char *name, int *out_x, int *out_y)
+{
+    int i;
+
+    if (!name || !out_x || !out_y)
+        return 0;
+    for (i = 0; i < g_lcd_tune_override_count; i++) {
+        if (strcmp(g_lcd_tune_override[i].name, name) == 0) {
+            *out_x = g_lcd_tune_override[i].lcd_x;
+            *out_y = g_lcd_tune_override[i].lcd_y;
+            return 1;
+        }
+    }
+    return 0;
+}
+
 static void draw_sprite_auto(const char *name)
 {
-    host_sprite(name, CUPCAKE_LCD_AUTO, CUPCAKE_LCD_AUTO);
+    int tx;
+    int ty;
+
+    if (lcd_tune_lookup(name, &tx, &ty))
+        host_sprite(name, tx, ty);
+    else
+        host_sprite(name, CUPCAKE_LCD_AUTO, CUPCAKE_LCD_AUTO);
 }
 
 static void draw_scoreboard_sprite(const char *name, void *ctx)
@@ -209,12 +256,17 @@ static int load_lcd_tune_entries(cupcake_pin_entry_t *out, int max_entries)
     fp = fopen(path, "r");
     if (!fp)
         return 0;
-    while (n < max_entries && fgets(line, sizeof line, fp)) {
+    while (fgets(line, sizeof line, fp)) {
         char entry[32];
         int x = 0;
         int y = 0;
         if (!parse_lcd_tune_line(line, entry, sizeof entry, &x, &y))
             continue;
+        if (n >= max_entries) {
+            fprintf(stderr, "lcd_tune.txt: only first %d sprites pinned (raise CUPCAKE_PIN_MAX)\n",
+                    max_entries);
+            break;
+        }
         snprintf(out[n].name, sizeof out[n].name, "%s", entry);
         out[n].lcd_x = x;
         out[n].lcd_y = y;
@@ -727,16 +779,24 @@ void cupcake_on_m_cupcake(int lane)
 void cupcake_cupcakes_step(cupcake_play_state_t *p)
 {
     int lane;
+    int stack_lane;
 
     if (!p)
         return;
 
+    stack_lane = cupcake_bart_stack_lane((int)p->bart.pos);
+
     for (lane = 1; lane <= 4; lane++) {
-        if (!cupcake_grid_is_visible(&p->grid, lane, 1))
+        int grid_lane = cupcake_bart_stack_lane(lane);
+
+        if (!cupcake_grid_is_visible(&p->grid, grid_lane, 1))
             continue;
         if (p->bart.pos == lane || p->bart.pos == 0 || p->bart.pos == 5)
             continue;
-        cupcake_grid_set_visible(&p->grid, lane, 1, 0);
+        /* Held stack uses grid row stack_lane; slot 1 looks like a floor cupcake. */
+        if (p->bart.count > 0 && grid_lane == stack_lane)
+            continue;
+        cupcake_grid_set_visible(&p->grid, grid_lane, 1, 0);
         cupcake_on_m_cupcake(lane);
     }
 }
@@ -926,7 +986,7 @@ static void tmr_bart_action_on_end(void *ctx, int tick)
     collected = cupcake_marge_collect(p);
     if (p->bart.pos == 0) {
         if (collected)
-            p->bart.count = cupcake_grid_is_visible(&p->grid, 1, 1) ? 1u : 0u;
+            p->bart.count = cupcake_grid_is_visible(&p->grid, cupcake_bart_stack_lane(1), 1) ? 1u : 0u;
         cupcake_bart_set_position(p, 1);
     }
 }
@@ -1090,7 +1150,7 @@ void cupcake_aircakes_land_at_lane(cupcake_play_state_t *p, int lane)
         else
             cupcake_on_m_cupcake(lane);
     } else {
-        cupcake_grid_set_visible(&p->grid, lane, 1, 1);
+        cupcake_grid_set_visible(&p->grid, cupcake_bart_stack_lane(lane), 1, 1);
     }
 }
 
@@ -1182,6 +1242,7 @@ void cupcake_pacifier_step(cupcake_play_state_t *p)
 static void cupcake_bart_move(cupcake_play_state_t *p, cupcake_move_t dir)
 {
     int dest;
+    int floor_lane;
 
     if (!p)
         return;
@@ -1194,15 +1255,18 @@ static void cupcake_bart_move(cupcake_play_state_t *p, cupcake_move_t dir)
         cupcake_bart_catch_pacifier(p);
 
     if (cupcake_marge_collect(p)) {
-        if (dir == CUPCAKE_MOVE_RIGHT && dest == 1 && cupcake_grid_is_visible(&p->grid, 1, 1))
+        if (dir == CUPCAKE_MOVE_RIGHT && dest == 1 &&
+            cupcake_grid_is_visible(&p->grid, cupcake_bart_stack_lane(1), 1))
             p->bart.count = 1;
         else
             p->bart.count = 0;
     }
 
-    if (p->bart.pos != 5 && cupcake_grid_is_visible(&p->grid, dest, 1)) {
+    /* JS: cupcakes[dest][1] — grid row is stack_lane(dest), not dest itself. */
+    floor_lane = cupcake_bart_stack_lane(dest);
+    if (p->bart.pos != 5 && cupcake_grid_is_visible(&p->grid, floor_lane, 1)) {
         if (p->bart.count < 5) {
-            cupcake_grid_set_visible(&p->grid, dest, 1, 0);
+            cupcake_grid_set_visible(&p->grid, floor_lane, 1, 0);
             cupcake_bart_catch_cupcake(p, dest);
         } else {
             cupcake_bart_set_position(p, dest);
@@ -1576,6 +1640,7 @@ void cupcake_draw(void)
     unsigned i;
     const char *name;
 
+    refresh_lcd_tune_override();
     host_frame();
 
     if (g.play.mode == CUPCAKE_MODE_DEMO) {
@@ -1587,18 +1652,17 @@ void cupcake_draw(void)
                     draw_sprite_auto(name);
             }
         }
-        cupcake_scoreboard_draw(&g.play, draw_scoreboard_sprite, NULL);
+        if (!(debug_pin_is_active() && debug_pin_solo))
+            cupcake_scoreboard_draw(&g.play, draw_scoreboard_sprite, NULL);
         draw_debug_pin();
         return;
     }
 
     if (g.play.mode == CUPCAKE_MODE_START || g.play.mode == CUPCAKE_MODE_PLAY ||
         g.play.mode == CUPCAKE_MODE_OVER) {
-        if (!(debug_pin_is_active() && debug_pin_solo)) {
-            draw_bart_play(&g.play);
-        }
+        /* Play always uses live game visibility + lcd_tune.txt coords. Pin-solo is demo-only. */
+        draw_bart_play(&g.play);
         cupcake_scoreboard_draw(&g.play, draw_scoreboard_sprite, NULL);
-        draw_debug_pin();
         return;
     }
 

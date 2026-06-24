@@ -93,7 +93,7 @@ static void test_aircakes_land_catch(void)
     cupcake_aircakes_land_at_lane(p, 2);
     if (p->bart.count != 1 || p->points != 100u)
         fail("aircakes land: catch at bart lane");
-    if (!cupcake_grid_is_visible(&p->grid, 2, 1))
+    if (!cupcake_grid_is_visible(&p->grid, 3, 1))
         fail("aircakes land: held stack slot 1 shown after catch");
 }
 
@@ -106,7 +106,7 @@ static void test_aircakes_land_grid(void)
     cupcake_aircakes_land_at_lane(p, 3);
     if (p->bart.count != 0)
         fail("aircakes land: no catch off lane");
-    if (!cupcake_grid_is_visible(&p->grid, 3, 1))
+    if (!cupcake_grid_is_visible(&p->grid, 4, 1))
         fail("aircakes land: grid cell set off lane");
 }
 
@@ -140,7 +140,7 @@ static void test_move_still_catches(void)
     cupcake_play_state_t *p;
 
     enter_play(&p);
-    cupcake_grid_set_visible(&p->grid, 3, 1, 1);
+    cupcake_grid_set_visible(&p->grid, 4, 1, 1);
     cupcake_on_move(CUPCAKE_MOVE_RIGHT);
     if (p->bart.count != 1 || p->points != 100u)
         fail("move: still uses catchCupcake");
