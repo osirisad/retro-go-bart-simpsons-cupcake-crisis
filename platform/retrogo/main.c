@@ -171,9 +171,7 @@ int main(int argc, char **argv)
                                    SDL_TEXTUREACCESS_STREAMING, WIN_W, WIN_H);
 
     bezel_pixels = load_image_rgba(asset_path("screen.jpg"), &bezel_w, &bezel_h);
-    atlas_pixels = load_image_rgba(asset_path("sprites-draw.png"), &atlas_w, &atlas_h);
-    if (!atlas_pixels)
-        atlas_pixels = load_image_rgba(asset_path("sprites-color.png"), &atlas_w, &atlas_h);
+    atlas_pixels = load_image_rgba(asset_path("sprites-color.png"), &atlas_w, &atlas_h);
 
     if (!bezel_pixels || !atlas_pixels) {
         fprintf(stderr,

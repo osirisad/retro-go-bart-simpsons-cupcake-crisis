@@ -490,7 +490,6 @@ $(TEST_BUILD):
 
 gen:
 	python tools/gen_sprites.py
-	python tools/gen_masked_atlas.py
 	python tools/gen_lcd_positions.py
 	python tools/gen_demo_data.py
 

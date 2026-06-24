@@ -38,7 +38,7 @@ See **`docs/HAR.md`** for what your itch.io HAR actually contains (JSON yes, atl
 ## Regenerate rects
 
 ```bash
-make gen   # gen_sprites.py, gen_masked_atlas.py, gen_lcd_positions.py, gen_demo_data.py
+make gen   # gen_sprites.py, gen_lcd_positions.py, gen_demo_data.py
 python tools/audit_sprites.py   # optional: luminance check on color sheet
 ```
 
