@@ -163,13 +163,13 @@ static SDL_Texture *texture_from_rgba(SDL_Renderer *ren, uint8_t *px, int w, int
 
 static void update_lcd_screen_rect(void)
 {
-    float sx = (float)win_w / (float)bezel_w;
-    float sy = (float)win_h / (float)bezel_h;
+    host_lcd_rect_t rect =
+        host_lcd_rect_for_framebuffer(win_w, win_h, bezel_w, bezel_h);
 
-    lcd_on_screen.x = (int)(CUPCAKE_LCD_ATLAS_X * sx + 0.5f);
-    lcd_on_screen.y = (int)(CUPCAKE_LCD_ATLAS_Y * sy + 0.5f);
-    lcd_on_screen.w = (int)(CUPCAKE_LCD_ATLAS_W * sx + 0.5f);
-    lcd_on_screen.h = (int)(CUPCAKE_LCD_ATLAS_H * sy + 0.5f);
+    lcd_on_screen.x = rect.x;
+    lcd_on_screen.y = rect.y;
+    lcd_on_screen.w = rect.w;
+    lcd_on_screen.h = rect.h;
 }
 
 static void lcd_clear_frame(void)
@@ -209,6 +209,7 @@ static int cupcake_cb_wrap(cupcake_cb_type_t type, const char *str_arg, int int_
 {
     switch (type) {
     case CUPCAKE_CB_FRAME:
+        lcd_clear_frame();
         return 0;
     case CUPCAKE_CB_SPR:
         return draw_sprite_sdl(str_arg, int_arg0, int_arg1);
@@ -301,6 +302,13 @@ static void input_poll(void)
             }
             free(st);
         }
+#ifdef CUPCAKE_DEBUG_CHEATS
+        if (ev.type == SDL_KEYDOWN && (ev.key.keysym.mod & KMOD_ALT)) {
+            const SDL_Keycode sym = ev.key.keysym.sym;
+            if (sym >= SDLK_1 && sym <= SDLK_6)
+                cupcake_debug_cheat_phase((int)(sym - SDLK_1 + 1));
+        }
+#endif
     }
 }
 
@@ -310,7 +318,6 @@ static void present(void)
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, bezel_tex, NULL, NULL);
 
-    lcd_clear_frame();
     cupcake_set_buttons(buttons);
     cupcake_update();
     cupcake_draw();
@@ -462,7 +469,8 @@ int main(int argc, char **argv)
             "  --lcd-border = green outline of 1024x800 sprite buffer (auto with --pin)\n"
             "  --debug = lcd border + sprite stderr log\n"
             "  --start LEVEL,PHASE,SCORE = skip attract; jump to play (e.g. 1,1,9900)\n"
-            "  CUPCAKE_DEBUG_START=1,1,9900 same as --start\n\n",
+            "  CUPCAKE_DEBUG_START=1,1,9900 same as --start\n"
+            "  Alt+1..6 in play/start = jump to phase (PC debug build)\n\n",
             atlas_file_loaded);
 
     while (run_loop) {

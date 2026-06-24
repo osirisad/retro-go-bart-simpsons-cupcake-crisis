@@ -215,6 +215,9 @@ void cupcake_set_debug_start(int level, int phase, uint32_t points);
 void cupcake_apply_debug_start(void);
 int cupcake_debug_start_pending(void);
 
+/* JS initCheats Alt+1..6 — PC dev when CUPCAKE_DEBUG_CHEATS is defined. */
+void cupcake_debug_cheat_phase(int phase_1_to_6);
+
 
 
 #ifdef __cplusplus

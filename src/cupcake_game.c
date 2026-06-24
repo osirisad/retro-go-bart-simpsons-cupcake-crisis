@@ -1355,6 +1355,28 @@ void cupcake_apply_debug_start(void)
             (unsigned)points, (unsigned)cupcake_phase_score_target(p));
 }
 
+void cupcake_debug_cheat_phase(int phase_1_to_6)
+{
+    cupcake_play_state_t *p = &g.play;
+
+    if (phase_1_to_6 < 1)
+        phase_1_to_6 = 1;
+    if (phase_1_to_6 > CUPCAKE_PHASE_MAX)
+        phase_1_to_6 = CUPCAKE_PHASE_MAX;
+    if (p->mode != CUPCAKE_MODE_PLAY && p->mode != CUPCAKE_MODE_START)
+        return;
+
+    cupcake_timers_stop(&g_timers);
+    host_sfx("stop");
+    p->phase = (uint8_t)(phase_1_to_6 - 1);
+    p->points = (uint32_t)(phase_1_to_6 - 1) * p->phase_threshold;
+    cupcake_scoreboard_set_level(p, 0);
+    cupcake_scoreboard_set_phase(p, phase_1_to_6);
+    cupcake_on_phase_complete();
+
+    fprintf(stderr, "Debug cheat: jump to phase %d\n", phase_1_to_6);
+}
+
 void cupcake_on_quick_start(int level)
 {
     cupcake_play_state_t *p = &g.play;

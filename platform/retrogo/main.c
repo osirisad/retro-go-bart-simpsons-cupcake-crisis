@@ -32,7 +32,10 @@ static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Texture *fb_texture;
 static uint16_t fb_data[WIN_W * WIN_H];
-static SDL_Texture *lcd_tex;
+static uint8_t *bezel_pixels;
+static int bezel_w, bezel_h;
+static host_bezel_t bezel;
+static host_lcd_rect_t lcd_rect;
 static uint8_t *atlas_pixels;
 static uint8_t *lcd_pixels;
 static int atlas_w, atlas_h;
@@ -70,6 +73,8 @@ static int cupcake_cb_wrap(cupcake_cb_type_t type, const char *str_arg, int int_
 {
     switch (type) {
     case CUPCAKE_CB_FRAME:
+        host_bezel_blit_rgb565(&bezel, fb_data, WIN_W, WIN_H);
+        host_clear_lcd_transparent(&host);
         return 0;
     case CUPCAKE_CB_SPR:
         host_draw_sprite(&host, str_arg, int_arg0, int_arg1);
@@ -138,27 +143,18 @@ static void input_read_gamepad(void)
     }
 }
 
-#define RGB565(r, g, b) \
-    (((b) >> 3) & 0x1f) | ((((g) >> 2) & 0x3f) << 5) | ((((r) >> 3) & 0x1f) << 11)
-
-static void blit_lcd_to_fb(void)
+static void present_frame(void)
 {
-    int ox = (WIN_W - LCD_W) / 2;
-    int oy = (WIN_H - LCD_H) / 2;
-    int y, x;
-    for (y = 0; y < LCD_H; y++) {
-        for (x = 0; x < LCD_W; x++) {
-            uint8_t *p = lcd_pixels + (y * LCD_W + x) * 4;
-            int dx = ox + x;
-            int dy = oy + y;
-            if (dx >= 0 && dx < WIN_W && dy >= 0 && dy < WIN_H)
-                fb_data[dy * WIN_W + dx] = RGB565(p[0], p[1], p[2]);
-        }
-    }
+    host_lcd_blit_rgb565(&host, &lcd_rect, fb_data, WIN_W, WIN_H);
+    SDL_UpdateTexture(fb_texture, NULL, fb_data, WIN_W * (int)sizeof(uint16_t));
+    SDL_RenderCopy(renderer, fb_texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
 }
 
 int main(int argc, char **argv)
 {
+    int visible_bezel_h;
+
     (void)argc;
     (void)argv;
 
@@ -171,13 +167,29 @@ int main(int argc, char **argv)
     fb_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB565,
                                    SDL_TEXTUREACCESS_STREAMING, WIN_W, WIN_H);
 
+    bezel_pixels = load_image_rgba(asset_path("screen.jpg"), &bezel_w, &bezel_h);
     atlas_pixels = load_image_rgba(asset_path("sprites-draw.png"), &atlas_w, &atlas_h);
     if (!atlas_pixels)
         atlas_pixels = load_image_rgba(asset_path("sprites-color.png"), &atlas_w, &atlas_h);
 
+    if (!bezel_pixels || !atlas_pixels) {
+        fprintf(stderr,
+                "Missing assets in %s (need screen.jpg and sprites-color.png)\n",
+                asset_path(""));
+        return 1;
+    }
+
+    visible_bezel_h = CUPCAKE_BEZEL_VISIBLE_H;
+    if (bezel_h < visible_bezel_h)
+        visible_bezel_h = bezel_h;
+
+    bezel.pixels = bezel_pixels;
+    bezel.w = bezel_w;
+    bezel.h = bezel_h;
+    bezel.visible_h = visible_bezel_h;
+    lcd_rect = host_lcd_rect_for_framebuffer(WIN_W, WIN_H, bezel_w, visible_bezel_h);
+
     lcd_pixels = calloc(LCD_W * LCD_H, 4);
-    lcd_tex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888,
-                                SDL_TEXTUREACCESS_STREAMING, LCD_W, LCD_H);
 
     host.atlas = atlas_pixels;
     host.atlas_w = atlas_w;
@@ -187,6 +199,10 @@ int main(int argc, char **argv)
     host.lcd_w = LCD_W;
     host.lcd_h = LCD_H;
     host.lcd_stride = LCD_W * 4;
+
+    fprintf(stderr, "retro-go host: bezel %dx%d (visible %d) -> %dx%d LCD rect %d,%d %dx%d\n",
+            bezel_w, bezel_h, visible_bezel_h, WIN_W, WIN_H, lcd_rect.x, lcd_rect.y, lcd_rect.w,
+            lcd_rect.h);
 
     odroid_system_init(APP_ID, 22050);
     odroid_system_emu_init(&LoadState, &SaveState, NULL, NULL);
@@ -209,14 +225,10 @@ int main(int argc, char **argv)
 
     while (run_loop) {
         input_read_gamepad();
-        host_clear_lcd(&host, 20, 24, 28);
         cupcake_set_buttons(buttons);
         cupcake_update();
         cupcake_draw();
-        blit_lcd_to_fb();
-        SDL_UpdateTexture(fb_texture, NULL, fb_data, WIN_W * sizeof(uint16_t));
-        SDL_RenderCopy(renderer, fb_texture, NULL, NULL);
-        SDL_RenderPresent(renderer);
+        present_frame();
 #if defined(CUPCAKE_AUDIO_ODROID) && !defined(LINUX_EMU)
         host_audio_pump(odroid_audio_sample_rate_get() / 30);
 #endif
@@ -225,9 +237,9 @@ int main(int argc, char **argv)
 
     host_audio_shutdown();
 
+    stbi_image_free(bezel_pixels);
     stbi_image_free(atlas_pixels);
     free(lcd_pixels);
-    SDL_DestroyTexture(lcd_tex);
     SDL_DestroyTexture(fb_texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

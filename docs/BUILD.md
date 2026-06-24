@@ -23,9 +23,13 @@ Set `CUPCAKE_ASSETS=assets` if you run the binary from another working directory
 ### Unit tests
 
 ```bash
-make test-all
+make test          # all unit tests (alias: make test-all)
+make test-smoke    # headless init + 10 frames
+make test-demo-replay
 # or individual targets: make test-state, make test-bart-move, etc.
 ```
+
+Sprite UV export (optional visual check): `python test/export_sprites.py` — see [test/README.md](../test/README.md).
 
 ## retro-go / Game & Watch
 
@@ -38,7 +42,7 @@ make -f $CUPCAKE_PORT/platform/retrogo/Makefile.cupcake
 
 Output: `build-cupcake/retro-go-cupcake.elf`
 
-Copy `assets/sprites-color.png` (and fallback `sprites.png`) to `/home/odroid/cupcake/` on the device SD layout your firmware expects (same pattern as other linux emu apps).
+Copy `assets/sprites-color.png`, `assets/screen.jpg` (and fallback `sprites.png`) to `/home/odroid/cupcake/` on the device SD layout your firmware expects (same pattern as other linux emu apps).
 
 Install the produced ELF like Celeste (`retro-go-celeste`).
 

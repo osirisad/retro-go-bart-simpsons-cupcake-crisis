@@ -992,12 +992,12 @@ Save-state hardening, retro-go bezel, automated tests, cheats, browser parity si
 
 | Task | Title | Status |
 |------|-------|--------|
-| TASK-42 | Save-state version covers full simulation | [Backlog - Sprint 12] |
-| TASK-43 | retro-go bezel / `CUPCAKE_CB_FRAME` support | [Backlog - Sprint 12] |
-| TASK-44 | Automated demo replay regression test | [Backlog - Sprint 12] |
-| TASK-51 | Optional debug cheats (`initCheats`) | [Backlog - Sprint 12] |
-| TASK-59 | Makefile `make test` target | [Backlog - Sprint 12] |
-| TASK-60 | End-to-end browser parity checklist | [Backlog - Sprint 12] |
+| TASK-42 | Save-state version covers full simulation | [Done - Sprint 12] |
+| TASK-43 | retro-go bezel / `CUPCAKE_CB_FRAME` support | [Done - Sprint 12] |
+| TASK-44 | Automated demo replay regression test | [Done - Sprint 12] |
+| TASK-51 | Optional debug cheats (`initCheats`) | [Done - Sprint 12] |
+| TASK-59 | Makefile `make test` target | [Done - Sprint 12] |
+| TASK-60 | End-to-end browser parity checklist | [In Progress - Sprint 12] |
 
 ---
 
@@ -1007,13 +1007,13 @@ Save-state hardening, retro-go bezel, automated tests, cheats, browser parity si
 
     Type: Feature
 
-    Status: [Backlog - Sprint 12]
+    Status: [Done - Sprint 12]
 
     Acceptance Criteria: Save/load includes entity grids, timer deadlines, scoreboard animation state, miss count, couch/marge/pacifier counters, and mode — not only current minimal `cupcake_state_t`. Loading mid-miss-sequence resumes correctly. Bump save format version with migration or invalidation.
 
-    Work Summary: 
+    Work Summary: `cupcake_state_t` already exports full play state + timer snapshots (`cupcake_timers_export/import`) + RNG. Added `test/cupcake_save_game_test.c` (`make test-save-game`): play-field roundtrip via `cupcake_save_state`/`cupcake_load_state`, mid-`onM_Cupcake` miss timer restore after load. Save format remains v1 (`CUPCAKE_SAVE_MAGIC` / `CUPCAKE_SAVE_VERSION`).
 
-    Feedback/Notes: 
+    Feedback/Notes:
 
 ---
 
@@ -1021,13 +1021,13 @@ Save-state hardening, retro-go bezel, automated tests, cheats, browser parity si
 
     Type: Feature
 
-    Status: [Backlog - Sprint 12]
+    Status: [Done - Sprint 12]
 
     Acceptance Criteria: retro-go host draws `screen.jpg` bezel like SDL PC build (or documents intentional LCD-only fullscreen). `CUPCAKE_CB_FRAME` implemented on both hosts consistently.
 
-    Work Summary: 
+    Work Summary: Shared `host_bezel_blit_rgb565()` / `host_lcd_blit_rgb565()` / `host_lcd_rect_for_framebuffer()` in `platform/host_draw.c`. retro-go loads `screen.jpg`, `CUPCAKE_CB_FRAME` blits bezel + clears transparent LCD; sprites composite over bezel at the same rect math as SDL. SDL `CUPCAKE_CB_FRAME` clears LCD buffer; bezel still drawn in present before `cupcake_draw()`. `make test-host-bezel`. Device SD needs `screen.jpg` alongside atlas.
 
-    Feedback/Notes: 
+    Feedback/Notes:
 
 ---
 
@@ -1035,13 +1035,13 @@ Save-state hardening, retro-go bezel, automated tests, cheats, browser parity si
 
     Type: Feature
 
-    Status: [Backlog - Sprint 12]
+    Status: [Done - Sprint 12]
 
     Acceptance Criteria: Test harness steps all 163 `cupcake_demo_frames` through renderer; optional PNG hash or pixel diff vs `test/export_sprites.py` reference / browser capture. Fails CI on sprite/LCD regression.
 
-    Work Summary: 
+    Work Summary: `test/cupcake_demo_replay_test.c` (`make test-demo-replay`): asserts 163 frames, every demo sprite name resolves in `cupcake_sprites.h`, full 163×8-tick update/draw cycle wraps `demo_frame` to 0 with zero missing blits.
 
-    Feedback/Notes: 
+    Feedback/Notes:
 
 ---
 
@@ -1049,13 +1049,13 @@ Save-state hardening, retro-go bezel, automated tests, cheats, browser parity si
 
     Type: Feature
 
-    Status: [Backlog - Sprint 12]
+    Status: [Done - Sprint 12]
 
     Acceptance Criteria: Alt+1..6 in play/start jumps to phase (debug threshold 1000 option optional). Guarded by compile flag `CUPCAKE_DEBUG_CHEATS`; no effect in release retro-go build.
 
-    Work Summary: 
+    Work Summary: PC `Makefile` defines `CUPCAKE_DEBUG_CHEATS`; SDL `Alt+1..6` calls `cupcake_debug_cheat_phase()` (JS `initCheats` parity: sets phase/points, `onPhaseComplete`). Also `--start LEVEL,PHASE,SCORE` / `CUPCAKE_DEBUG_START` for score/phase test entry (`make test-debug-start`). retro-go `Makefile.cupcake` does not define the flag.
 
-    Feedback/Notes: 
+    Feedback/Notes:
 
 ---
 
@@ -1063,13 +1063,13 @@ Save-state hardening, retro-go bezel, automated tests, cheats, browser parity si
 
     Type: Feature
 
-    Status: [Backlog - Sprint 12]
+    Status: [Done - Sprint 12]
 
     Acceptance Criteria: Single command runs sprite export check + demo frame count validation + optional headless SDL smoke (init, 10 frames, exit 0). Document in README.
 
-    Work Summary: 
+    Work Summary: `make test` / `make test-all` runs 40+ unit targets including new `test-smoke`, `test-demo-replay`, `test-save-game`, `test-debug-start`, and previously missing `test-phase-complete`. Smoke test: init + 10 update/draw cycles without SDL window.
 
-    Feedback/Notes: 
+    Feedback/Notes: Sprite PNG export remains manual (`python test/export_sprites.py`); see `test/README.md`.
 
 ---
 
@@ -1077,13 +1077,13 @@ Save-state hardening, retro-go bezel, automated tests, cheats, browser parity si
 
     Type: Feature
 
-    Status: [Backlog - Sprint 12]
+    Status: [In Progress - Sprint 12]
 
     Acceptance Criteria: Manual test script covering: full demo loop, level 1 play to first miss, couch sit bonus, Marge five-cupcake delivery, pacifier catch, game over → CON → restart, level 2 faster timing. Sign-off recorded in this file's Feedback/Notes when complete.
 
-    Work Summary: 
+    Work Summary: Added `docs/PARITY_CHECKLIST.md` with itch.io comparison checklist and sign-off table. Manual playthrough pending.
 
-    Feedback/Notes: 
+    Feedback/Notes:
 
 ---
 

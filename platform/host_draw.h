@@ -16,6 +16,18 @@ typedef struct {
     int lcd_stride;
 } host_atlas_t;
 
+/* RGBA bezel (screen.jpg); visible_h crops to top rows (see CUPCAKE_BEZEL_VISIBLE_H). */
+typedef struct {
+    const uint8_t *pixels;
+    int w;
+    int h;
+    int visible_h;
+} host_bezel_t;
+
+typedef struct {
+    int x, y, w, h;
+} host_lcd_rect_t;
+
 void host_clear_lcd(host_atlas_t *host, uint8_t r, uint8_t g, uint8_t b);
 void host_clear_lcd_transparent(host_atlas_t *host);
 
@@ -23,5 +35,15 @@ void host_clear_lcd_transparent(host_atlas_t *host);
 int host_sprite_rect_ok(const char *name);
 
 void host_draw_sprite(const host_atlas_t *host, const char *name, int lcd_x, int lcd_y);
+
+/* LCD destination rect when scaling bezel to fb_w x fb_h (SDL + retro-go parity). */
+host_lcd_rect_t host_lcd_rect_for_framebuffer(int fb_w, int fb_h, int bezel_w, int bezel_visible_h);
+
+/* Scale bezel visible region to an RGB565 framebuffer. */
+void host_bezel_blit_rgb565(const host_bezel_t *bezel, uint16_t *dst, int dst_w, int dst_h);
+
+/* Alpha-composite LCD RGBA buffer into dst at rect (scaled from logical LCD size). */
+void host_lcd_blit_rgb565(const host_atlas_t *host, const host_lcd_rect_t *rect, uint16_t *dst,
+                          int dst_w, int dst_h);
 
 #endif

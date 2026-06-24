@@ -18,7 +18,7 @@ SRCS = \
 	platform/stb/stb_image_impl.c
 
 CC       ?= gcc
-CFLAGS   ?= -std=c99 -Wall -Wextra -O2 -g -MMD -MP
+CFLAGS   ?= -std=c99 -Wall -Wextra -O2 -g -MMD -MP -DCUPCAKE_DEBUG_CHEATS
 INCLUDES = -Isrc -Iplatform -Iplatform/stb
 LDFLAGS  ?= -lm
 
@@ -182,6 +182,38 @@ test-debug-start: $(TEST_DEBUG_START)
 	$(TEST_DEBUG_START)
 
 $(TEST_DEBUG_START): test/cupcake_debug_start_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
+TEST_DEMO_REPLAY = $(TEST_BUILD)/cupcake_demo_replay_test$(EXE)
+
+test-demo-replay: $(TEST_DEMO_REPLAY)
+	$(TEST_DEMO_REPLAY)
+
+$(TEST_DEMO_REPLAY): test/cupcake_demo_replay_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
+TEST_SMOKE = $(TEST_BUILD)/cupcake_smoke_test$(EXE)
+
+test-smoke: $(TEST_SMOKE)
+	$(TEST_SMOKE)
+
+$(TEST_SMOKE): test/cupcake_smoke_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
+TEST_SAVE_GAME = $(TEST_BUILD)/cupcake_save_game_test$(EXE)
+
+test-save-game: $(TEST_SAVE_GAME)
+	$(TEST_SAVE_GAME)
+
+$(TEST_SAVE_GAME): test/cupcake_save_game_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
+TEST_HOST_BEZEL = $(TEST_BUILD)/cupcake_host_bezel_test$(EXE)
+
+test-host-bezel: $(TEST_HOST_BEZEL)
+	$(TEST_HOST_BEZEL)
+
+$(TEST_HOST_BEZEL): test/cupcake_host_bezel_test.c platform/host_draw.c | $(TEST_BUILD)
 	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
 
 TEST_ENABLED = $(TEST_BUILD)/cupcake_enabled_test$(EXE)
@@ -448,7 +480,7 @@ test-miss-counter: $(TEST_MISS_COUNTER)
 $(TEST_MISS_COUNTER): test/cupcake_miss_counter_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
 	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
 
-test: test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test-play-draw test-marge-lcd test-miss-counter
+test test-all: test-smoke test-host-bezel test-demo-replay test-timer test-rng test-state test-save-game test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-debug-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test-play-draw test-marge-lcd test-miss-counter
 
 $(TEST_TIMER): test/cupcake_timer_test.c src/cupcake_timer.c | $(TEST_BUILD)
 	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
@@ -473,7 +505,7 @@ extract-audio:
 clean:
 	rm -rf $(BUILD)
 
-.PHONY: all run clean gen bake-lcd force-rebuild test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test-play-draw test-marge-lcd test-miss-counter test
+.PHONY: all run clean gen bake-lcd force-rebuild test test-all test-host-bezel test-smoke test-demo-replay test-save-game test-debug-start test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test-play-draw test-marge-lcd test-miss-counter
 
 # Use if alignment edits in .h seem "cached" (also close cupcake-sdl.exe before make).
 force-rebuild:

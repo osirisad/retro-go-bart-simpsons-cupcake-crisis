@@ -9,7 +9,10 @@ Standalone C port of the [RetroFab Acclaim SuperPlay simulation](https://itizso.
 ```bash
 make
 make run
+make test          # or: make test-all — 40+ unit tests
 ```
+
+**Dev shortcuts:** `run-pc.bat --start 1,1,9900` (jump near phase threshold); Alt+1…6 in play jumps phase (PC debug build).
 
 **Controls:** ←→↑↓ move, **Z** action, **X** select. See [docs/INPUT_MAPPING.md](docs/INPUT_MAPPING.md).
 
@@ -37,6 +40,7 @@ Details: [docs/HAR.md](docs/HAR.md).
 | [docs/SPRITES.md](docs/SPRITES.md) | Sprite atlas and UV mapping |
 | [docs/HAR.md](docs/HAR.md) | HAR contents and extraction |
 | [docs/HOST_WEB.md](docs/HOST_WEB.md) | Running the original in a browser |
+| [docs/PARITY_CHECKLIST.md](docs/PARITY_CHECKLIST.md) | Manual itch.io parity sign-off |
 | [SPRINT_BOARD.md](SPRINT_BOARD.md) | Development progress |
 
 ## Legal

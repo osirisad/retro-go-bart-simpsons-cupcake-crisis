@@ -5,6 +5,7 @@
 #   make -f Makefile.cupcake
 #
 # Copy assets to device:
+#   /home/odroid/cupcake/screen.jpg
 #   /home/odroid/cupcake/sprites-color.png
 #   /home/odroid/cupcake/sprites.png
 #   /home/odroid/cupcake/audio/*.wav  (make extract-audio in port tree)
