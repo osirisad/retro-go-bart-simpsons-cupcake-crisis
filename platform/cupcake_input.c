@@ -25,6 +25,8 @@ void cupcake_input_from_sdl_keyboard(const uint8_t *keys, uint16_t *buttons)
         b |= CUPCAKE_BTN_LEVEL1;
     if (keys[SDL_SCANCODE_2])
         b |= CUPCAKE_BTN_LEVEL2;
+    if (keys[SDL_SCANCODE_F6])
+        b |= CUPCAKE_BTN_SOUND;
 
     *buttons = b;
 }
@@ -47,16 +49,15 @@ void cupcake_input_from_odroid(const odroid_gamepad_state_t *pad, uint16_t *butt
         b |= CUPCAKE_BTN_UP;
     if (pad->values[ODROID_INPUT_DOWN])
         b |= CUPCAKE_BTN_DOWN;
-    /* G&W A = Action (matches celeste bit 4 on device). */
-    if (pad->values[ODROID_INPUT_A])
+    /* G&W A + GAME = Action / Start (itch.io btnAction). */
+    if (pad->values[ODROID_INPUT_A] || pad->values[ODROID_INPUT_START])
         b |= CUPCAKE_BTN_ACTION;
-    /* G&W B = Select / mode. */
-    if (pad->values[ODROID_INPUT_B])
+    /* G&W B + TIME = Select — cycle demo level 0→1→2→0 (btnSelect). */
+    if (pad->values[ODROID_INPUT_B] || pad->values[ODROID_INPUT_SELECT])
         b |= CUPCAKE_BTN_SELECT;
-    if (pad->values[ODROID_INPUT_START])
-        b |= CUPCAKE_BTN_LEVEL1;
-    if (pad->values[ODROID_INPUT_X])
-        b |= CUPCAKE_BTN_LEVEL2;
+    /* G&W PAUSE = Sound on/off (btnSound). */
+    if (pad->values[ODROID_INPUT_VOLUME])
+        b |= CUPCAKE_BTN_SOUND;
 
     *buttons = b;
 }

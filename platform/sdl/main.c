@@ -222,6 +222,10 @@ static int cupcake_cb_wrap(cupcake_cb_type_t type, const char *str_arg, int int_
             host_audio_play(str_arg);
         }
         return 0;
+    case CUPCAKE_CB_SOUND_TOGGLE:
+        host_audio_toggle_mute();
+        fprintf(stderr, "Sound %s\n", host_audio_is_muted() ? "off" : "on");
+        return 0;
     default:
         return 0;
     }
@@ -459,7 +463,7 @@ int main(int argc, char **argv)
             "  Atlas: %s | Demo: demo.model attract (~4 fps)\n"
             "  Click the game window first, then keys below.\n"
             "  X / Select = cycle level (demo) | Z / Action = start / CON continue\n"
-            "  1 / Level1, 2 / Level2 = quick start that level\n"
+            "  F6 / Sound = mute toggle (release) | 1 / 2 = quick start (PC dev keys)\n"
             "  Arrows / WASD = move (play, when enabled)\n"
             "  --pin = pin all sprites in assets/lcd_tune.txt (demo frozen)\n"
             "  --pin marge1 = pin one sprite; --pin off to clear\n"

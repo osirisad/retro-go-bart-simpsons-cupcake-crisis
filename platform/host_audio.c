@@ -9,6 +9,8 @@
 #include <string.h>
 #include <stdint.h>
 
+static int g_muted;
+
 #if defined(CUPCAKE_AUDIO_ODROID) && !defined(LINUX_EMU)
 
 #include "odroid_audio.h"
@@ -241,6 +243,9 @@ int host_audio_play(const char *sfx_id)
     if (!sfx_id || !sfx_id[0] || !g_ready)
         return -1;
 
+    if (g_muted && strcmp(sfx_id, "stop") != 0)
+        return 0;
+
     if (strcmp(sfx_id, "stop") == 0) {
         stop_voices();
         return 0;
@@ -399,6 +404,9 @@ int host_audio_play(const char *sfx_id)
     if (!g_ready)
         return -1;
 
+    if (g_muted && strcmp(sfx_id, "stop") != 0)
+        return 0;
+
     if (strcmp(sfx_id, "stop") == 0) {
         Mix_HaltChannel(-1);
         return 0;
@@ -435,3 +443,15 @@ void host_audio_pump(int frame_count)
 }
 
 #endif
+
+void host_audio_toggle_mute(void)
+{
+    g_muted = !g_muted;
+    if (g_muted)
+        host_audio_play("stop");
+}
+
+int host_audio_is_muted(void)
+{
+    return g_muted;
+}

@@ -36,6 +36,8 @@ typedef enum {
 
     CUPCAKE_BTN_LEVEL2 = 1 << 7,
 
+    CUPCAKE_BTN_SOUND = 1 << 8,
+
 } cupcake_btn_t;
 
 typedef enum {
@@ -63,6 +65,8 @@ typedef enum {
 
     CUPCAKE_CB_SFX,     /* (const char *id) */
 
+    CUPCAKE_CB_SOUND_TOGGLE, /* JS onRelease Sound — host toggles mute */
+
 } cupcake_cb_type_t;
 
 
@@ -78,6 +82,8 @@ typedef enum {
  *   CUPCAKE_CB_BTN    str=NULL, int0=button_index
 
  *   CUPCAKE_CB_SFX    str=sfx_id
+
+ *   CUPCAKE_CB_SOUND_TOGGLE  str=NULL (on button release)
 
  */
 

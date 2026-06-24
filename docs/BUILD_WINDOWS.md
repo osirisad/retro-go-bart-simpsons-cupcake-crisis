@@ -73,9 +73,10 @@ The game needs `assets\screen.jpg` and `assets\sprites-color.png` (already in yo
 | Key | Action |
 |-----|--------|
 | Arrow keys / WASD | Move |
-| Z | Action |
-| X | Select |
-| 1 / 2 | Quick start level 1 / 2 |
+| Z | Action / Start |
+| X | Select — cycle level in attract (0 → L-1 → L-2 → attract) |
+| F6 | Sound on/off (release) |
+| 1 / 2 | Quick start level 1 / 2 (PC dev shortcuts) |
 | Esc | Quit |
 | F3 / F4 | Save / load `cupcake.sav` |
 

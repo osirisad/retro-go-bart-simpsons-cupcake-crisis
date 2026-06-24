@@ -18,7 +18,8 @@ See **`docs/INPUT_MAPPING.md`** for the full G&W / retro-go / SDL bit layout.
 - **Move** (L/R/U/D): `bart.move(direction)` when `enabled`
 - **Action**: If scoreboard shows `CON` → `onStart(phase)`; else in demo with level set → `onStart(1)`; else in play → `bart.action()` (throw toward Marge)
 - **Select**: In demo cycles `level` 0→1→2→0; at level 0 returns to demo; after over sets `CON`
-- **Level1 / Level2**: Quick start that level
+- **Sound** (button release): toggles handheld mute (`onRelease` in JS parent device)
+- **Level1 / Level2**: Browser/PC quick-start shortcuts only — on G&W use Select to pick L-1/L-2
 
 ## Level vs phase (easy to confuse)
 

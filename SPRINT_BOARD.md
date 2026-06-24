@@ -39,7 +39,7 @@ Gap analysis comparing the original JavaScript game (`assets/build.js`, logic sl
 | 10 | Sprites & play renderer | TASK-61, TASK-37, TASK-45, TASK-46, TASK-50 |
 | 11 | Audio | TASK-38, TASK-39, TASK-40, TASK-41 |
 | 12 | Platform, QA & ship | TASK-42, TASK-43, TASK-44, TASK-51, TASK-59, TASK-60 |
-| 13 | Bug fixes & parity polish | TASK-62 |
+| 13 | Bug fixes & parity polish | TASK-62, TASK-63 |
 
 ## Sprint 1 — Core infrastructure
 
@@ -1095,6 +1095,7 @@ Post-ship parity fixes found during manual playtesting.
 | Task | Title | Status |
 |------|-------|--------|
 | TASK-62 | Phase 2 must not start until phase music ends | [Done - Sprint 13] |
+| TASK-63 | G&W button map: Select level cycle + Sound mute | [Done - Sprint 13] |
 
 ---
 
@@ -1111,6 +1112,20 @@ Post-ship parity fixes found during manual playtesting.
     Work Summary: Split phase-complete end from immediate `onPhaseRestart`: `tmr_phase_complete_end` schedules 0.75s interstitial before `onPhaseStart` + resume. `onPhaseStart` leaves `enabled=0` until `cupcake_resume()` (start intro and debug start call resume; phase-complete path resumes in `sched_phase_restart_finish`). Removed extra `maggie_step` from `onPhaseStart`. `tmr_game_ot` guards on `cupcake_phase_celebration_active()`. Phase restart matches JS: `onPhaseStart` + `pause` immediately when music ends, then 0.75s before `resume` (Bart cannot move during interstitial). `make test-phase-complete` includes `test_no_game_ticks_during_phase_music`.
 
     Feedback/Notes: Manual verify: `run-pc.bat --start 1,1,9900`, score to 10k, confirm Maggie idle during phase music.
+
+---
+
+[TASK-63] G&W button map: Select level cycle + Sound mute
+
+    Type: Bug
+
+    Status: [Done - Sprint 13]
+
+    Acceptance Criteria: retro-go device maps physical G&W buttons per Acclaim Superplay: D-pad move/sit, A/GAME=Action, B/TIME=Select (level cycle 0→L-1→L-2→attract), PAUSE=Sound on/off (release). PC SDL keeps X/Z/F6 parity. No START/X quick-start on device (use Select).
+
+    Work Summary: Added `CUPCAKE_BTN_SOUND` + `CUPCAKE_CB_SOUND_TOGGLE` (`onRelease` parity). `host_audio_toggle_mute()` / `host_audio_is_muted()`. Fixed `cupcake_input_from_odroid()`: removed START/X→Level1/2; map TIME+PAUSE. Updated `docs/INPUT_MAPPING.md` with attract level-select flow. `make test-input`.
+
+    Feedback/Notes:
 
 ---
 

@@ -372,6 +372,12 @@ static int btn_pressed(int index)
     return (g_buttons & mask) && !(g_buttons_prev & mask);
 }
 
+static int btn_released(int index)
+{
+    unsigned mask = 1u << index;
+    return !(g_buttons & mask) && (g_buttons_prev & mask);
+}
+
 /* JS: move + game OT run only in play with enabled true (pause clears enabled). */
 static int cupcake_play_active(void)
 {
@@ -1442,7 +1448,7 @@ static void cupcake_on_action(void)
         return;
     }
     if (p->mode == CUPCAKE_MODE_DEMO && p->level == 0) {
-        fprintf(stderr, "Press X/Select for level, Z/Action to start, or 1/2 quick start\n");
+        fprintf(stderr, "Press Select (X) to cycle level, Action (Z) to start\n");
         return;
     }
     if (cupcake_play_active()) {
@@ -1469,6 +1475,8 @@ static void cupcake_handle_input(void)
         cupcake_on_quick_start(1);
     if (btn_pressed(7))
         cupcake_on_quick_start(2);
+    if (btn_released(8) && g_cb)
+        g_cb(CUPCAKE_CB_SOUND_TOGGLE, NULL, 0, 0);
 }
 
 static void cupcake_on_phase_start(int game_timer_start_tick)

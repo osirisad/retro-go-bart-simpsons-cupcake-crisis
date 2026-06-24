@@ -6,6 +6,17 @@
 #include <stdio.h>
 
 static int g_fail;
+static int g_sound_toggles;
+
+static int test_cb(cupcake_cb_type_t type, const char *str, int a0, int a1)
+{
+    (void)str;
+    (void)a0;
+    (void)a1;
+    if (type == CUPCAKE_CB_SOUND_TOGGLE)
+        g_sound_toggles++;
+    return 0;
+}
 
 static void fail(const char *msg)
 {
@@ -82,6 +93,23 @@ static void test_move_only_when_enabled(void)
         fail("move: right when enabled");
 }
 
+static void test_sound_toggle_on_release(void)
+{
+    cupcake_set_callback(test_cb);
+    cupcake_init();
+    g_sound_toggles = 0;
+
+    cupcake_set_buttons(CUPCAKE_BTN_SOUND);
+    cupcake_update();
+    if (g_sound_toggles != 0)
+        fail("sound: no toggle on press");
+
+    cupcake_set_buttons(0);
+    cupcake_update();
+    if (g_sound_toggles != 1)
+        fail("sound: toggle on release");
+}
+
 static void test_action_con_in_demo(void)
 {
     cupcake_init();
@@ -102,6 +130,7 @@ int main(void)
     test_select_level_cycle();
     test_quick_start();
     test_move_only_when_enabled();
+    test_sound_toggle_on_release();
     test_action_con_in_demo();
 
     if (g_fail)

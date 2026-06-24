@@ -18,7 +18,7 @@ Output: `build-pc/cupcake-sdl` (or `cupcake-sdl.exe` on Windows).
 
 Set `CUPCAKE_ASSETS=assets` if you run the binary from another working directory.
 
-**Controls:** Arrow keys, **Z** = Action, **X** = Select, **Esc** = quit, **F3/F4** = save/load state. Full mapping: [INPUT_MAPPING.md](INPUT_MAPPING.md).
+**Controls:** Arrow keys, **Z** = Action, **X** = Select (cycle level), **F6** = Sound, **Esc** = quit, **F3/F4** = save/load state. Full mapping: [INPUT_MAPPING.md](INPUT_MAPPING.md).
 
 ### Unit tests
 

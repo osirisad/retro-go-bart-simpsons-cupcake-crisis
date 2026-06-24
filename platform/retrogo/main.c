@@ -85,6 +85,9 @@ static int cupcake_cb_wrap(cupcake_cb_type_t type, const char *str_arg, int int_
         if (str_arg)
             host_audio_play(str_arg);
         return 0;
+    case CUPCAKE_CB_SOUND_TOGGLE:
+        host_audio_toggle_mute();
+        return 0;
     default:
         return 0;
     }
