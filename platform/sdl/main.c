@@ -41,6 +41,23 @@ static const char *pin_sprite_arg;
 static int pin_tune_file_arg;
 static int pin_solo_arg;
 
+static int parse_debug_start_spec(const char *spec)
+{
+    int level = 0;
+    int phase = 0;
+    unsigned score = 0;
+    char sep = '\0';
+
+    if (!spec || !spec[0])
+        return 0;
+    if (sscanf(spec, "%d%c%d%c%u", &level, &sep, &phase, &sep, &score) != 5)
+        return 0;
+    if (sep != ',' && sep != ':')
+        return 0;
+    cupcake_set_debug_start(level, phase, (uint32_t)score);
+    return 1;
+}
+
 static void parse_args(int argc, char **argv)
 {
     const char *env = getenv("CUPCAKE_WINDOW_SCALE");
@@ -77,12 +94,25 @@ static void parse_args(int argc, char **argv)
             win_scale = (float)atof(argv[++i]);
         else if (strncmp(argv[i], "--scale=", 8) == 0)
             win_scale = (float)atof(argv[i] + 8);
+        else if (!strcmp(argv[i], "--start") && i + 1 < argc) {
+            if (!parse_debug_start_spec(argv[++i]))
+                fprintf(stderr, "Warning: --start needs LEVEL,PHASE,SCORE (e.g. 1,1,9900)\n");
+        } else if (strncmp(argv[i], "--start=", 8) == 0) {
+            if (!parse_debug_start_spec(argv[i] + 8))
+                fprintf(stderr, "Warning: --start= needs LEVEL,PHASE,SCORE (e.g. 1,1,9900)\n");
+        }
     }
 
     if (win_scale < 0.2f)
         win_scale = 0.2f;
     if (win_scale > 2.0f)
         win_scale = 2.0f;
+
+    if (!cupcake_debug_start_pending()) {
+        const char *env_start = getenv("CUPCAKE_DEBUG_START");
+        if (env_start && env_start[0] && !parse_debug_start_spec(env_start))
+            fprintf(stderr, "Warning: CUPCAKE_DEBUG_START needs LEVEL,PHASE,SCORE\n");
+    }
 
     /* Alignment: show full 1024x800 sprite buffer bounds on the bezel. */
     if (pin_tune_file_arg || (pin_sprite_arg && pin_sprite_arg[0]))
@@ -406,6 +436,9 @@ int main(int argc, char **argv)
     if (pin_solo_arg)
         cupcake_set_debug_pin_solo(1);
 
+    if (cupcake_debug_start_pending())
+        cupcake_apply_debug_start();
+
     if (pin_tune_file_arg) {
         fprintf(stderr, "LCD alignment (edit assets/lcd_tune.txt — no rebuild):\n");
         cupcake_log_sprite_lcd(NULL);
@@ -427,7 +460,9 @@ int main(int argc, char **argv)
             "  --align = --pin --pin-solo + green LCD border (edit assets/lcd_tune.txt)\n"
             "  Start play (Action) to preview catches with tune coords; pin sheet is demo-only.\n"
             "  --lcd-border = green outline of 1024x800 sprite buffer (auto with --pin)\n"
-            "  --debug = lcd border + sprite stderr log\n\n",
+            "  --debug = lcd border + sprite stderr log\n"
+            "  --start LEVEL,PHASE,SCORE = skip attract; jump to play (e.g. 1,1,9900)\n"
+            "  CUPCAKE_DEBUG_START=1,1,9900 same as --start\n\n",
             atlas_file_loaded);
 
     while (run_loop) {

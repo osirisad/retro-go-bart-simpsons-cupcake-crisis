@@ -20,11 +20,22 @@ See **`docs/INPUT_MAPPING.md`** for the full G&W / retro-go / SDL bit layout.
 - **Select**: In demo cycles `level` 0→1→2→0; at level 0 returns to demo; after over sets `CON`
 - **Level1 / Level2**: Quick start that level
 
+## Level vs phase (easy to confuse)
+
+The scoreboard has **one** text slot (`L-N` or `P-N`); setting phase overwrites level.
+
+| Term | Meaning | When set |
+|------|---------|----------|
+| **Level** 1 or 2 | Difficulty preset (Beginner / Advanced) — speed tables | Demo Select, quick-start keys, start intro (`onStart(phase, true)`) |
+| **Phase** 1–6 | In-run progression within a single game | After first phase complete, CON continue, start intro without level |
+
+**Itch.io “level 1 done → music → level 2”** is almost always **phase 1 → phase 2**: at 10,000 points `onPhaseComplete` plays `phase.mp3` (~4s), then `onPhaseRestart` resumes play at the next phase automatically — no button press. Difficulty **Level 2** (Advanced) is only chosen before a run (Select / key `2`); JS never bumps `level` from 1→2 mid-game.
+
 ## Phases & scoring
 
 - Phases 1–6 per run; `phasethreshold` default **10000** points per phase (cheat/debug uses 1000).
 - `addPoints(n)` updates score; when `points >= phase * phasethreshold` → `onPhaseComplete`.
-- Phase complete: pause, play `phase` sound, increment phase, maybe reduce miss count, `onPhaseRestart`.
+- Phase complete: pause, play `phase` sound (~4s), increment phase, maybe reduce miss count, `onPhaseRestart` (0.75s pause, then auto-resume — no button press).
 
 ## Level speed (timer `game` rate)
 

@@ -176,6 +176,14 @@ test-quick-start: $(TEST_QUICK_START)
 $(TEST_QUICK_START): test/cupcake_quick_start_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
 	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
 
+TEST_DEBUG_START = $(TEST_BUILD)/cupcake_debug_start_test$(EXE)
+
+test-debug-start: $(TEST_DEBUG_START)
+	$(TEST_DEBUG_START)
+
+$(TEST_DEBUG_START): test/cupcake_debug_start_test.c $(CORE_GAME_SRCS) | $(TEST_BUILD)
+	$(CC) $(CFLAGS) -Itest -Isrc $^ -o $@ $(LDFLAGS)
+
 TEST_ENABLED = $(TEST_BUILD)/cupcake_enabled_test$(EXE)
 
 test-enabled: $(TEST_ENABLED)

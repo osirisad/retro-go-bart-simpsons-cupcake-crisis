@@ -34,6 +34,15 @@ typedef struct {
 
 static cupcake_start_ctx_t g_start_ctx;
 
+typedef struct {
+    int pending;
+    int level;
+    int phase;
+    uint32_t points;
+} cupcake_debug_start_cfg_t;
+
+static cupcake_debug_start_cfg_t g_debug_start;
+
 static int g_miss_cupcake_lane;
 
 static void cupcake_on_phase_start(int game_timer_start_tick);
@@ -901,20 +910,17 @@ static void sched_phase_restart_resume(void *ctx, int tick)
 void cupcake_on_phase_restart(void)
 {
     cupcake_play_state_t *p = &g.play;
-    cupcake_timer_config_t cfg;
 
-    /* JS onPhaseRestart ordering. */
+    /* JS onPhaseRestart ordering. scoreboard.phase overwrites level text (single slot). */
+    cupcake_scoreboard_set_level(p, 0);
     cupcake_scoreboard_set_phase(p, (int)p->phase);
     cupcake_timers_stop(&g_timers);
     cupcake_on_phase_start(1);
     cupcake_pause();
     host_sfx("stop");
 
-    memset(&cfg, 0, sizeof cfg);
-    cfg.delay_sec = 0.75f;
-    cfg.max_ticks = 1;
-    cfg.on_start = sched_phase_restart_resume;
-    cupcake_timer_start(&g_timers, CUPCAKE_TMR_PHASE, &cfg);
+    if (cupcake_timers_schedule(&g_timers, 0.75f, sched_phase_restart_resume, NULL) < 0)
+        sched_phase_restart_resume(NULL, 0);
 }
 
 static void tmr_sit_bonus_on_start(void *ctx, int tick)
@@ -1294,6 +1300,61 @@ void cupcake_on_move(cupcake_move_t dir)
     cupcake_bart_move(p, dir);
 }
 
+void cupcake_set_debug_start(int level, int phase, uint32_t points)
+{
+    if (level < 1)
+        level = 1;
+    if (level > CUPCAKE_LEVEL_MAX)
+        level = CUPCAKE_LEVEL_MAX;
+    if (phase < 1)
+        phase = 1;
+    if (phase > CUPCAKE_PHASE_MAX)
+        phase = CUPCAKE_PHASE_MAX;
+
+    g_debug_start.pending = 1;
+    g_debug_start.level = level;
+    g_debug_start.phase = phase;
+    g_debug_start.points = points;
+}
+
+int cupcake_debug_start_pending(void)
+{
+    return g_debug_start.pending;
+}
+
+void cupcake_apply_debug_start(void)
+{
+    cupcake_play_state_t *p = &g.play;
+    int level;
+    int phase;
+    uint32_t points;
+
+    if (!g_debug_start.pending)
+        return;
+
+    level = g_debug_start.level;
+    phase = g_debug_start.phase;
+    points = g_debug_start.points;
+    g_debug_start.pending = 0;
+
+    cupcake_stop();
+    p->level = (uint8_t)level;
+    p->phase = (uint8_t)phase;
+    p->points = points;
+    p->scoreboard.score = points;
+    p->scoreboard.value = points;
+    p->scoreboard.show_con = 0;
+    cupcake_scoreboard_set_level(p, 0);
+    cupcake_scoreboard_set_phase(p, phase);
+    cupcake_set_threshold(10000);
+    host_sfx("stop");
+    cupcake_on_phase_start(1);
+    host_on_score_change();
+
+    fprintf(stderr, "Debug start: level %d phase %d score %u (target %u)\n", level, phase,
+            (unsigned)points, (unsigned)cupcake_phase_score_target(p));
+}
+
 void cupcake_on_quick_start(int level)
 {
     cupcake_play_state_t *p = &g.play;
@@ -1470,12 +1531,8 @@ static void cupcake_timers_restore(void)
 
     t = &g_timers.named[CUPCAKE_TMR_PHASE];
     if (t->active) {
-        if (t->cfg.delay_sec >= 0.74f && t->cfg.delay_sec <= 0.76f) {
-            t->cfg.on_start = sched_phase_restart_resume;
-        } else {
-            t->cfg.on_start = tmr_phase_complete_start;
-            t->cfg.on_end = tmr_phase_complete_end;
-        }
+        t->cfg.on_start = tmr_phase_complete_start;
+        t->cfg.on_end = tmr_phase_complete_end;
     }
 
     t = &g_timers.named[CUPCAKE_TMR_ACTION];
@@ -1506,6 +1563,8 @@ static void cupcake_timers_restore(void)
             s->cfg.on_start = sched_on_m;
         else if (s->cfg.rate_sec >= 1.99f && s->cfg.rate_sec <= 2.01f)
             s->cfg.on_start = sched_on_m;
+        else if (s->cfg.rate_sec >= 0.74f && s->cfg.rate_sec <= 0.76f)
+            s->cfg.on_start = sched_phase_restart_resume;
     }
 
     if (g.play.mode == CUPCAKE_MODE_PLAY && !g.play.enabled &&
@@ -1611,7 +1670,7 @@ void cupcake_init(void)
         cupcake_scoreboard_set_host(&host);
     }
     cupcake_set_threshold(10000);
-    /* debug_pin_* is host tuning state — do not clear here (--pin may be set before init). */
+    /* debug_pin_* / g_debug_start are host tuning state — do not clear here. */
 #ifdef CUPCAKE_DEBUG_PIN_SPRITE_STR
     if (!debug_pin_name[0])
         cupcake_set_debug_pin(CUPCAKE_DEBUG_PIN_SPRITE_STR, 1);

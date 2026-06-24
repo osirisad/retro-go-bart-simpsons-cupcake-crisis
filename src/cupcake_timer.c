@@ -62,9 +62,11 @@ static void timer_begin(cupcake_timers_t *tm, cupcake_timer_t *t, const cupcake_
     t->active = 1;
     if (rate_override > 0.f)
         t->rate_override = rate_override;
-    if (cfg->delay_sec > 0.f)
+    if (cfg->delay_sec > 0.f) {
         t->delay_remaining = cfg->delay_sec;
-    else {
+        if (g_timer_update_depth > 0)
+            t->skip_dt_once = 1;
+    } else {
         timer_fire(tm, t);
         if (g_timer_update_depth > 0)
             t->skip_dt_once = 1;

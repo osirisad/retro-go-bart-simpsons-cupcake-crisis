@@ -142,6 +142,31 @@ static void test_con_continue_preserves_phase_on_scoreboard(void)
         fail("CON continue: scoreboard shows resumed phase");
 }
 
+static void test_quick_start_phase_complete_clears_level_overlay(void)
+{
+    cupcake_play_state_t *p;
+    cupcake_timers_t *tm;
+
+    cupcake_init();
+    p = cupcake_play_state();
+    tm = cupcake_timers();
+    p->level = 1;
+    cupcake_on_start(1, 1);
+    cupcake_timers_update(tm, 3.16f);
+    cupcake_timers_update(tm, 3.16f);
+    if (p->scoreboard.level != 1)
+        fail("quick start: L-1 shown during intro/play");
+
+    p->phase = 1;
+    cupcake_set_threshold(1000);
+    cupcake_add_points(1000);
+    cupcake_timers_update(tm, 4.f);
+    if (p->scoreboard.level != 0)
+        fail("phase restart: level overlay cleared for P-N");
+    if (p->scoreboard.phase != 2)
+        fail("phase restart: scoreboard shows next phase");
+}
+
 int main(void)
 {
     test_start_intro_sets_scoreboard_phase();
@@ -150,6 +175,7 @@ int main(void)
     test_phase_complete_updates_scoreboard_phase();
     test_set_phase_clamps();
     test_con_continue_preserves_phase_on_scoreboard();
+    test_quick_start_phase_complete_clears_level_overlay();
 
     if (g_fail)
         return 1;

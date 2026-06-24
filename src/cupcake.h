@@ -205,6 +205,16 @@ void cupcake_pacifier_on_loop3(cupcake_play_state_t *p);
 /* JS onQuickStart(Level1|Level2): stop sim, set level, onStart(1, true). */
 void cupcake_on_quick_start(int level);
 
+/*
+ * PC/dev: skip attract + start intro and enter play at level/phase/points.
+ * Call cupcake_set_debug_start() before cupcake_init(), then cupcake_apply_debug_start()
+ * after init (and audio). Points is run score (not hi-score). If points already meets the
+ * current phase threshold, phase-complete runs immediately.
+ */
+void cupcake_set_debug_start(int level, int phase, uint32_t points);
+void cupcake_apply_debug_start(void);
+int cupcake_debug_start_pending(void);
+
 
 
 #ifdef __cplusplus
