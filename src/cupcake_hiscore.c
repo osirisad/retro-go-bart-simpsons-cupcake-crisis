@@ -83,13 +83,25 @@ static const char *hiscore_path(void)
     return g_path;
 }
 
+uint32_t cupcake_hiscore_attract(const cupcake_play_state_t *play)
+{
+    uint32_t a;
+    uint32_t b;
+
+    if (!play)
+        return 0;
+    a = play->scoreboard.hi_score[1];
+    b = play->scoreboard.hi_score[2];
+    return a > b ? a : b;
+}
+
 static void apply_to_play(cupcake_play_state_t *play)
 {
     if (!play)
         return;
     memcpy(play->scoreboard.hi_score, g_hiscores, sizeof g_hiscores);
     if (play->mode == CUPCAKE_MODE_DEMO && play->level == 0)
-        play->scoreboard.value = play->scoreboard.hi_score[0];
+        play->scoreboard.value = cupcake_hiscore_attract(play);
 }
 
 void cupcake_hiscore_sync_from_play(const cupcake_play_state_t *play)

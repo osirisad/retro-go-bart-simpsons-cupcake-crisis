@@ -1112,7 +1112,7 @@ Post-ship parity fixes found during manual playtesting.
 
     Work Summary: Split phase-complete end from immediate `onPhaseRestart`: `tmr_phase_complete_end` schedules 0.75s interstitial before `onPhaseStart` + resume. `onPhaseStart` leaves `enabled=0` until `cupcake_resume()` (start intro and debug start call resume; phase-complete path resumes in `sched_phase_restart_finish`). Removed extra `maggie_step` from `onPhaseStart`. `tmr_game_ot` guards on `cupcake_phase_celebration_active()`. Phase restart matches JS: `onPhaseStart` + `pause` immediately when music ends, then 0.75s before `resume` (Bart cannot move during interstitial). `make test-phase-complete` includes `test_no_game_ticks_during_phase_music`.
 
-    Feedback/Notes: Manual verify: `run-pc.bat --start 1,1,9900`, score to 10k, confirm Maggie idle during phase music.
+    Feedback/Notes: Manual verify: `run-pc.bat --start 1,1,9900`, score to 10k, confirm Maggie idle during phase music. Regression fix: `cupcake_resume()` now refuses to re-enable during phase music / P-N interstitial; `on_phase_complete` stops bonus/miss/action timers whose `on_end` paths were calling `resume()` early.
 
 ---
 

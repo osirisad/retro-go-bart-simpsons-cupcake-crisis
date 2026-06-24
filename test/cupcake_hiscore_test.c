@@ -91,21 +91,35 @@ static void test_on_score_change_beats_and_persists(void)
         fail("onScoreChange: persisted to disk");
 }
 
+static void test_hiscore_attract_max_level_scores(void)
+{
+    cupcake_play_state_t play;
+
+    memset(&play, 0, sizeof play);
+    play.scoreboard.hi_score[1] = 1200;
+    play.scoreboard.hi_score[2] = 3400;
+    if (cupcake_hiscore_attract(&play) != 3400u)
+        fail("attract: max of level 1 and 2");
+    play.scoreboard.hi_score[2] = 800;
+    if (cupcake_hiscore_attract(&play) != 1200u)
+        fail("attract: level 1 can be higher");
+}
+
 static void test_init_loads_hiscores(void)
 {
     cupcake_play_state_t play;
 
     use_test_path();
     memset(&play, 0, sizeof play);
-    play.scoreboard.hi_score[0] = 4242;
+    play.scoreboard.hi_score[1] = 4242;
     cupcake_hiscore_sync_from_play(&play);
     cupcake_hiscore_save();
 
     cupcake_init();
-    if (cupcake_play_state()->scoreboard.hi_score[0] != 4242u)
+    if (cupcake_play_state()->scoreboard.hi_score[1] != 4242u)
         fail("init: loads hi-score from file");
     if (cupcake_get_state()->play.scoreboard.value != 4242u)
-        fail("init: demo value from hi-score[0]");
+        fail("init: demo value from attract hi-score");
 }
 
 static void test_add_points_triggers_hiscore(void)
@@ -129,6 +143,7 @@ int main(void)
 {
     test_save_load_roundtrip();
     test_on_score_change_beats_and_persists();
+    test_hiscore_attract_max_level_scores();
     test_init_loads_hiscores();
     test_add_points_triggers_hiscore();
 

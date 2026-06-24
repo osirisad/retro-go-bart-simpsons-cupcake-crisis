@@ -26,6 +26,9 @@ void cupcake_hiscore_on_score_change(cupcake_play_state_t *play);
 /* Copy play hi_score[] into persistence buffer (after load_state, etc.). */
 void cupcake_hiscore_sync_from_play(const cupcake_play_state_t *play);
 
+/* JS scoreboard.hiscore: max of level 1 and level 2 persisted scores. */
+uint32_t cupcake_hiscore_attract(const cupcake_play_state_t *play);
+
 #ifdef __cplusplus
 }
 #endif

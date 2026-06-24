@@ -44,6 +44,7 @@ typedef struct {
 static cupcake_debug_start_cfg_t g_debug_start;
 
 static int g_miss_cupcake_lane;
+static int g_pending_phase_restart_finish;
 
 static void cupcake_on_phase_start(int game_timer_start_tick);
 static void cupcake_timers_restore(void);
@@ -71,6 +72,7 @@ static void tmr_bart_action_on_end(void *ctx, int tick);
 static void sched_on_m(void *ctx, int tick);
 static void sched_phase_restart_finish(void *ctx, int tick);
 static void cupcake_phase_restart_play(void);
+static void cupcake_run_deferred_work(void);
 static void sched_maggie_index_reset(void *ctx, int tick);
 static void sched_marge_start_after_delivery(void *ctx, int tick);
 static void cupcake_game_timer_start(int start_tick);
@@ -379,16 +381,30 @@ static int btn_released(int index)
 }
 
 /* JS: move + game OT run only in play with enabled true (pause clears enabled). */
+static int cupcake_phase_celebration_active(void)
+{
+    return cupcake_timer_active(&g_timers, CUPCAKE_TMR_PHASE) ? 1 : 0;
+}
+
+/* Block move/action during phase music, P-N interstitial, and start intro. */
+static int cupcake_phase_transition_locked(void)
+{
+    const cupcake_play_state_t *p = &g.play;
+
+    if (p->mode == CUPCAKE_MODE_START)
+        return 1;
+    if (cupcake_phase_celebration_active())
+        return 1;
+    if (p->mode == CUPCAKE_MODE_PLAY && p->scoreboard.disp == CUPCAKE_SB_DISP_PHASE)
+        return 1;
+    return 0;
+}
+
 static int cupcake_play_active(void)
 {
     const cupcake_play_state_t *p = &g.play;
 
-    return p->mode == CUPCAKE_MODE_PLAY && p->enabled;
-}
-
-static int cupcake_phase_celebration_active(void)
-{
-    return cupcake_timer_active(&g_timers, CUPCAKE_TMR_PHASE) ? 1 : 0;
+    return p->mode == CUPCAKE_MODE_PLAY && p->enabled && !cupcake_phase_transition_locked();
 }
 
 static void cupcake_on_stop(void)
@@ -443,14 +459,17 @@ void cupcake_pause(void)
 
 void cupcake_resume(void)
 {
-    if (g.play.mode == CUPCAKE_MODE_PLAY &&
-        cupcake_timer_active(&g_timers, CUPCAKE_TMR_GAME))
+    cupcake_play_state_t *p = &g.play;
+
+    if (p->mode != CUPCAKE_MODE_PLAY)
+        return;
+    if (cupcake_phase_transition_locked())
+        return;
+    if (cupcake_timer_active(&g_timers, CUPCAKE_TMR_GAME))
         cupcake_timer_resume(&g_timers, CUPCAKE_TMR_GAME);
-    if (g.play.mode == CUPCAKE_MODE_PLAY &&
-        cupcake_timer_active(&g_timers, CUPCAKE_TMR_COUCH))
+    if (cupcake_timer_active(&g_timers, CUPCAKE_TMR_COUCH))
         cupcake_timer_resume(&g_timers, CUPCAKE_TMR_COUCH);
-    if (g.play.mode == CUPCAKE_MODE_PLAY)
-        g.play.enabled = 1;
+    p->enabled = 1;
 }
 
 int cupcake_is_paused(void)
@@ -892,11 +911,18 @@ static void tmr_phase_complete_end(void *ctx, int tick)
 void cupcake_on_phase_complete(void)
 {
     cupcake_timer_config_t cfg;
+    cupcake_play_state_t *p = &g.play;
 
-    if (g.play.mode != CUPCAKE_MODE_PLAY)
+    if (p->mode != CUPCAKE_MODE_PLAY)
         return;
     if (cupcake_timer_active(&g_timers, CUPCAKE_TMR_PHASE))
         return;
+
+    /* Stop bonus/miss/action timers — their on_end paths call resume(). */
+    cupcake_timer_stop(&g_timers, CUPCAKE_TMR_BONUS);
+    p->scoreboard.bonus_active = 0;
+    cupcake_timer_stop(&g_timers, CUPCAKE_TMR_MISS);
+    cupcake_timer_stop(&g_timers, CUPCAKE_TMR_ACTION);
 
     cupcake_pause();
     memset(&cfg, 0, sizeof cfg);
@@ -922,6 +948,12 @@ static void sched_phase_restart_finish(void *ctx, int tick)
     cupcake_resume();
 }
 
+static void cupcake_schedule_phase_restart_finish(void)
+{
+    if (cupcake_timers_schedule(&g_timers, 0.75f, sched_phase_restart_finish, NULL) < 0)
+        sched_phase_restart_finish(NULL, 0);
+}
+
 /* JS onPhaseRestart body: onPhaseStart → pause → 0.75s → resume. */
 static void cupcake_phase_restart_play(void)
 {
@@ -929,9 +961,22 @@ static void cupcake_phase_restart_play(void)
     cupcake_on_phase_start(0);
     cupcake_pause();
     host_sfx("stop");
+    /*
+     * Scheduling from sched_on_m reuses the active schedule slot and drops on_start.
+     * Defer to post-update when called reentrantly from a timer callback.
+     */
+    if (cupcake_timers_in_callback())
+        g_pending_phase_restart_finish = 1;
+    else
+        cupcake_schedule_phase_restart_finish();
+}
 
-    if (cupcake_timers_schedule(&g_timers, 0.75f, sched_phase_restart_finish, NULL) < 0)
-        sched_phase_restart_finish(NULL, 0);
+static void cupcake_run_deferred_work(void)
+{
+    if (!g_pending_phase_restart_finish)
+        return;
+    g_pending_phase_restart_finish = 0;
+    cupcake_schedule_phase_restart_finish();
 }
 
 void cupcake_on_phase_restart(void)
@@ -1107,7 +1152,7 @@ static void cupcake_on_demo(void)
     cupcake_stop();
     cupcake_play_state_start_demo(p);
     cupcake_scoreboard_set_level(p, 0);
-    cupcake_scoreboard_show_value(p, p->scoreboard.hi_score[0]);
+    cupcake_scoreboard_show_value(p, cupcake_hiscore_attract(p));
     g.demo_frame = 0;
     g.demo_tick = 0;
 }
@@ -1130,8 +1175,7 @@ static void cupcake_on_select(void)
         p->mode = CUPCAKE_MODE_DEMO;
         cupcake_scoreboard_set_level(p, (int)p->level);
     } else {
-        p->scoreboard.value = p->scoreboard.hi_score[0];
-        cupcake_scoreboard_show_value(p, p->scoreboard.hi_score[0]);
+        cupcake_scoreboard_show_value(p, cupcake_hiscore_attract(p));
         cupcake_on_demo();
     }
 }
@@ -1705,6 +1749,7 @@ void cupcake_init(void)
     cupcake_hiscore_load(&g.play);
     cupcake_play_state_start_demo(&g.play);
     cupcake_timers_init(&g_timers);
+    cupcake_timers_set_post_update(cupcake_run_deferred_work);
     cupcake_rng_init();
     g.rng_state = cupcake_rng_get_state();
     {
@@ -1736,7 +1781,7 @@ void cupcake_update(void)
             g.demo_tick = 0;
             g.demo_frame = (uint16_t)((g.demo_frame + 1) % CUPCAKE_DEMO_FRAME_COUNT);
         }
-        g.play.scoreboard.value = g.play.scoreboard.hi_score[0];
+        g.play.scoreboard.value = cupcake_hiscore_attract(&g.play);
     }
 
     cupcake_handle_input();

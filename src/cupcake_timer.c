@@ -6,6 +6,17 @@
 #include <string.h>
 
 static int g_timer_update_depth;
+static void (*g_timers_post_update)(void);
+
+int cupcake_timers_in_callback(void)
+{
+    return g_timer_update_depth > 0 ? 1 : 0;
+}
+
+void cupcake_timers_set_post_update(void (*fn)(void))
+{
+    g_timers_post_update = fn;
+}
 
 static int timer_paused(const cupcake_timers_t *tm, const cupcake_timer_t *t)
 {
@@ -128,6 +139,8 @@ void cupcake_timers_update(cupcake_timers_t *tm, float dt_sec)
     for (i = 0; i < CUPCAKE_TMR_SCHEDULE_MAX; i++)
         timer_update_one(tm, &tm->schedule[i], dt_sec);
     g_timer_update_depth--;
+    if (g_timer_update_depth == 0 && g_timers_post_update)
+        g_timers_post_update();
 }
 
 void cupcake_timer_start(cupcake_timers_t *tm, cupcake_timer_slot_t slot,

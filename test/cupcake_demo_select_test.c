@@ -2,6 +2,7 @@
  * TASK-09 demo Select level cycle — run: make test-demo-select
  */
 #include "cupcake.h"
+#include "cupcake_hiscore.h"
 #include "cupcake_scoreboard.h"
 
 #include <stdio.h>
@@ -68,7 +69,7 @@ static void test_select_cycle(void)
         fail("select: level 2 -> 0 restores attract");
     if (st->play.scoreboard.level != 0)
         fail("select: scoreboard.level cleared at attract");
-    if (st->play.scoreboard.value != st->play.scoreboard.hi_score[0])
+    if (st->play.scoreboard.value != cupcake_hiscore_attract(&st->play))
         fail("select: hi-score value restored at level 0");
 }
 

@@ -182,10 +182,33 @@ static void test_no_game_ticks_during_phase_music(void)
         fail("phase music: must stay paused");
 }
 
+static void test_bonus_end_does_not_resume_during_phase_music(void)
+{
+    cupcake_play_state_t *p;
+    cupcake_timers_t *tm;
+
+    setup_play();
+    p = cupcake_play_state();
+    tm = cupcake_timers();
+    cupcake_scoreboard_add_bonus(0.03f, 20, 100);
+    cupcake_on_phase_complete();
+
+    if (cupcake_timer_active(tm, CUPCAKE_TMR_BONUS))
+        fail("phase complete: bonus timer stopped");
+
+    cupcake_timers_update(tm, 1.f);
+    if (p->enabled)
+        fail("phase music: enabled must stay false");
+    cupcake_on_move(CUPCAKE_MOVE_RIGHT);
+    if (p->bart.pos != 2)
+        fail("phase music: move blocked");
+}
+
 int main(void)
 {
     test_phase_complete_pauses_and_runs_timer();
     test_no_game_ticks_during_phase_music();
+    test_bonus_end_does_not_resume_during_phase_music();
     test_phase_complete_end_increments_and_restarts();
     test_phase_complete_clamps_at_max();
     test_phase_restart_resets_entities();

@@ -2,6 +2,7 @@
  * TASK-22 Bart miss poses bart6/bart9 — run: make test-bart-miss
  */
 #include "cupcake.h"
+#include "cupcake_scoreboard.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -112,6 +113,8 @@ static void test_miss_resume_after_life_lost(void)
 
     if (p->miss.count != 1)
         fail("miss resume: one life lost");
+    if (p->scoreboard.disp != CUPCAKE_SB_DISP_SCORE)
+        fail("miss resume: scoreboard shows run score");
     if (cupcake_is_paused() || !p->enabled)
         fail("miss resume: gameplay resumed");
     if (!cupcake_timer_active(tm, CUPCAKE_TMR_GAME))

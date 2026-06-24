@@ -2,6 +2,7 @@
  * TASK-08 demo hi-score scoreboard — run: make test-demo-scoreboard
  */
 #include "cupcake.h"
+#include "cupcake_hiscore.h"
 #include "cupcake_scoreboard.h"
 #include "cupcake_state.h"
 
@@ -104,7 +105,8 @@ static void test_demo_state_on_init(void)
 
     cupcake_init();
     p = cupcake_play_state();
-    p->scoreboard.hi_score[0] = 555;
+    memset(p->scoreboard.hi_score, 0, sizeof p->scoreboard.hi_score);
+    p->scoreboard.hi_score[1] = 555;
     cupcake_play_state_start_demo(p);
 
     st = cupcake_get_state();
@@ -124,7 +126,8 @@ static void test_on_demo_restores_hiscore(void)
 
     cupcake_init();
     p = cupcake_play_state();
-    p->scoreboard.hi_score[0] = 9876;
+    memset(p->scoreboard.hi_score, 0, sizeof p->scoreboard.hi_score);
+    p->scoreboard.hi_score[2] = 9876;
     press_select();
     press_select();
     press_select();

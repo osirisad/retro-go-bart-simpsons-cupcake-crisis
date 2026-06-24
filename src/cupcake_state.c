@@ -3,6 +3,7 @@
  */
 #include "cupcake_state.h"
 #include "cupcake_scoreboard.h"
+#include "cupcake_hiscore.h"
 #include "cupcake_rng.h"
 
 #include <stdio.h>
@@ -175,7 +176,7 @@ void cupcake_play_state_start_demo(cupcake_play_state_t *p)
     p->scoreboard.show_con = 0;
     p->scoreboard.level = 0;
     p->scoreboard.disp = CUPCAKE_SB_DISP_VALUE;
-    p->scoreboard.value = p->scoreboard.hi_score[0];
+    p->scoreboard.value = cupcake_hiscore_attract(p);
 }
 
 void cupcake_play_state_start_phase(cupcake_play_state_t *p, int bart_lane)

@@ -68,6 +68,12 @@ void cupcake_timers_init(cupcake_timers_t *tm);
 /* Advance all active timers by dt_sec (call once per cupcake_update). */
 void cupcake_timers_update(cupcake_timers_t *tm, float dt_sec);
 
+/* True while a timer callback (on_start/on_tick/on_end) is running. */
+int cupcake_timers_in_callback(void);
+
+/* Optional hook after each top-level timers_update (deferred game work). */
+void cupcake_timers_set_post_update(void (*fn)(void));
+
 /*
  * Start (or restart) a named timer — mirrors new $G.Timer(opts).start().
  * Optional rate_override > 0 replaces cfg.rate_sec for this run (JS start(rate)).
