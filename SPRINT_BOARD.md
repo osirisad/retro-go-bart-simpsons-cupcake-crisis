@@ -39,6 +39,7 @@ Gap analysis comparing the original JavaScript game (`assets/build.js`, logic sl
 | 10 | Sprites & play renderer | TASK-61, TASK-37, TASK-45, TASK-46, TASK-50 |
 | 11 | Audio | TASK-38, TASK-39, TASK-40, TASK-41 |
 | 12 | Platform, QA & ship | TASK-42, TASK-43, TASK-44, TASK-51, TASK-59, TASK-60 |
+| 13 | Bug fixes & parity polish | TASK-62 |
 
 ## Sprint 1 — Core infrastructure
 
@@ -1084,6 +1085,32 @@ Save-state hardening, retro-go bezel, automated tests, cheats, browser parity si
     Work Summary: Added `docs/PARITY_CHECKLIST.md` with itch.io comparison checklist and sign-off table. Manual playthrough pending.
 
     Feedback/Notes:
+
+---
+
+## Sprint 13 — Bug fixes & parity polish
+
+Post-ship parity fixes found during manual playtesting.
+
+| Task | Title | Status |
+|------|-------|--------|
+| TASK-62 | Phase 2 must not start until phase music ends | [Done - Sprint 13] |
+
+---
+
+## Sprint 13
+
+[TASK-62] Phase 2 must not start until phase music ends
+
+    Type: Bug
+
+    Status: [Done - Sprint 13]
+
+    Acceptance Criteria: After reaching the phase score threshold, gameplay pauses for the ~4s phase SFX. Maggie and other entities must not advance during that music. Phase increments and entity reset happen only after the timer ends, then a 0.75s interstitial, then play resumes — matching itch.io.
+
+    Work Summary: Split phase-complete end from immediate `onPhaseRestart`: `tmr_phase_complete_end` schedules 0.75s interstitial before `onPhaseStart` + resume. `onPhaseStart` leaves `enabled=0` until `cupcake_resume()` (start intro and debug start call resume; phase-complete path resumes in `sched_phase_restart_finish`). Removed extra `maggie_step` from `onPhaseStart`. `tmr_game_ot` guards on `cupcake_phase_celebration_active()`. Phase restart matches JS: `onPhaseStart` + `pause` immediately when music ends, then 0.75s before `resume` (Bart cannot move during interstitial). `make test-phase-complete` includes `test_no_game_ticks_during_phase_music`.
+
+    Feedback/Notes: Manual verify: `run-pc.bat --start 1,1,9900`, score to 10k, confirm Maggie idle during phase music.
 
 ---
 

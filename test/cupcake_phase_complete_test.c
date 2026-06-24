@@ -86,6 +86,16 @@ static void test_phase_complete_end_increments_and_restarts(void)
         fail("phase restart: scoreboard phase updated");
     if (!cupcake_is_paused())
         fail("phase restart: paused during 0.75s interstitial");
+    if (!cupcake_timer_active(tm, CUPCAKE_TMR_GAME))
+        fail("phase restart: game timer started on phase reset");
+    if (!cupcake_timer_is_paused(tm, CUPCAKE_TMR_GAME))
+        fail("phase restart: game timer paused during interstitial");
+    if (p->bart.pos != 2)
+        fail("phase restart: bart reset to lane 2 during interstitial");
+
+    cupcake_on_move(CUPCAKE_MOVE_LEFT);
+    if (p->bart.pos != 2)
+        fail("phase restart: move blocked during interstitial");
 
     cupcake_timers_update(tm, 0.75f);
     if (cupcake_is_paused())
@@ -148,9 +158,34 @@ static void test_miss_restart_skips_phase_timer(void)
         fail("miss restart: scoreboard phase synced");
 }
 
+static void test_no_game_ticks_during_phase_music(void)
+{
+    cupcake_play_state_t *p;
+    cupcake_timers_t *tm;
+    uint8_t maggie_loop_before;
+
+    setup_play();
+    p = cupcake_play_state();
+    tm = cupcake_timers();
+    maggie_loop_before = p->maggie.loop;
+    cupcake_set_threshold(1000);
+    cupcake_add_points(1000);
+
+    cupcake_timers_update(tm, 2.f);
+    if (!cupcake_timer_active(tm, CUPCAKE_TMR_PHASE))
+        fail("phase music: celebration timer active");
+    if (p->maggie.loop != maggie_loop_before)
+        fail("phase music: maggie must not advance during celebration");
+    if (p->enabled)
+        fail("phase music: play must stay disabled");
+    if (!cupcake_is_paused())
+        fail("phase music: must stay paused");
+}
+
 int main(void)
 {
     test_phase_complete_pauses_and_runs_timer();
+    test_no_game_ticks_during_phase_music();
     test_phase_complete_end_increments_and_restarts();
     test_phase_complete_clamps_at_max();
     test_phase_restart_resets_entities();

@@ -69,7 +69,8 @@ static void tmr_sit_bonus_end(void *ctx, int tick);
 static void tmr_bart_action_on_start(void *ctx, int tick);
 static void tmr_bart_action_on_end(void *ctx, int tick);
 static void sched_on_m(void *ctx, int tick);
-static void sched_phase_restart_resume(void *ctx, int tick);
+static void sched_phase_restart_finish(void *ctx, int tick);
+static void cupcake_phase_restart_play(void);
 static void sched_maggie_index_reset(void *ctx, int tick);
 static void sched_marge_start_after_delivery(void *ctx, int tick);
 static void cupcake_game_timer_start(int start_tick);
@@ -379,6 +380,11 @@ static int cupcake_play_active(void)
     return p->mode == CUPCAKE_MODE_PLAY && p->enabled;
 }
 
+static int cupcake_phase_celebration_active(void)
+{
+    return cupcake_timer_active(&g_timers, CUPCAKE_TMR_PHASE) ? 1 : 0;
+}
+
 static void cupcake_on_stop(void)
 {
     g.play.enabled = 0;
@@ -483,7 +489,7 @@ static void tmr_game_ot(void *ctx, int tick)
 
     (void)ctx;
 
-    if (!cupcake_play_active())
+    if (!cupcake_play_active() || cupcake_phase_celebration_active())
         return;
 
     p->game_tick = (uint32_t)tick;
@@ -872,7 +878,9 @@ static void tmr_phase_complete_end(void *ctx, int tick)
         p->phase++;
     p->phase = (uint8_t)cupcake_phase_clamp((int)p->phase);
     cupcake_miss_decrease(p);
-    cupcake_on_phase_restart();
+    cupcake_scoreboard_set_level(p, 0);
+    cupcake_scoreboard_set_phase(p, (int)p->phase);
+    cupcake_phase_restart_play();
 }
 
 void cupcake_on_phase_complete(void)
@@ -893,7 +901,7 @@ void cupcake_on_phase_complete(void)
     cupcake_timer_start(&g_timers, CUPCAKE_TMR_PHASE, &cfg);
 }
 
-static void sched_phase_restart_resume(void *ctx, int tick)
+static void sched_phase_restart_finish(void *ctx, int tick)
 {
     cupcake_play_state_t *p = &g.play;
 
@@ -907,20 +915,26 @@ static void sched_phase_restart_resume(void *ctx, int tick)
     cupcake_resume();
 }
 
+/* JS onPhaseRestart body: onPhaseStart → pause → 0.75s → resume. */
+static void cupcake_phase_restart_play(void)
+{
+    cupcake_timers_stop(&g_timers);
+    cupcake_on_phase_start(0);
+    cupcake_pause();
+    host_sfx("stop");
+
+    if (cupcake_timers_schedule(&g_timers, 0.75f, sched_phase_restart_finish, NULL) < 0)
+        sched_phase_restart_finish(NULL, 0);
+}
+
 void cupcake_on_phase_restart(void)
 {
     cupcake_play_state_t *p = &g.play;
 
-    /* JS onPhaseRestart ordering. scoreboard.phase overwrites level text (single slot). */
+    /* JS onPhaseRestart ordering (miss recovery — entities reset before interstitial). */
     cupcake_scoreboard_set_level(p, 0);
     cupcake_scoreboard_set_phase(p, (int)p->phase);
-    cupcake_timers_stop(&g_timers);
-    cupcake_on_phase_start(1);
-    cupcake_pause();
-    host_sfx("stop");
-
-    if (cupcake_timers_schedule(&g_timers, 0.75f, sched_phase_restart_resume, NULL) < 0)
-        sched_phase_restart_resume(NULL, 0);
+    cupcake_phase_restart_play();
 }
 
 static void tmr_sit_bonus_on_start(void *ctx, int tick)
@@ -1349,6 +1363,7 @@ void cupcake_apply_debug_start(void)
     cupcake_set_threshold(10000);
     host_sfx("stop");
     cupcake_on_phase_start(1);
+    cupcake_resume();
     host_on_score_change();
 
     fprintf(stderr, "Debug start: level %d phase %d score %u (target %u)\n", level, phase,
@@ -1462,12 +1477,11 @@ static void cupcake_on_phase_start(int game_timer_start_tick)
 
     /* JS onPhaseStart: bart, maggie(1), cupcakes, aircakes, pacifier, marge, couch. */
     p->mode = CUPCAKE_MODE_PLAY;
-    p->enabled = 1;
+    p->enabled = 0;
     p->game_tick = 0;
     p->scoreboard.score = p->points;
     cupcake_bart_start(p, 2);
     cupcake_maggie_start(p);
-    cupcake_maggie_step(p);
     cupcake_cupcakes_start(p);
     cupcake_aircakes_start(p);
     cupcake_pacifier_start(p);
@@ -1519,6 +1533,7 @@ static void tmr_start_seq_on_tick(void *ctx, int tick)
     } else if (tick == 2) {
         p->scoreboard.value = 0;
         cupcake_on_phase_start(phase > 0 ? 0 : 1);
+        cupcake_resume();
     }
 }
 
@@ -1586,7 +1601,7 @@ static void cupcake_timers_restore(void)
         else if (s->cfg.rate_sec >= 1.99f && s->cfg.rate_sec <= 2.01f)
             s->cfg.on_start = sched_on_m;
         else if (s->cfg.rate_sec >= 0.74f && s->cfg.rate_sec <= 0.76f)
-            s->cfg.on_start = sched_phase_restart_resume;
+            s->cfg.on_start = sched_phase_restart_finish;
     }
 
     if (g.play.mode == CUPCAKE_MODE_PLAY && !g.play.enabled &&
