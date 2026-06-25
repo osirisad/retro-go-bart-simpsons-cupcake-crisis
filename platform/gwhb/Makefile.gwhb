@@ -1,0 +1,118 @@
+# GWHB homebrew build for retro-go-sd GWHB firmware.
+#
+# Usage (from port root):
+#   make -f platform/gwhb/Makefile.gwhb
+#   make -f platform/gwhb/Makefile.gwhb test-header
+#   make -f platform/gwhb/Makefile.gwhb gwhb-release
+#
+# Requires: arm-none-eabi-gcc (Ubuntu: gcc-arm-none-eabi)
+#
+# When platform/gwhb/main_gwhb.c is missing, `all` only checks the toolchain
+# (CI stays green until the GWHB host is implemented — see GWHB_SPRINT_BOARD.md).
+
+CROSS_COMPILE ?= arm-none-eabi-
+CC      = $(CROSS_COMPILE)gcc
+OBJCOPY = $(CROSS_COMPILE)objcopy
+SIZE    = $(CROSS_COMPILE)size
+
+BUILD_DIR   = build-gwhb
+TARGET_ELF  = $(BUILD_DIR)/CUPCAKE.elf
+TARGET_BIN  = $(BUILD_DIR)/CUPCAKE.bin
+RELEASE_DIR = release
+
+GWHB_HOST_SRC = platform/gwhb/main_gwhb.c
+
+MCU_CFLAGS = -mcpu=cortex-m7 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard
+BASE_CFLAGS = -std=c99 -Wall -Wextra -ffunction-sections -fdata-sections \
+	$(MCU_CFLAGS) -nostdlib -ffreestanding -Os -g
+
+.PHONY: all clean test-header toolchain-check gwhb-release
+
+ifeq ($(wildcard $(GWHB_HOST_SRC)),)
+
+all: toolchain-check
+	@echo ""
+	@echo "GWHB host not built: $(GWHB_HOST_SRC) is missing."
+	@echo "See GWHB_SPRINT_BOARD.md (GW-4..GW-10). CI verifies toolchain only."
+
+toolchain-check:
+	@echo "Toolchain: $$($(CC) --version | head -1)"
+
+test-header:
+	@echo "SKIP test-header: $(TARGET_BIN) not produced yet"
+
+gwhb-release:
+	@echo "SKIP gwhb-release: implement GWHB host first"
+
+else
+
+# --- Full build (activates when main_gwhb.c and linker.ld exist) ----------------
+
+PORT_ROOT := $(abspath ../..)
+
+CORE_SRCS = \
+	$(PORT_ROOT)/src/cupcake_game.c \
+	$(PORT_ROOT)/src/cupcake_scoreboard.c \
+	$(PORT_ROOT)/src/cupcake_hiscore.c \
+	$(PORT_ROOT)/src/cupcake_timer.c \
+	$(PORT_ROOT)/src/cupcake_rng.c \
+	$(PORT_ROOT)/src/cupcake_state.c
+
+PLATFORM_SRCS = \
+	$(PORT_ROOT)/platform/cupcake_input.c \
+	$(PORT_ROOT)/platform/host_draw.c \
+	$(PORT_ROOT)/platform/host_audio.c \
+	$(PORT_ROOT)/platform/host_audio_catalog.c
+
+GWHB_SRCS = \
+	$(PORT_ROOT)/platform/gwhb/main_gwhb.c \
+	$(PORT_ROOT)/platform/gwhb/gwhb_entry.c \
+	$(PORT_ROOT)/platform/gwhb/abi_stubs.c \
+	$(PORT_ROOT)/platform/gwhb/rg_lcd.c \
+	$(PORT_ROOT)/platform/gwhb/rg_input.c
+
+SRCS = $(CORE_SRCS) $(PLATFORM_SRCS) $(GWHB_SRCS)
+
+INCLUDES = \
+	-I$(PORT_ROOT)/src \
+	-I$(PORT_ROOT)/platform \
+	-I$(PORT_ROOT)/platform/gwhb
+
+DEFS = -DCUPCAKE_GWHB -DCUPCAKE_AUDIO_ODROID -DTARGET_GNW
+
+CFLAGS = $(BASE_CFLAGS) $(INCLUDES) $(DEFS)
+
+OBJS = $(addprefix $(BUILD_DIR)/,$(notdir $(SRCS:.c=.o)))
+vpath %.c $(sort $(dir $(SRCS)))
+
+LINKER = $(PORT_ROOT)/platform/gwhb/linker.ld
+
+all: $(TARGET_BIN)
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TARGET_ELF): $(OBJS) $(LINKER) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -T $(LINKER) -Wl,--gc-sections -o $@ $(OBJS) -lgcc
+	$(SIZE) $@
+
+$(TARGET_BIN): $(TARGET_ELF)
+	$(OBJCOPY) -O binary $< $@
+	@echo "Built $(TARGET_BIN) for /roms/homebrew/ on GWHB firmware"
+
+test-header: $(TARGET_BIN)
+	bash $(PORT_ROOT)/scripts/ci/verify_gwhb_header.sh $(TARGET_BIN)
+
+gwhb-release: all test-header
+	@mkdir -p $(RELEASE_DIR)
+	@cp $(TARGET_BIN) $(RELEASE_DIR)/
+	@cp $(PORT_ROOT)/docs/ATTRIBUTION.md $(RELEASE_DIR)/ 2>/dev/null || true
+	@echo "Release: $(RELEASE_DIR)/CUPCAKE.bin (self-contained; copy to /roms/homebrew/)"
+
+clean:
+	rm -rf $(BUILD_DIR)
+
+endif

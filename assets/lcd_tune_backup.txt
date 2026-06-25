@@ -1,0 +1,99 @@
+# Cupcake Crisis — LCD alignment tune file
+# Edit lcd_x lcd_y here; save and re-run (no rebuild).
+#
+#   run-align.bat     static layout: all sprites at once (demo frozen)
+#   run-pc.bat        play-test with these coords applied live
+#
+# Align vs play:
+#   --align shows every lane's cupcakes + every bart pose together (pin sheet).
+#   During play only ONE lane's stack is visible: cake01-05 lane 1, cake11-15 lane 2, etc.
+#   Bart's held stack uses grid row min(4, position), not Bart's lane index:
+#     pos 0 → cake01 row; pos 1 → cake11 row; pos 2 → cake21; … pos 4/5 → cake41 row.
+#   Tune cakeNN against bartN for each lane column, then verify catches with run-pc.bat.
+#
+# Must run from the port folder (run-align.bat / run-pc.bat set CUPCAKE_ASSETS=assets).
+# Bake into cupcake_sprite_lcd.h:  make gen   (reads this file automatically)
+
+# Bart
+bart0 26 540    # plate hand off to marge (pos 0)
+bart1 110 443   # lane 1
+bart2 235 368   # lane 2
+bart3 360 395   # lane 3
+bart4 485 482   # lane 4
+bart6 490 9     # couch sit miss
+bart7 116 395   # lane 1 plate / catch layer
+bart8 514 430   # couch plate layer (pos 5)
+bart9 167 650   # cupcake miss
+
+# === Maggie (maggie0..maggie3) ===
+maggie0 705 243  # base (always visible when Maggie on screen)
+maggie1 724 267  # throw overlay loop 1
+maggie2 855 253  # throw overlay loop 2
+maggie3 720 192  # throw overlay loop 3
+
+# === Marge ===
+marge1 0 115
+
+# === Pacifier ===
+pacifier1 434 149
+pacifier2 343 252
+
+# Couch (x, y)
+bart5 585 382    # couch sitting (pos 5)
+couch0 758 108   # homer couch speech
+couch1 816 355   # homer couch
+couch2 755 335   # marge couch
+couch3 621 598   # maggie couch
+couch4 726 485   # lisa couch
+
+# Bart lives (top-left)
+miss1 20 5
+miss2 98 5
+miss3 175 5
+
+# === Grid cupcakes — lane 1 (cake01..cake05, slots 1-5) ===
+cake01 20 495    # slot 1
+cake02 93 495    # slot 2
+cake03 57 475    # slot 3
+cake04 84 447    # slot 4
+cake05 49 435    # slot 5
+
+# === Grid cupcakes — lane 2 (cake11..cake15) ===
+cake11 123 355   # slot 1
+cake12 175 358   # slot 2
+cake13 178 310   # slot 3
+cake14 133 310   # slot 4
+cake15 160 265   # slot 5
+
+# === Grid cupcakes — lane 3 (cake21..cake25) ===
+cake21 231 327   # slot 1
+cake22 286 341   # slot 2
+cake23 300 291   # slot 3
+cake24 241 290   # slot 4
+cake25 281 250   # slot 5
+
+# === Grid cupcakes — lane 4 (cake31..cake35) ===
+cake31 382 363   # slot 1
+cake32 448 368   # slot 2
+cake33 453 314   # slot 3
+cake34 400 321   # slot 4
+cake35 422 273   # slot 5
+
+# === Grid cupcakes — lane 5 / couch row (cake41..cake45) ===
+cake41 516 402   # slot 1
+cake42 567 401   # slot 2
+cake43 556 348   # slot 3
+cake44 509 354   # slot 4
+cake45 519 307   # slot 5
+
+# === Flying aircakes (cake0..cake9) — Maggie throw / catch lanes ===
+cake0 55 690     # miss cake (left) 
+cake1 219 209    # aircake 1
+cake2 334 211    # aircake 2
+cake3 452 202    # aircake 3
+cake4 503 242    # aircake 4
+cake5 282 129    # aircake 5
+cake6 397 134    # aircake 6
+cake7 512 122    # aircake 7
+cake8 619 115    # aircake 8
+cake9 445 690    # miss cake (right) 

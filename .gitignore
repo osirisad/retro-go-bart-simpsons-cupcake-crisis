@@ -2,6 +2,8 @@
 build-pc/
 build-test/
 build-cupcake/
+build-gwhb/
+release/
 *.o
 *.d
 *.exe
