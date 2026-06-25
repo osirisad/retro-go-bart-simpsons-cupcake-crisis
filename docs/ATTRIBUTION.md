@@ -10,12 +10,12 @@ Sprites, bezel art, audio, and game rules in the G&W build are derived from that
 
 ## This port
 
-- C port and GWHB packaging: *(your name / repo link)*
-- Built for Game & Watch homebrew via [retro-go-sd](https://github.com/sylverb/game-and-watch-retro-go-sd) with a **GWHB**-capable firmware build.
+- C port and G&W packaging: *(your name / repo link)*
+- Built for Game & Watch via retro-go-sd **firmware overlay** (Celeste model); GWHB SD-drop planned when that firmware path is stable.
 
 ## What we ship
 
-The release **`CUPCAKE.bin`** embeds the art and audio needed to play. Users install one file to `/roms/homebrew/`. If you redistribute the binary, keep this attribution with it.
+The release **`cupcake.bin`** (overlay extract) embeds the art and audio needed to play. Users install it to `/roms/homebrew/` alongside a firmware build that includes the Cupcake overlay. If you redistribute the binary, keep this attribution with it.
 
 ## Suggested in-game credit (optional)
 

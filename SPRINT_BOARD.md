@@ -1,6 +1,8 @@
 # Cupcake Crisis C Port — Sprint Board
 
-**GWHB / Game & Watch SD-drop platform work:** see [GWHB_SPRINT_BOARD.md](GWHB_SPRINT_BOARD.md) (27 tasks in this repo; requires GWHB-capable retro-go-sd firmware).
+**Game & Watch ship path:** Celeste-style firmware overlay → [OVERLAY_SPRINT_BOARD.md](OVERLAY_SPRINT_BOARD.md) (**active**).
+
+**GWHB SD-drop** (single `CUPCAKE.bin`, no firmware rebuild): [GWHB_SPRINT_BOARD.md](GWHB_SPRINT_BOARD.md) — **on hold** until GWHB firmware is stable on hardware.
 
 Gap analysis comparing the original JavaScript game (`assets/build.js`, logic slice in `docs/AcclaimCupcakeCrisis.js`) against the current C port (`src/`).
 

@@ -31,7 +31,11 @@ make test-demo-replay
 
 Sprite UV export (optional visual check): `python test/export_sprites.py` — see [test/README.md](../test/README.md).
 
-## retro-go / Game & Watch
+## retro-go / Game & Watch — overlay (active)
+
+Integrate into your retro-go-sd firmware fork using the Celeste overlay model. See [OVERLAY_SPRINT_BOARD.md](../OVERLAY_SPRINT_BOARD.md).
+
+### Linux emu (regression / dev)
 
 Build the linux emu binary from your retro-go firmware tree:
 
@@ -46,9 +50,18 @@ Copy `assets/sprites-color.png`, `assets/screen.jpg` (and fallback `sprites.png`
 
 Install the produced ELF like Celeste (`retro-go-celeste`).
 
-## GWHB binary
+### Device overlay (hardware)
 
-For SD-drop homebrew on GWHB-capable retro-go-sd firmware, build `CUPCAKE.bin`:
+1. Add Cupcake to your firmware fork (linker `.overlay_cupcake`, `Makefile.common`, `rg_emulators.c` dispatch) — tasks OV-11..OV-15 in the overlay board.
+2. Build firmware; extract `cupcake.bin` from the overlay section.
+3. Copy `cupcake.bin` to `/roms/homebrew/` on SD.
+4. Launch from Homebrew menu.
+
+Assets are embedded at build time (`cupcake_data.h`), not loose files on SD.
+
+## GWHB binary (on hold)
+
+GWHB SD-drop is deferred until GWHB-capable firmware is stable. Scaffold remains for later:
 
 ```bash
 # Requires arm-none-eabi-gcc (MSYS2: pacman -S mingw-w64-x86_64-arm-none-eabi-{binutils,gcc,newlib})
