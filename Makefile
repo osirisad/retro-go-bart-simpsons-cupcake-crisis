@@ -511,8 +511,7 @@ gwhb:
 test-overlay-regression-pc: test-smoke test-demo-replay test-host-bezel
 
 test-overlay-regression: test-overlay-regression-pc
-	@command -v bash >/dev/null 2>&1 && bash scripts/overlay_regression.sh || \
-	  $(MAKE) test-overlay-regression-pc
+	@command -v bash >/dev/null 2>&1 && MAKE="$(MAKE)" SKIP_PC=1 bash scripts/overlay_regression.sh
 
 overlay-size-estimate:
 	python tools/overlay_size_estimate.py

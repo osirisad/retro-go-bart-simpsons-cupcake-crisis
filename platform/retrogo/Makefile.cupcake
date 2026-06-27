@@ -30,6 +30,7 @@ gw_lcd.c \
 porting.c \
 $(CUPCAKE_PORT)/src/cupcake_game.c \
 $(CUPCAKE_PORT)/src/cupcake_scoreboard.c \
+$(CUPCAKE_PORT)/src/cupcake_hiscore.c \
 $(CUPCAKE_PORT)/src/cupcake_timer.c \
 $(CUPCAKE_PORT)/src/cupcake_rng.c \
 $(CUPCAKE_PORT)/src/cupcake_state.c \
@@ -46,6 +47,7 @@ CFLAGS = -std=c99 -Wall -DTARGET_GNW -DLINUX_EMU \
 	-I$(CUPCAKE_PORT)/src \
 	-I$(CUPCAKE_PORT)/platform \
 	-I$(CUPCAKE_PORT)/platform/stb \
+	-I../Core/Src/porting/lib \
 	-I../Core/Inc/retro-go \
 	-I../retro-go-stm32/components/odroid \
 	$(shell sdl2-config --cflags 2>/dev/null) \

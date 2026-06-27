@@ -9,8 +9,8 @@ On Windows, use MSYS2 — see [BUILD_WINDOWS.md](BUILD_WINDOWS.md) for full setu
 From the project root (MINGW64 shell on Windows):
 
 ```bash
-make
-make run
+./build.sh          # MSYS2: make is installed as mingw32-make — see BUILD_WINDOWS.md
+./build.sh run
 # or: run-pc.bat
 ```
 
@@ -35,15 +35,23 @@ Sprite UV export (optional visual check): `python test/export_sprites.py` — se
 
 Integrate into your retro-go-sd firmware fork using the Celeste overlay model. See [OVERLAY.md](OVERLAY.md) and [OVERLAY_SPRINT_BOARD.md](../OVERLAY_SPRINT_BOARD.md).
 
-After shared-code edits: `make test-overlay-regression` (PC tests; linux emu when firmware tree is available).
+After shared-code edits: `./build.sh test-overlay-regression` (PC tests; linux emu when firmware tree is available).
 
 ### Linux emu (regression / dev)
 
-Build the linux emu binary from your retro-go firmware tree:
+Requires retro-go `linux/` tree + SDL2. **Initialize firmware submodules first** (linux emu headers live in `retro-go-stm32`):
+
+```bash
+cd ../game-and-watch-retro-go-sd-cupcake
+git submodule update --init retro-go-stm32
+```
+
+From firmware `linux/` (or via `mingw32-make test-overlay-regression` in the port repo):
 
 ```bash
 export CUPCAKE_PORT=/path/to/bart_simpson_cupcake_crisis_port
-make -f $CUPCAKE_PORT/platform/retrogo/Makefile.cupcake
+cd "$RETROGO_FW/linux"   # or ../game-and-watch-retro-go-sd-cupcake/linux
+mingw32-make -f $CUPCAKE_PORT/platform/retrogo/Makefile.cupcake
 ```
 
 Output: `build-cupcake/retro-go-cupcake.elf`

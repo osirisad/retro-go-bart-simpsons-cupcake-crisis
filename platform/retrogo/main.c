@@ -206,7 +206,7 @@ int main(int argc, char **argv)
             lcd_rect.h);
 
     odroid_system_init(APP_ID, 22050);
-    odroid_system_emu_init(&LoadState, &SaveState, NULL, NULL);
+    odroid_system_emu_init(&LoadState, &SaveState, NULL, NULL, NULL, NULL);
 
     {
         char hiscore_path[512];

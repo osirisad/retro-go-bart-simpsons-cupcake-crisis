@@ -31,7 +31,7 @@ void cupcake_input_from_sdl_keyboard(const uint8_t *keys, uint16_t *buttons)
     *buttons = b;
 }
 
-#ifdef TARGET_GNW
+#if defined(TARGET_GNW) || defined(LINUX_EMU)
 #include "odroid_input.h"
 
 void cupcake_input_from_odroid(const odroid_gamepad_state_t *pad, uint16_t *buttons)

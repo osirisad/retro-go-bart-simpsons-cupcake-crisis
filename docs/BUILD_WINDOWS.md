@@ -32,9 +32,13 @@ cd "/c/Users/sfleishman/Desktop/retrofab-acclaim-cupcake-crisis-0.9.10/bart_simp
 mingw32-make
 ```
 
-MSYS2 installs GNU Make as **`mingw32-make`**, not `make`. If `which make` is empty, that is normal.
+MSYS2 installs GNU Make as **`mingw32-make`**, not `make`. If `which make` is empty, that is normal — use **`./build.sh`** instead:
 
-Shortcut: `./build.sh` (same as `mingw32-make`).
+```bash
+./build.sh                              # same as mingw32-make
+./build.sh test-overlay-regression-pc    # OV-03 PC regression gate
+./build.sh test-overlay-regression        # PC tests + linux emu if firmware sibling exists
+```
 
 You should see `build-pc/cupcake-sdl.exe` when it succeeds.
 
