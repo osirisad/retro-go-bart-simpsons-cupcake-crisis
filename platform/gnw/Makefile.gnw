@@ -1,0 +1,111 @@
+# Standalone Game & Watch overlay build — port repo only.
+#
+# Produces release/cupcake.bin (copy to SD: /roms/homebrew/cupcake.bin).
+# Does NOT compile the full retro-go firmware.
+#
+# Requires:
+#   - arm-none-eabi-gcc on PATH
+#   - A symbol map from the firmware you flash on the device (one of):
+#       platform/gnw/firmware_imports.ld   (checked in, preferred)
+#       FIRMWARE_ELF=/path/to/firmware.elf (from a firmware build or release)
+#
+# Generate imports after flashing a new firmware version:
+#   bash tools/gen_overlay_imports.sh /path/to/firmware.elf > platform/gnw/firmware_imports.ld
+#
+# Usage (from port root):
+#   make -f platform/gnw/Makefile.gnw
+#   make cupcake-bin
+
+PORT_ROOT   := $(abspath ../..)
+BUILD_DIR   := $(PORT_ROOT)/build-gnw
+RELEASE_DIR := $(PORT_ROOT)/release
+TARGET_ELF  := $(BUILD_DIR)/cupcake-overlay.elf
+TARGET_BIN  := $(RELEASE_DIR)/cupcake.bin
+LINKER      := $(PORT_ROOT)/platform/gnw/overlay.ld
+SDK         := $(PORT_ROOT)/platform/gnw/sdk
+IMPORTS_LD  := $(PORT_ROOT)/platform/gnw/firmware_imports.ld
+FIRMWARE_ELF ?=
+
+CROSS_COMPILE ?= arm-none-eabi-
+CC      = $(CROSS_COMPILE)gcc
+OBJCOPY = $(CROSS_COMPILE)objcopy
+SIZE    = $(CROSS_COMPILE)size
+
+MCU     = -mcpu=cortex-m7 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -mno-unaligned-access
+BASE_CFLAGS = -std=c99 -Wall -Wextra -Os -g $(MCU) \
+	-ffunction-sections -fdata-sections -fno-common -nostartfiles \
+	-DSTM32H7B0xx -DUSE_HAL_DRIVER -DIS_LITTLE_ENDIAN -DTARGET_GNW \
+	-DCUPCAKE_GNW -DCUPCAKE_AUDIO_ODROID
+
+INCLUDES = \
+	-I$(SDK)/Core/Inc \
+	-I$(SDK)/Core/Inc/porting \
+	-I$(SDK)/Core/Inc/porting/cupcake \
+	-I$(SDK)/Core/Inc/retro-go \
+	-I$(SDK)/odroid \
+	-I$(SDK)/Drivers/CMSIS/Device/ST/STM32H7xx/Include \
+	-I$(PORT_ROOT)/src \
+	-I$(PORT_ROOT)/platform \
+	-I$(PORT_ROOT)/platform/stb
+
+SRCS = \
+	$(PORT_ROOT)/src/cupcake_game.c \
+	$(PORT_ROOT)/src/cupcake_scoreboard.c \
+	$(PORT_ROOT)/src/cupcake_hiscore.c \
+	$(PORT_ROOT)/src/cupcake_timer.c \
+	$(PORT_ROOT)/src/cupcake_rng.c \
+	$(PORT_ROOT)/src/cupcake_state.c \
+	$(PORT_ROOT)/platform/host_draw.c \
+	$(PORT_ROOT)/platform/host_audio.c \
+	$(PORT_ROOT)/platform/host_audio_catalog.c \
+	$(PORT_ROOT)/platform/cupcake_input.c \
+	$(PORT_ROOT)/platform/stb/stb_image_impl.c \
+	$(PORT_ROOT)/platform/gnw/gnw_assets.c \
+	$(PORT_ROOT)/platform/gnw/main_cupcake.c
+
+CFLAGS  = $(BASE_CFLAGS) $(INCLUDES)
+OBJS    = $(addprefix $(BUILD_DIR)/,$(notdir $(SRCS:.c=.o)))
+vpath %.c $(sort $(dir $(SRCS)))
+
+LDFLAGS = $(MCU) -nostdlib -T$(LINKER) -Wl,--gc-sections -lgcc
+
+ifneq ($(wildcard $(IMPORTS_LD)),)
+  LDFLAGS += -T$(IMPORTS_LD)
+else ifneq ($(FIRMWARE_ELF),)
+  ifeq ($(wildcard $(FIRMWARE_ELF)),)
+    $(error FIRMWARE_ELF not found: $(FIRMWARE_ELF))
+  endif
+  LDFLAGS += -Wl,--just-symbols=$(FIRMWARE_ELF)
+else
+  $(error Need platform/gnw/firmware_imports.ld or FIRMWARE_ELF=/path/to/matching/firmware.elf)
+endif
+
+.PHONY: all clean help size
+
+all: $(TARGET_BIN)
+
+help:
+	@echo "Standalone cupcake.bin build (no firmware source required if firmware_imports.ld exists)."
+	@echo "  make -f platform/gnw/Makefile.gnw"
+	@echo "  make cupcake-bin"
+
+$(BUILD_DIR) $(RELEASE_DIR):
+	mkdir -p $@
+
+$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TARGET_ELF): $(OBJS) $(LINKER) | $(BUILD_DIR)
+	$(CC) $(OBJS) $(LDFLAGS) -o $@
+	$(SIZE) $@
+
+$(TARGET_BIN): $(TARGET_ELF) | $(RELEASE_DIR)
+	$(OBJCOPY) -O binary --only-section=.overlay_cupcake $< $@
+	@echo "Built $@ ($(shell wc -c < $@ | tr -d ' ') bytes) — copy to /roms/homebrew/cupcake.bin"
+
+size: $(TARGET_ELF)
+	$(SIZE) $(TARGET_ELF)
+	@echo "Load section .overlay_cupcake (max ~724 KiB RAM slot)"
+
+clean:
+	rm -rf $(BUILD_DIR)

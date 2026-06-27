@@ -74,7 +74,7 @@ Same idea as `celeste.bin` → `"celeste"` → `app_main_celeste()`.
 |-------|-----------------------------------------------|---------------|
 | Game core | `src/cupcake_*.c` | — |
 | Shared draw/audio/input | `platform/host_draw.c`, `host_audio.c`, `cupcake_input.c` | — |
-| Device entry | `platform/gnw/main_cupcake.c`, `gnw_assets.c` | optional stub at `Core/Src/porting/cupcake/` when `CUPCAKE_PORT` unset |
+| Device entry | `platform/gnw/main_cupcake.c`, `gnw_assets.c` | smoke stub at `Core/Src/porting/cupcake/` (full game built in port repo) |
 | Linux emu host | `platform/retrogo/main.c`, `Makefile.cupcake` | — |
 | Asset bundle tool | `tools/bundle_overlay_assets.py` (OV-08) | — |
 | Linker sections | — | `.overlay_cupcake` / `_bss` in `STM32H7B0VBTx_*.ld` |
@@ -84,17 +84,13 @@ Same idea as `celeste.bin` → `"celeste"` → `app_main_celeste()`.
 
 ### Two ways to produce `cupcake.bin`
 
-1. **Firmware stub** — build firmware without `CUPCAKE_PORT`; ships a tiny smoke-test `cupcake.bin` from `Core/Src/porting/cupcake/main_cupcake.c`.
-
-2. **Full game (OV-2+)** — from this port repo:
+**Recommended (standalone):** from this port repo only — see **[RELEASE_CUPCAKE_BIN.md](RELEASE_CUPCAKE_BIN.md)**.
 
 ```bash
-# MSYS2 / Linux — requires arm-none-eabi-gcc and firmware submodules
-make -f platform/gnw/Makefile.overlay
-# optional: FW_ROOT=/path/to/game-and-watch-retro-go-sd-cupcake
+make cupcake-bin   # → release/cupcake.bin
 ```
 
-This runs `make CUPCAKE_PORT=$PWD cupcake-overlay-bin` in the firmware tree and writes `cupcake.bin` to the firmware SD homebrew folder. Copy to `/roms/homebrew/cupcake.bin` on device SD.
+No firmware source checkout. Requires `platform/gnw/firmware_imports.ld` (committed for releases).
 
 **Interim assets (until OV-3 embedded pack):** copy from `assets/` to SD:
 
@@ -108,30 +104,11 @@ Hi-scores use `/retro-go/saves/cupcake_hiscores.dat` (set in `main_cupcake.c`).
 
 ---
 
-## `CUPCAKE_PORT` wiring
+## `CUPCAKE_PORT` (linux emu only, optional)
 
-`CUPCAKE_PORT` is the absolute path to **this repo**. It is already used by the linux emu fragment:
+`CUPCAKE_PORT` is the absolute path to **this repo**. It is used only by the optional linux emu fragment (`platform/retrogo/Makefile.cupcake`), not by device `cupcake.bin` builds.
 
-```bash
-export CUPCAKE_PORT=/path/to/bart_simpson_cupcake_crisis_port
-cd /path/to/game-and-watch-retro-go-sd-cupcake/linux
-make -f $CUPCAKE_PORT/platform/retrogo/Makefile.cupcake
-```
-
-The fragment pulls shared sources from `$CUPCAKE_PORT/src/` and `$CUPCAKE_PORT/platform/` — same list the device overlay will use, plus `LINUX_EMU`, SDL, and stb for host I/O.
-
-For device overlay:
-
-```bash
-export CUPCAKE_PORT=/path/to/bart_simpson_cupcake_crisis_port
-make -f $CUPCAKE_PORT/platform/gnw/Makefile.overlay
-# or from firmware root:
-make CUPCAKE_PORT=$CUPCAKE_PORT cupcake-overlay-bin
-```
-
-- Toolchain: `arm-none-eabi-gcc`
-- Flags: `-DCUPCAKE_GNW -DCUPCAKE_AUDIO_ODROID -DTARGET_GNW` (via `platform/gnw/cupcake_overlay.mk`)
-- Output: `objcopy --only-section=.overlay_cupcake` → firmware `HOMEBREWS_FOLDER/cupcake.bin`
+For device overlay, use **`make cupcake-bin`** — see [RELEASE_CUPCAKE_BIN.md](RELEASE_CUPCAKE_BIN.md).
 
 ---
 
