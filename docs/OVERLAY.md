@@ -2,7 +2,7 @@
 
 Cupcake Crisis ships on **retro-go Game & Watch** as a firmware **RAM overlay** — the same pattern as Celeste Classic in [game-and-watch-retro-go-sd-cupcake](https://github.com/sylverb/game-and-watch-retro-go-sd).
 
-This repo stays the **source of truth** for game logic and the device host. The firmware fork owns the linker slot, launcher dispatch, and (for now) a smoke-test stub.
+This repo stays the **source of truth** for game logic and the device host. The firmware fork owns the linker slot and launcher dispatch.
 
 **Related:** [OVERLAY_RAM_BUDGET.md](OVERLAY_RAM_BUDGET.md) · [BUILD.md](BUILD.md) · [OVERLAY_SPRINT_BOARD.md](../OVERLAY_SPRINT_BOARD.md) · firmware [OVERLAY_CUPCAKE.md](../../game-and-watch-retro-go-sd-cupcake/docs/OVERLAY_CUPCAKE.md)
 
@@ -14,7 +14,7 @@ This repo stays the **source of truth** for game logic and the device host. The 
 |--------|------|-------|--------|
 | **PC / Linux dev** | `platform/sdl/main.c` | `make` → `build-pc/cupcake-sdl` | Loose files under `assets/` (`CUPCAKE_ASSETS`) |
 | **Linux emu (G&W regression)** | `platform/retrogo/main.c` | `make -f platform/retrogo/Makefile.cupcake` | Loose files (default `/home/odroid/cupcake/`) |
-| **G&W hardware** | `platform/gnw/main_cupcake.c` | `cupcake.bin` on SD (see below) | Embedded `cupcake_data.h` at build time |
+| **G&W hardware** | `platform/gnw/main_cupcake.c` | `make -f platform/gnw/Makefile.overlay` → `cupcake.bin` | SD files at `/retro-go/cupcake/` (interim); embedded pack in OV-3 |
 
 Only the **platform host** and **asset loading path** differ. Game rules live in `src/cupcake_game.c` and are shared.
 
@@ -74,7 +74,7 @@ Same idea as `celeste.bin` → `"celeste"` → `app_main_celeste()`.
 |-------|-----------------------------------------------|---------------|
 | Game core | `src/cupcake_*.c` | — |
 | Shared draw/audio/input | `platform/host_draw.c`, `host_audio.c`, `cupcake_input.c` | — |
-| Device entry | `platform/gnw/main_cupcake.c` | stub until full `cupcake.bin` replaces SD file |
+| Device entry | `platform/gnw/main_cupcake.c`, `gnw_assets.c` | optional stub at `Core/Src/porting/cupcake/` when `CUPCAKE_PORT` unset |
 | Linux emu host | `platform/retrogo/main.c`, `Makefile.cupcake` | — |
 | Asset bundle tool | `tools/bundle_overlay_assets.py` (OV-08) | — |
 | Linker sections | — | `.overlay_cupcake` / `_bss` in `STM32H7B0VBTx_*.ld` |
@@ -84,11 +84,27 @@ Same idea as `celeste.bin` → `"celeste"` → `app_main_celeste()`.
 
 ### Two ways to produce `cupcake.bin`
 
-1. **Firmware stub (today)** — build firmware alone; ships a tiny smoke-test `cupcake.bin`. No `CUPCAKE_PORT` required. See firmware [OVERLAY_CUPCAKE.md](../../game-and-watch-retro-go-sd-cupcake/docs/OVERLAY_CUPCAKE.md).
+1. **Firmware stub** — build firmware without `CUPCAKE_PORT`; ships a tiny smoke-test `cupcake.bin` from `Core/Src/porting/cupcake/main_cupcake.c`.
 
-2. **Full game (target)** — build from this port repo (`platform/gnw/Makefile.overlay`, OV-04b), copy output to `/roms/homebrew/cupcake.bin`. Firmware **does not** need a rebuild unless the overlay ABI or linker layout changes.
+2. **Full game (OV-2+)** — from this port repo:
 
-Optional dev shortcut: point firmware `CUPCAKE_C_SOURCES` at this repo (like `Makefile.cupcake` for linux emu) and `objcopy` from the firmware ELF. That is convenient for all-in-one firmware dev, not required for end-user SD drops.
+```bash
+# MSYS2 / Linux — requires arm-none-eabi-gcc and firmware submodules
+make -f platform/gnw/Makefile.overlay
+# optional: FW_ROOT=/path/to/game-and-watch-retro-go-sd-cupcake
+```
+
+This runs `make CUPCAKE_PORT=$PWD cupcake-overlay-bin` in the firmware tree and writes `cupcake.bin` to the firmware SD homebrew folder. Copy to `/roms/homebrew/cupcake.bin` on device SD.
+
+**Interim assets (until OV-3 embedded pack):** copy from `assets/` to SD:
+
+```
+/retro-go/cupcake/screen.jpg
+/retro-go/cupcake/sprites-color.png
+/retro-go/cupcake/audio/*.wav
+```
+
+Hi-scores use `/retro-go/saves/cupcake_hiscores.dat` (set in `main_cupcake.c`).
 
 ---
 
@@ -104,12 +120,18 @@ make -f $CUPCAKE_PORT/platform/retrogo/Makefile.cupcake
 
 The fragment pulls shared sources from `$CUPCAKE_PORT/src/` and `$CUPCAKE_PORT/platform/` — same list the device overlay will use, plus `LINUX_EMU`, SDL, and stb for host I/O.
 
-For device overlay (planned `platform/gnw/Makefile.overlay`):
+For device overlay:
+
+```bash
+export CUPCAKE_PORT=/path/to/bart_simpson_cupcake_crisis_port
+make -f $CUPCAKE_PORT/platform/gnw/Makefile.overlay
+# or from firmware root:
+make CUPCAKE_PORT=$CUPCAKE_PORT cupcake-overlay-bin
+```
 
 - Toolchain: `arm-none-eabi-gcc`
-- Flags: `-DCUPCAKE_GNW -DCUPCAKE_AUDIO_ODROID -DCUPCAKE_EMBEDDED_ASSETS`
-- Link: firmware `.overlay_cupcake` linker fragment (same VMA/LMA as Celeste slot)
-- Output: `build-gnw/cupcake.bin` via `objcopy --only-section=.overlay_cupcake`
+- Flags: `-DCUPCAKE_GNW -DCUPCAKE_AUDIO_ODROID -DTARGET_GNW` (via `platform/gnw/cupcake_overlay.mk`)
+- Output: `objcopy --only-section=.overlay_cupcake` → firmware `HOMEBREWS_FOLDER/cupcake.bin`
 
 ---
 
@@ -151,13 +173,14 @@ make -f $CUPCAKE_PORT/platform/retrogo/Makefile.cupcake
 
 Copy `assets/sprites-color.png`, `assets/screen.jpg`, `assets/audio/*.wav` to `/home/odroid/cupcake/` (or set `CUPCAKE_ASSETS`).
 
-### Device smoke (firmware stub)
+### Device (full overlay)
 
-1. Flash firmware from `game-and-watch-retro-go-sd-cupcake`.
-2. Confirm `/roms/homebrew/cupcake.bin` on SD.
-3. Homebrew → **cupcake** — stub runs briefly, returns to menu.
+1. Build `cupcake.bin` (see [Two ways to produce `cupcake.bin`](#two-ways-to-produce-cupcakebin)).
+2. Copy assets to `/retro-go/cupcake/` on SD (interim until OV-3).
+3. Copy `cupcake.bin` to `/roms/homebrew/cupcake.bin`.
+4. Homebrew → **cupcake**.
 
-Replace `cupcake.bin` with the port-repo build when OV-4+ land.
+For stub-only smoke (no port repo build), flash firmware without `CUPCAKE_PORT` and use the in-tree stub `cupcake.bin`.
 
 ---
 

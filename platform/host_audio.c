@@ -202,8 +202,13 @@ int host_audio_init(const char *assets_base)
     if (g_ready)
         return 0;
 
-    if (!assets_base || !assets_base[0])
+    if (!assets_base || !assets_base[0]) {
+#if defined(CUPCAKE_GNW)
+        assets_base = "/retro-go/cupcake";
+#else
         assets_base = "/home/odroid/cupcake";
+#endif
+    }
 
     g_device_rate = odroid_audio_sample_rate_get();
     if (g_device_rate <= 0)

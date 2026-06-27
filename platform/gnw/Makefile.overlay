@@ -1,0 +1,40 @@
+# Build cupcake.bin overlay from the port repo (requires firmware checkout + arm-none-eabi).
+#
+# Usage (MINGW64 / Linux, from port root):
+#   make -f platform/gnw/Makefile.overlay
+#   make -f platform/gnw/Makefile.overlay FW_ROOT=../game-and-watch-retro-go-sd-cupcake
+#
+# Output: $(FW_ROOT)/build/homebrews/cupcake.bin (path varies — see firmware HOMEBREWS_FOLDER)
+#
+# Prerequisites:
+#   - arm-none-eabi-gcc on PATH
+#   - firmware submodules: git submodule update --init retro-go-stm32
+#   - SD assets at /retro-go/cupcake/ on device (until OV-3 embedded pack)
+
+PORT_ROOT := $(abspath ../..)
+FW_ROOT   ?= $(abspath $(PORT_ROOT)/../game-and-watch-retro-go-sd-cupcake)
+
+CUPCAKE_PORT = $(PORT_ROOT)
+
+.PHONY: all overlay-bin clean help
+
+all: overlay-bin
+
+help:
+	@echo "Build full Cupcake overlay via firmware tree:"
+	@echo "  make -f platform/gnw/Makefile.overlay"
+	@echo "Set FW_ROOT= if firmware is not a sibling directory."
+
+overlay-bin:
+	@if [ ! -f "$(FW_ROOT)/Makefile" ]; then \
+	  echo "Missing firmware at $(FW_ROOT) — set FW_ROOT=" >&2; exit 1; \
+	fi
+	@if [ ! -f "$(FW_ROOT)/retro-go-stm32/components/odroid/odroid_system.h" ]; then \
+	  echo "Init firmware submodule: cd $(FW_ROOT) && git submodule update --init retro-go-stm32" >&2; exit 1; \
+	fi
+	$(MAKE) -C "$(FW_ROOT)" CUPCAKE_PORT="$(CUPCAKE_PORT)" cupcake-overlay-bin
+
+clean:
+	@if [ -f "$(FW_ROOT)/Makefile" ]; then \
+	  $(MAKE) -C "$(FW_ROOT)" CUPCAKE_PORT="$(CUPCAKE_PORT)" cupcake-overlay-clean; \
+	fi

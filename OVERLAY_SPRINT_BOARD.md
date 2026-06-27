@@ -72,12 +72,26 @@
 
 | Task | Title | Status |
 |------|-------|--------|
-| OV-04 | `platform/gnw/main_cupcake.c` skeleton | [ ] |
-| OV-05 | Odroid LCD + input wiring | [ ] |
-| OV-06 | Odroid audio from embedded WAVs | [ ] |
-| OV-07 | `host_draw.c` / `host_audio.c` GNW ifdef pass | [ ] |
+| OV-04 | `platform/gnw/main_cupcake.c` skeleton | [x] |
+| OV-05 | Odroid LCD + input wiring | [x] |
+| OV-06 | Odroid audio (SD WAV interim; embedded in OV-3) | [x] |
+| OV-07 | `host_draw.c` / `host_audio.c` GNW ifdef pass | [x] |
 
----
+### OV-04 `main_cupcake.c`
+
+    Full overlay host: `app_main_cupcake`, `common_emu_frame_loop`, save/load, blit to `gw_lcd`. Interim SD assets via `gnw_assets.c` until OV-3 embedded pack.
+
+### OV-05 LCD + input
+
+    `host_lcd_blit_rgb565` → `lcd_get_active_buffer` / `lcd_swap`. Input via `cupcake_input_from_odroid`.
+
+### OV-06 Odroid audio
+
+    `host_audio_init` + `host_audio_pump` with `CUPCAKE_AUDIO_ODROID`. WAVs from `/retro-go/cupcake/audio/` on SD until OV-08/09 embed catalog.
+
+### OV-07 Host ifdef pass
+
+    `host_draw.c` stays platform-neutral. `host_audio.c` default base `/retro-go/cupcake` when `CUPCAKE_GNW`. Build via `platform/gnw/Makefile.overlay` → `make cupcake-overlay-bin` in firmware with `CUPCAKE_PORT` set.
 
 ## Sprint OV-3 — Embedded assets
 

@@ -4,7 +4,7 @@
 |-----------|------|
 | `sdl/` | PC test binary — full bezel (`screen.jpg`) + LCD sprite layer |
 | `retrogo/` | G&W `linux` emulator — `screen.jpg` bezel + LCD composite @ 320×240 |
-| `gnw/` | Device overlay host — `app_main_cupcake()` → `cupcake.bin` on SD |
+| `gnw/` | Device overlay host — `app_main_cupcake()` → `cupcake.bin` on SD ([gnw/README.md](gnw/README.md)) |
 | `host_draw.c` | Shared atlas → LCD blit (used by all hosts) |
 | `stb/` | stb_image for PNG/JPG without SDL_image |
 
