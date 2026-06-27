@@ -1,6 +1,6 @@
 # Cupcake Crisis — GWHB / Game & Watch Sprint Board
 
-> **Status: ON HOLD** (2025-06-24) — GWHB-capable firmware is not stable enough for daily use yet. **Active ship path:** Celeste-style firmware overlay → [OVERLAY_SPRINT_BOARD.md](OVERLAY_SPRINT_BOARD.md). Revisit this board when GWHB loader + ABI firmware is production-ready.
+> **Status: ON HOLD** — Active ship path is Celeste-style overlay → [OVERLAY_SPRINT_BOARD.md](OVERLAY_SPRINT_BOARD.md). Revisit when you want ABI-only bin drops without reflashing firmware.
 
 Track **changes in this repo only** (`bart_simpson_cupcake_crisis_port`) to produce a single self-contained **`CUPCAKE.bin`** GWHB homebrew (code + all game assets embedded at build time).
 

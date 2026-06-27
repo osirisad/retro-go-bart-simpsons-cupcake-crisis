@@ -11,7 +11,7 @@ Sprites, bezel art, audio, and game rules in the G&W build are derived from that
 ## This port
 
 - C port and G&W packaging: *(your name / repo link)*
-- Built for Game & Watch via retro-go-sd **firmware overlay** (Celeste model); GWHB SD-drop planned when that firmware path is stable.
+- Built for Game & Watch via retro-go-sd **firmware overlay** (Celeste model: `cupcake.bin` + `app_main_cupcake`). GWHB SD-drop deferred.
 
 ## What we ship
 

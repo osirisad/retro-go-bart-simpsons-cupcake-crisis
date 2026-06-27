@@ -507,7 +507,18 @@ clean:
 gwhb:
 	$(MAKE) -f platform/gwhb/Makefile.gwhb
 
-.PHONY: all run clean gen bake-lcd force-rebuild gwhb test test-all test-host-bezel test-smoke test-demo-replay test-save-game test-debug-start test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test-play-draw test-marge-lcd test-miss-counter
+# OV-03 — run after changes to src/ or shared platform/ (host_*, cupcake_input)
+test-overlay-regression-pc: test-smoke test-demo-replay test-host-bezel
+
+test-overlay-regression: test-overlay-regression-pc
+	@command -v bash >/dev/null 2>&1 && bash scripts/overlay_regression.sh || \
+	  $(MAKE) test-overlay-regression-pc
+
+overlay-size-estimate:
+	python tools/overlay_size_estimate.py
+
+.PHONY: all run clean gen bake-lcd force-rebuild gwhb test test-all test-host-bezel test-smoke test-demo-replay \
+	test-overlay-regression test-overlay-regression-pc overlay-size-estimate test-save-game test-debug-start test-timer test-rng test-state test-start test-over test-pause test-input test-demo-start test-action test-quick-start test-enabled test-demo-scoreboard test-demo-select test-scoreboard test-add-bonus test-hiscore test-add-points test-phase-indicator test-level-indicator test-phase-complete test-game-tick test-record-mode test-bart-start test-bart-move test-bart-sit test-bart-action test-bart-catch test-bart-position test-bart-miss test-bart-position0 test-cupcakes-step test-cupcakes-draw test-aircakes-step test-aircakes-draw test-maggie-step test-marge-step test-marge-collect test-couch-step test-pacifier-step test-entities-draw test-play-draw test-marge-lcd test-miss-counter
 
 # Use if alignment edits in .h seem "cached" (also close cupcake-sdl.exe before make).
 force-rebuild:
