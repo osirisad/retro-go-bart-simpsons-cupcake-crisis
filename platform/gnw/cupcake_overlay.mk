@@ -1,7 +1,8 @@
 # Reference source list — duplicated in platform/gnw/Makefile.gnw.
 # Upstream firmware builds only the in-tree smoke stub; full game is make cupcake-bin here.
 
-PORT_ROOT := $(abspath ../..)
+_GNW_MK   := $(abspath $(lastword $(MAKEFILE_LIST)))
+PORT_ROOT := $(abspath $(dir $(_GNW_MK))../..)
 
 CUPCAKE_C_SOURCES = \
 $(PORT_ROOT)/src/cupcake_game.c \

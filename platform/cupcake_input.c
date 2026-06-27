@@ -1,5 +1,7 @@
 #include "cupcake_input.h"
 
+#if !defined(CUPCAKE_GNW) && !defined(TARGET_GNW)
+
 #include <SDL2/SDL_scancode.h>
 
 void cupcake_input_from_sdl_keyboard(const uint8_t *keys, uint16_t *buttons)
@@ -30,6 +32,8 @@ void cupcake_input_from_sdl_keyboard(const uint8_t *keys, uint16_t *buttons)
 
     *buttons = b;
 }
+
+#endif /* !CUPCAKE_GNW */
 
 #if defined(TARGET_GNW) || defined(LINUX_EMU)
 #include "odroid_input.h"

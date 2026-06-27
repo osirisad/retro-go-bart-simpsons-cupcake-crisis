@@ -3,6 +3,7 @@ build-pc/
 build-test/
 build-cupcake/
 build-gwhb/
+build-gnw/
 release/
 *.o
 *.d

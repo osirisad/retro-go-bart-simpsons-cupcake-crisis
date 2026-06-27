@@ -16,7 +16,8 @@
 #   make -f platform/gnw/Makefile.gnw
 #   make cupcake-bin
 
-PORT_ROOT   := $(abspath ../..)
+_GNW_MK   := $(abspath $(lastword $(MAKEFILE_LIST)))
+PORT_ROOT := $(abspath $(dir $(_GNW_MK))../..)
 BUILD_DIR   := $(PORT_ROOT)/build-gnw
 RELEASE_DIR := $(PORT_ROOT)/release
 TARGET_ELF  := $(BUILD_DIR)/cupcake-overlay.elf
@@ -32,7 +33,9 @@ OBJCOPY = $(CROSS_COMPILE)objcopy
 SIZE    = $(CROSS_COMPILE)size
 
 MCU     = -mcpu=cortex-m7 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -mno-unaligned-access
-BASE_CFLAGS = -std=c99 -Wall -Wextra -Os -g $(MCU) \
+# Match firmware Makefile.common (Cortex-M7 hard-float + nano/newlib for fopen/mem*)
+SPECS   = -specs=nano.specs -specs=nosys.specs
+BASE_CFLAGS = -std=c99 -Wall -Wextra -Os -g $(MCU) $(SPECS) \
 	-ffunction-sections -fdata-sections -fno-common -nostartfiles \
 	-DSTM32H7B0xx -DUSE_HAL_DRIVER -DIS_LITTLE_ENDIAN -DTARGET_GNW \
 	-DCUPCAKE_GNW -DCUPCAKE_AUDIO_ODROID
@@ -67,22 +70,32 @@ CFLAGS  = $(BASE_CFLAGS) $(INCLUDES)
 OBJS    = $(addprefix $(BUILD_DIR)/,$(notdir $(SRCS:.c=.o)))
 vpath %.c $(sort $(dir $(SRCS)))
 
-LDFLAGS = $(MCU) -nostdlib -T$(LINKER) -Wl,--gc-sections -lgcc
+LDFLAGS = $(MCU) $(SPECS) -nostdlib -T$(LINKER) -Wl,--gc-sections -lgcc
 
+# Imports checked only when linking (compile-only targets work without firmware.elf).
+IMPORTS_LDFLAGS =
 ifneq ($(wildcard $(IMPORTS_LD)),)
-  LDFLAGS += -T$(IMPORTS_LD)
+  IMPORTS_LDFLAGS += -T$(IMPORTS_LD)
 else ifneq ($(FIRMWARE_ELF),)
   ifeq ($(wildcard $(FIRMWARE_ELF)),)
     $(error FIRMWARE_ELF not found: $(FIRMWARE_ELF))
   endif
-  LDFLAGS += -Wl,--just-symbols=$(FIRMWARE_ELF)
-else
-  $(error Need platform/gnw/firmware_imports.ld or FIRMWARE_ELF=/path/to/matching/firmware.elf)
+  IMPORTS_LDFLAGS += -Wl,--just-symbols=$(FIRMWARE_ELF)
 endif
 
-.PHONY: all clean help size
+.PHONY: all clean help size compile-check imports-check
 
-all: $(TARGET_BIN)
+all: imports-check $(TARGET_BIN)
+
+imports-check:
+	@if [ -z "$(IMPORTS_LDFLAGS)" ]; then \
+	  echo "Need platform/gnw/firmware_imports.ld or FIRMWARE_ELF=/path/to/matching/firmware.elf" >&2; \
+	  echo "  bash tools/gen_overlay_imports.sh /path/to/firmware.elf > platform/gnw/firmware_imports.ld" >&2; \
+	  exit 1; \
+	fi
+
+compile-check: $(OBJS)
+	@echo "Compile OK ($(words $(OBJS)) objects). Run imports-check + link after generating firmware_imports.ld."
 
 help:
 	@echo "Standalone cupcake.bin build (no firmware source required if firmware_imports.ld exists)."
@@ -95,8 +108,8 @@ $(BUILD_DIR) $(RELEASE_DIR):
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(TARGET_ELF): $(OBJS) $(LINKER) | $(BUILD_DIR)
-	$(CC) $(OBJS) $(LDFLAGS) -o $@
+$(TARGET_ELF): $(OBJS) $(LINKER) | $(BUILD_DIR) imports-check
+	$(CC) $(OBJS) $(LDFLAGS) $(IMPORTS_LDFLAGS) -o $@
 	$(SIZE) $@
 
 $(TARGET_BIN): $(TARGET_ELF) | $(RELEASE_DIR)

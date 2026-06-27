@@ -1,7 +1,10 @@
 # Cupcake Crisis — Overlay / Game & Watch Sprint Board
 
-**Active ship path:** Celeste-style **named overlay** on stable `game-and-watch-retro-go-sd-cupcake` firmware.
+> **Archived for remaining work.** Active sprint board: **[RETROGO_SPRINT_BOARD.md](RETROGO_SPRINT_BOARD.md)** (ABI overlay path — no `firmware_imports.ld`). Repo cleanup: **RG-6** in that board.
+>
+> This file is kept for historical OV-* task IDs and completed spike notes.
 
+**Former ship path:** Celeste-style **named overlay** with per-firmware symbol imports (retired in favor of `gw_firmware_abi`).
 **GWHB is deferred** — see [GWHB_SPRINT_BOARD.md](GWHB_SPRINT_BOARD.md) (on hold). Do not add GWHB loader code to firmware for this round.
 
 ## How it works (player view)
@@ -105,7 +108,7 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 | OV-19 | Vendored `platform/gnw/sdk/` headers | [x] |
 | OV-20 | `tools/gen_overlay_imports.sh` + `firmware_symbols.txt` | [x] |
 | OV-21 | Commit `platform/gnw/firmware_imports.ld` | [ ] |
-| OV-22 | First successful `make cupcake-bin` link | [ ] |
+| OV-22 | First successful `make cupcake-bin` link | [~] |
 | OV-23 | `.github/workflows/cupcake-bin.yml` + Releases | [ ] |
 
 ### OV-21 `firmware_imports.ld`
@@ -115,6 +118,7 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 ### OV-22 First link
 
     Acceptance Criteria: `release/cupcake.bin` produced locally; size checked vs `__RAM_EMU` (expect tight until OV-3).
+    Progress: `make cupcake-compile-check` passes (13 ARM objects). Link blocked until OV-21 `firmware_imports.ld`.
 
 ### OV-23 GitHub Actions
 

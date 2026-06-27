@@ -1,6 +1,6 @@
 # Cupcake Crisis — GWHB / Game & Watch Sprint Board
 
-> **Status: ON HOLD** — Active ship path is Celeste-style overlay → [OVERLAY_SPRINT_BOARD.md](OVERLAY_SPRINT_BOARD.md). Revisit when you want ABI-only bin drops without reflashing firmware.
+> **Status: ON HOLD** — Active ship path: [RETROGO_SPRINT_BOARD.md](RETROGO_SPRINT_BOARD.md) (ABI overlay → `cupcake.bin`). Revisit GWHB for a self-contained `CUPCAKE.bin` without a named firmware slot. Cleanup: RG-6 **CL-P06** in Retro-Go board.
 
 Track **changes in this repo only** (`bart_simpson_cupcake_crisis_port`) to produce a single self-contained **`CUPCAKE.bin`** GWHB homebrew (code + all game assets embedded at build time).
 

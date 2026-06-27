@@ -1,6 +1,15 @@
 # Cupcake Crisis C Port — Sprint Board
 
-**Game & Watch ship path:** Celeste-style firmware overlay → [OVERLAY_SPRINT_BOARD.md](OVERLAY_SPRINT_BOARD.md) (**active**).
+## Sprint roadmap (high level)
+
+| Phase | Sprints | When |
+|-------|---------|------|
+| Ship Retro-Go overlay | RG-1..5 | Now |
+| Port repo cleanup | RG-6 (CL-P*) | After first ABI link |
+| **Fresh upstream firmware** | **RG-6b (RB-*)** | **After RG-08; before optimization & public PR** |
+| Code optimization | RG-7 (OP-*) | **Last — after RG-22 + RG-6b** |
+
+**Game & Watch ship path:** ABI overlay → [RETROGO_SPRINT_BOARD.md](RETROGO_SPRINT_BOARD.md) (**active**).
 
 **GWHB SD-drop** (single `CUPCAKE.bin`, no firmware rebuild): [GWHB_SPRINT_BOARD.md](GWHB_SPRINT_BOARD.md) — **on hold** until GWHB firmware is stable on hardware.
 
