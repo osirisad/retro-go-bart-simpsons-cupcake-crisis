@@ -100,7 +100,7 @@ Celeste uses a tiny P8 framebuffer and embedded tile/font data — much smaller 
 
 3. **Runtime buffers** — match linux emu: **320×240 RGB565** framebuffer + scaled LCD rect; avoid full 1024×800 RGBA in overlay BSS.
 
-4. **Re-measure** after first `platform/gnw/Makefile.overlay` link — treat this document’s estimates as spike bounds until `size.sh` reports real numbers.
+4. **Re-measure** after `make cupcake-bin` — recorded load **148 KiB** + BSS **153 KiB** (2026-06-27).
 
 ### When to escalate (firmware issue)
 

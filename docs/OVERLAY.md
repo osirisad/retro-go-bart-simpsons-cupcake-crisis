@@ -14,7 +14,7 @@ This repo stays the **source of truth** for game logic and the device host. The 
 |--------|------|-------|--------|
 | **PC / Linux dev** | `platform/sdl/main.c` | `make` → `build-pc/cupcake-sdl` | Loose files under `assets/` (`CUPCAKE_ASSETS`) |
 | **Linux emu (G&W regression)** | `platform/retrogo/main.c` | `make -f platform/retrogo/Makefile.cupcake` | Loose files (default `/home/odroid/cupcake/`) |
-| **G&W hardware** | `platform/gnw/main_cupcake.c` | `make -f platform/gnw/Makefile.overlay` → `cupcake.bin` | SD files at `/retro-go/cupcake/` (interim); embedded pack in OV-3 |
+| **G&W hardware** | `platform/gnw/main_cupcake.c` | `make cupcake-bin` → `release/cupcake.bin` | SD files at `/retro-go/cupcake/` (interim); embedded pack in RG-4 |
 
 Only the **platform host** and **asset loading path** differ. Game rules live in `src/cupcake_game.c` and are shared.
 
@@ -90,7 +90,7 @@ Same idea as `celeste.bin` → `"celeste"` → `app_main_celeste()`.
 make cupcake-bin   # → release/cupcake.bin
 ```
 
-No firmware source checkout. Requires `platform/gnw/firmware_imports.ld` (committed for releases).
+No firmware source checkout. Links through **`gw_firmware_abi`** (`platform/gnw/abi_stubs.c`).
 
 **Interim assets (until OV-3 embedded pack):** copy from `assets/` to SD:
 

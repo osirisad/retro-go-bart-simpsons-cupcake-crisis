@@ -3,6 +3,7 @@ name: cupcake.bin
 on:
   push:
     branches: [main]
+    tags: ['v*']
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -17,57 +18,40 @@ jobs:
       - name: Install ARM toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi make
 
-      - name: Build cupcake.bin (standalone)
+      - name: Build cupcake.bin (ABI — port repo only)
+        run: make cupcake-bin
+
+      - name: Overlay size report
         run: |
-          if [ ! -f platform/gnw/firmware_imports.ld ]; then
-            echo "::error::Missing platform/gnw/firmware_imports.ld — run the regen-imports workflow_dispatch job once and commit the file."
-            exit 1
-          fi
-          make cupcake-bin
+          arm-none-eabi-size -A build-gnw/cupcake-overlay.elf | grep overlay_cupcake || true
+          ls -la release/cupcake.bin
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: cupcake.bin
+          name: cupcake-bin
           path: |
             release/cupcake.bin
             docs/ATTRIBUTION.md
 
-  # Regenerate firmware_imports.ld when the pinned firmware changes.
-  # Runs only on maintainer workflow_dispatch with firmware checkout.
-  regen-imports:
-    if: github.event_name == 'workflow_dispatch'
+  attach-to-release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-cupcake-bin
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Checkout port repo
-        uses: actions/checkout@v4
-
-      - name: Checkout firmware (reference build only)
-        uses: actions/checkout@v4
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
         with:
-          repository: sylverb/game-and-watch-retro-go-sd-cupcake
-          path: firmware
-          submodules: recursive
+          name: cupcake-bin
+          path: artifact
 
-      - name: Install build deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi make python3 python3-pip
-          python3 -m pip install -r firmware/requirements.txt
-
-      - name: Build reference firmware ELF
-        working-directory: firmware
-        run: make GNW_TARGET=mario -j"$(nproc)"
-
-      - name: Generate firmware_imports.ld
-        run: |
-          bash tools/gen_overlay_imports.sh firmware/build/gw_retro_go.elf > platform/gnw/firmware_imports.ld
-          head -20 platform/gnw/firmware_imports.ld
-
-      - name: Upload imports artifact
-        uses: actions/upload-artifact@v4
+      - name: Attach to GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: firmware_imports.ld
-          path: platform/gnw/firmware_imports.ld
+          files: |
+            artifact/release/cupcake.bin
+            artifact/docs/ATTRIBUTION.md

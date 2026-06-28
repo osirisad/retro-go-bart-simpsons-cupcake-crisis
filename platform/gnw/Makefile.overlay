@@ -1,7 +1,4 @@
-# Build cupcake.bin — standalone (see Makefile.gnw).
-#
-# This file is a thin alias. You do NOT need the firmware source tree if
-# platform/gnw/firmware_imports.ld is present (committed for releases).
+# Thin alias for `make cupcake-bin` → `Makefile.gnw` (ABI standalone build).
 
 PORT_ROOT := $(abspath ../..)
 

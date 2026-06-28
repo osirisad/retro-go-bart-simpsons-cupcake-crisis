@@ -47,7 +47,7 @@ Firmware (minimal PR)
 | Overlay RAM budget | [x] | Load 148 KiB + BSS 153 KiB ≈ 302 KiB / 724 KiB slot |
 | Firmware slot + dispatch + stub | [x] | Fork: linker, `rg_emulators.c`, `main_cupcake.c` stub |
 | RAM budget doc + estimator | [x] | `docs/OVERLAY_RAM_BUDGET.md` |
-| Player install draft | [~] | `docs/RELEASE_CUPCAKE_BIN.md` (needs ABI rewrite) |
+| Player install draft | [x] | `docs/RELEASE_CUPCAKE_BIN.md` (ABI rewrite done) |
 
 **Retired / do not pursue:** OV-21 `firmware_imports.ld`, `tools/gen_overlay_imports.sh` as ship path.
 
@@ -78,7 +78,7 @@ Firmware (minimal PR)
 |-------|-------|--------|
 | Firmware API binding | **`gw_firmware_abi` shims** | Done |
 | `make cupcake-bin` | **`release/cupcake.bin` produced** | Done |
-| CI / Releases | Workflow expects `firmware_imports.ld` | Build from port repo only |
+| CI / Releases | Port-only workflow; tag `v*` attaches bin | Done |
 | Assets on device | SD PNG/JPG/WAV (interim) | Embedded pack (RAM fit) |
 | Hardware validation | Not run | Stub smoke → full game smoke |
 | Upstream PR | Done in fork | Submit + merge |
@@ -115,7 +115,7 @@ Firmware (minimal PR)
     - Heap/stdio: `ram_malloc`, `malloc`, `free`, `fopen`, `fread`, `fwrite`, `fclose`, `fseek`, `ftell`, `memcpy`, `memset`, `memmove`
     - stb path: use ABI `fopen`/`fread` — drop `__wrap_*` dependency if possible
 
-    Reference: firmware `gw_firmware_abi.c` field list; old list in `platform/gnw/firmware_symbols.txt`.
+    Reference: firmware `gw_firmware_abi.c` field list.
 
 ### RG-04 `common_emu_state`
 
@@ -138,9 +138,9 @@ Firmware (minimal PR)
 | RG-07 | Update `Makefile.gnw` — ABI sources, remove imports | [x] |
 | RG-08 | First successful `make cupcake-bin` link | [x] |
 | RG-09 | Overlay size check vs `__RAM_EMU` (~724 KiB) | [x] |
-| RG-10 | Retire imports tooling from docs/CI | [ ] |
-| RG-11 | `.github/workflows/cupcake-bin.yml` — port-only build | [ ] |
-| RG-12 | GitHub Release attaches `cupcake.bin` + attribution | [ ] |
+| RG-10 | Retire imports tooling from docs/CI | [x] |
+| RG-11 | `.github/workflows/cupcake-bin.yml` — port-only build | [x] |
+| RG-12 | GitHub Release attaches `cupcake.bin` + attribution | [x] |
 
 ### RG-07 Makefile
 
@@ -224,7 +224,7 @@ Firmware (minimal PR)
 | RG-20 | Hi-scores persist on device | [~] |
 | RG-21 | Save states via firmware slots | [ ] |
 | RG-22 | Hardware parity sign-off | [ ] |
-| RG-23 | Player install doc final | [~] |
+| RG-23 | Player install doc final | [x] |
 
 ### RG-19 Full game on device
 
@@ -256,13 +256,13 @@ Leftovers from symbol-import linking, firmware-in-tree builds, and deferred GWHB
 
 | Artifact | Repo | Path | Verdict |
 |----------|------|------|---------|
-| Symbol import generator | Port | `tools/gen_overlay_imports.sh` | **Delete** after RG-03/RG-07 |
-| Symbol list | Port | `platform/gnw/firmware_symbols.txt` | **Delete** (reference only for RG-03) |
-| Import build wrapper | Port | `tools/build_cupcake_bin.sh` | **Delete** or rewrite for ABI-only |
-| Unused source manifest | Port | `platform/gnw/cupcake_overlay.mk` | **Delete** (never included; was for firmware `CUPCAKE_PORT`) |
-| Makefile alias | Port | `platform/gnw/Makefile.overlay` | **Delete** or keep thin alias → document one command |
-| CI imports job | Port | `.github/workflows/cupcake-bin.yml` `regen-imports` | **Delete** job |
-| Stale import docs | Port | `docs/RELEASE_CUPCAKE_BIN.md`, `docs/OVERLAY.md`, `platform/gnw/README.md`, `platform/gnw/sdk/README.md` | **Rewrite** (RG-10 / CL-P05) |
+| Symbol import generator | Port | `tools/gen_overlay_imports.sh` | **Deleted** (RG-10) |
+| Symbol list | Port | `platform/gnw/firmware_symbols.txt` | **Deleted** (RG-10) |
+| Import build wrapper | Port | `tools/build_cupcake_bin.sh` | **Simplified** — calls `make cupcake-bin` |
+| Unused source manifest | Port | `platform/gnw/cupcake_overlay.mk` | **Deleted** (CL-P02) |
+| Makefile alias | Port | `platform/gnw/Makefile.overlay` | **Kept** as thin alias to `Makefile.gnw` |
+| CI imports job | Port | `.github/workflows/cupcake-bin.yml` `regen-imports` | **Deleted** (RG-11) |
+| Stale import docs | Port | `docs/RELEASE_CUPCAKE_BIN.md`, `docs/OVERLAY.md`, `platform/gnw/README.md`, `platform/gnw/sdk/README.md` | **Rewritten** (RG-10 / CL-P04) |
 | Archived sprint board | Port | `docs/archive/OVERLAY_SPRINT_BOARD.md` | Historical OV-* only |
 | GWHB plan | Port | `docs/archive/GWHB_SPRINT_BOARD.md` | Deferred GW-* |
 | Linux emu host | Port | `platform/retrogo/Makefile.cupcake` | **Keep** — valid dev regression (not abandoned) |
@@ -276,10 +276,10 @@ Leftovers from symbol-import linking, firmware-in-tree builds, and deferred GWHB
 
 | Task | Title | Status |
 |------|-------|--------|
-| CL-P01 | Remove symbol-import toolchain | [ ] |
-| CL-P02 | Consolidate overlay build entry points | [ ] |
+| CL-P01 | Remove symbol-import toolchain | [x] |
+| CL-P02 | Consolidate overlay build entry points | [x] |
 | CL-P03 | Slim `platform/gnw/sdk/` for ABI model | [ ] |
-| CL-P04 | Rewrite docs + READMEs (ABI, single board link) | [ ] |
+| CL-P04 | Rewrite docs + READMEs (ABI, single board link) | [x] |
 | CL-P05 | Trim archived `OVERLAY_SPRINT_BOARD.md` | [x] |
 | CL-P06 | GWHB deferred hygiene | [x] |
 | CL-P07 | `.gitignore` + local artifact purge | [ ] |

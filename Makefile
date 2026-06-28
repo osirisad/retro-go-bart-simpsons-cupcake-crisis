@@ -507,7 +507,7 @@ clean:
 gwhb:
 	$(MAKE) -f platform/gwhb/Makefile.gwhb
 
-# Device overlay — standalone cupcake.bin (see docs/RELEASE_CUPCAKE_BIN.md)
+# Device overlay — standalone cupcake.bin via ABI (see docs/RELEASE_CUPCAKE_BIN.md)
 cupcake-bin:
 	$(MAKE) -f platform/gnw/Makefile.gnw
 
