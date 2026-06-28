@@ -6,6 +6,9 @@
 # Usage (from port root):
 #   make cupcake-bin
 #   make cupcake-compile-check
+#
+# When assets/screen.jpg exists, runs tools/bundle_overlay_assets.py and embeds
+# art + audio (CUPCAKE_EMBEDDED_ASSETS). Otherwise SD asset fallback remains.
 
 _GNW_MK   := $(abspath $(lastword $(MAKEFILE_LIST)))
 PORT_ROOT := $(abspath $(dir $(_GNW_MK))../..)
@@ -16,6 +19,13 @@ TARGET_ELF  := $(BUILD_DIR)/cupcake-overlay.elf
 TARGET_BIN  := $(RELEASE_DIR)/cupcake.bin
 LINKER      := $(GNW_DIR)/overlay.ld
 SDK         := $(GNW_DIR)/sdk
+
+ASSETS_DIR     := $(PORT_ROOT)/assets
+ASSETS_SCREEN  := $(ASSETS_DIR)/screen.jpg
+CUPCAKE_DATA_C := $(GNW_DIR)/cupcake_data.c
+CUPCAKE_DATA_H := $(GNW_DIR)/cupcake_data.h
+BUNDLE_PY      := $(PORT_ROOT)/tools/bundle_overlay_assets.py
+PYTHON        ?= python3
 
 CROSS_COMPILE ?= arm-none-eabi-
 CC      = $(CROSS_COMPILE)gcc
@@ -57,13 +67,22 @@ SRCS = \
 	$(GNW_DIR)/abi_stubs.c \
 	$(GNW_DIR)/main_cupcake.c
 
-CFLAGS  = $(BASE_CFLAGS) $(INCLUDES)
+ifneq ($(wildcard $(ASSETS_SCREEN)),)
+EMBED_CFLAGS := -DCUPCAKE_EMBEDDED_ASSETS
+EMBED_SRCS   := $(GNW_DIR)/cupcake_data.c $(GNW_DIR)/cupcake_adpcm.c
+else
+EMBED_CFLAGS :=
+EMBED_SRCS   :=
+endif
+
+CFLAGS  = $(BASE_CFLAGS) $(EMBED_CFLAGS) $(INCLUDES)
+SRCS   += $(EMBED_SRCS)
 OBJS    = $(addprefix $(BUILD_DIR)/,$(notdir $(SRCS:.c=.o)))
 vpath %.c $(sort $(dir $(SRCS)))
 
 LDFLAGS = $(MCU) $(SPECS) -nostdlib -T$(LINKER) -Wl,--gc-sections -lgcc
 
-.PHONY: all clean help size compile-check
+.PHONY: all clean help size compile-check bundle-assets
 
 all: $(TARGET_BIN)
 
@@ -74,11 +93,19 @@ help:
 	@echo "Standalone cupcake.bin (ABI — no firmware checkout)."
 	@echo "  make cupcake-bin"
 
+bundle-assets: $(CUPCAKE_DATA_C)
+
 $(BUILD_DIR) $(RELEASE_DIR):
 	mkdir -p $@
 
+$(CUPCAKE_DATA_C): $(BUNDLE_PY) $(ASSETS_SCREEN) $(ASSETS_DIR)/sprites-color.png $(PORT_ROOT)/platform/host_audio_catalog.c
+	$(PYTHON) $(BUNDLE_PY) --assets $(ASSETS_DIR)
+
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/cupcake_data.o: $(CUPCAKE_DATA_C) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $(CUPCAKE_DATA_C) -o $@
 
 $(TARGET_ELF): $(OBJS) $(LINKER) | $(BUILD_DIR)
 	$(CC) $(OBJS) $(LDFLAGS) -o $@
@@ -94,3 +121,4 @@ size: $(TARGET_ELF)
 
 clean:
 	rm -rf $(BUILD_DIR)
+	rm -f $(CUPCAKE_DATA_C) $(CUPCAKE_DATA_H)

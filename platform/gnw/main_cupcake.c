@@ -145,7 +145,11 @@ void app_main_cupcake(uint8_t load_state, uint8_t start_paused, int8_t save_slot
     }
 
     if (gnw_assets_load(&g_host, &g_bezel, &g_bezel_w, &g_bezel_h) != 0) {
+#ifdef CUPCAKE_EMBEDDED_ASSETS
+        odroid_overlay_alert("Cupcake: embedded assets failed.\nRebuild cupcake.bin with assets/");
+#else
         odroid_overlay_alert("Cupcake: copy screen.jpg,\nsprites-color.png, audio/\nto /retro-go/cupcake/ on SD");
+#endif
         return;
     }
 
@@ -171,7 +175,11 @@ void app_main_cupcake(uint8_t load_state, uint8_t start_paused, int8_t save_slot
     cupcake_set_callback(cupcake_cb_wrap);
 
     if (host_audio_init(gnw_assets_base()) != 0) {
+#ifdef CUPCAKE_EMBEDDED_ASSETS
+        odroid_overlay_alert("Cupcake: embedded audio failed.\nRebuild cupcake.bin with assets/");
+#else
         odroid_overlay_alert("Cupcake: audio disabled.\nCopy WAVs to /retro-go/cupcake/audio/");
+#endif
     }
 
     if (load_state)

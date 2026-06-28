@@ -3,11 +3,12 @@
 
 #include "host_draw.h"
 
-/* Interim SD layout until OV-3 embeds assets in cupcake.bin. */
+/* SD layout when CUPCAKE_EMBEDDED_ASSETS is unset (dev fallback). */
 #ifndef CUPCAKE_GNW_ASSETS_BASE
 #define CUPCAKE_GNW_ASSETS_BASE "/retro-go/cupcake"
 #endif
 
+/* NULL when assets are embedded in cupcake.bin. */
 const char *gnw_assets_base(void);
 
 /* Load screen.jpg + sprites-color.png into heap (ram_malloc). Returns 0 on success. */

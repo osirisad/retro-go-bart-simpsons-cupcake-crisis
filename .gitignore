@@ -5,6 +5,8 @@ build-cupcake/
 build-gwhb/
 build-gnw/
 release/
+platform/gnw/cupcake_data.c
+platform/gnw/cupcake_data.h
 *.o
 *.d
 *.exe

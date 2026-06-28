@@ -62,7 +62,7 @@ Firmware (minimal PR)
 | **`platform/gnw/abi_*`** — ABI link layer (new) | `rg_emulators.c` — `strcmp(name,"cupcake")` |
 | `make cupcake-bin` → `release/cupcake.bin` | `docs/OVERLAY_CUPCAKE.md` |
 | GitHub Releases + CI | Optional: append ABI fields if port cannot workaround |
-| Embedded assets (RG-4) | — |
+| Embedded assets (RG-4) | [x] |
 
 **Not in firmware PR:** port sources, `CUPCAKE_PORT`, linux emu wiring, forcing users to install Cupcake.
 
@@ -202,17 +202,21 @@ Firmware (minimal PR)
 
 | Task | Title | Status |
 |------|-------|--------|
-| RG-16 | `tools/bundle_overlay_assets.py` | [ ] |
-| RG-17 | `cupcake_data.h` + link into overlay | [ ] |
-| RG-18 | Remove interim SD asset requirement for ship | [ ] |
+| RG-16 | `tools/bundle_overlay_assets.py` | [x] |
+| RG-17 | `cupcake_data.h` + link into overlay | [x] |
+| RG-18 | Remove interim SD asset requirement for ship | [x] |
 
 ### RG-16–17 Asset bundle
 
     Acceptance Criteria: Atlas masks, bezel, WAV table embedded at build time. `gnw_assets.c` loads from rodata instead of SD. Fits in `__RAM_EMU` per `docs/OVERLAY_RAM_BUDGET.md` (compression if needed).
 
+    **Recorded (2026-06-27):** `tools/bundle_overlay_assets.py` embeds JPEG bezel+atlas (auto quality fit) and IMA ADPCM audio. Linked load **583 456 B** + BSS **156 608 B** = **740 064 B** (~99.8% of 724 KiB slot). `release/cupcake.bin` is self-contained when built with local `assets/`.
+
 ### RG-18 Ship criteria
 
     Acceptance Criteria: Release `cupcake.bin` runs with **only** the bin on SD (plus firmware saves path for hi-scores). Optional: keep SD asset fallback behind ifdef for dev.
+
+    **Done:** `-DCUPCAKE_EMBEDDED_ASSETS` when `assets/screen.jpg` exists; SD fallback remains when assets absent (CI compile without embed).
 
 ---
 

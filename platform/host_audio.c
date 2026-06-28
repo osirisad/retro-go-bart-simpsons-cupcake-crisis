@@ -15,6 +15,11 @@ static int g_muted;
 
 #include "odroid_audio.h"
 
+#ifdef CUPCAKE_EMBEDDED_ASSETS
+#include "cupcake_data.h"
+#include "cupcake_adpcm.h"
+#endif
+
 #define HOST_VOICE_MAX 12
 
 typedef struct {
@@ -48,6 +53,7 @@ static int read_u32_le(const uint8_t *p)
     return (int)p[0] | ((int)p[1] << 8) | ((int)p[2] << 16) | ((int)p[3] << 24);
 }
 
+#ifndef CUPCAKE_EMBEDDED_ASSETS
 static int load_wav_mono(const char *path, host_pcm_t *out)
 {
     FILE *fp;
@@ -138,6 +144,7 @@ static int load_wav_mono(const char *path, host_pcm_t *out)
     out->sample_rate = rate;
     return 0;
 }
+#endif
 
 static void resample_to_device(host_pcm_t *pcm)
 {
@@ -171,19 +178,56 @@ static void resample_to_device(host_pcm_t *pcm)
     pcm->sample_rate = g_device_rate;
 }
 
+#ifdef CUPCAKE_EMBEDDED_ASSETS
+static int load_embedded_pcm(int index, host_pcm_t *pcm)
+{
+    const host_sfx_def_t *def = &host_sfx_catalog[index];
+    const cupcake_embedded_wav_t *ew;
+    int16_t *decoded;
+
+    ew = cupcake_embedded_wav_by_file(def->file);
+    if (!ew || !ew->adpcm || ew->adpcm_size < 3u || ew->pcm_samples < 1u)
+        return -1;
+
+    decoded = (int16_t *)malloc((size_t)ew->pcm_samples * sizeof(int16_t));
+    if (!decoded)
+        return -1;
+    if (cupcake_adpcm_decode(ew->adpcm, ew->adpcm_size, decoded, (int)ew->pcm_samples) != 0) {
+        free(decoded);
+        return -1;
+    }
+
+    pcm->pcm = decoded;
+    pcm->len = (int)ew->pcm_samples;
+    pcm->sample_rate = 22050;
+    return 0;
+}
+#endif
+
 static void load_catalog_pcm(int index)
 {
-    char path[640];
     const host_sfx_def_t *def = &host_sfx_catalog[index];
     host_pcm_t *pcm = &g_pcm[index];
 
     if (pcm->pcm)
         return;
-    snprintf(path, sizeof path, "%s/%s", g_audio_dir, def->file);
-    if (load_wav_mono(path, pcm) != 0) {
-        fprintf(stderr, "host_audio: missing %s\n", path);
+
+#ifdef CUPCAKE_EMBEDDED_ASSETS
+    if (load_embedded_pcm(index, pcm) != 0) {
+        fprintf(stderr, "host_audio: missing embedded %s\n", def->file);
         return;
     }
+#else
+    {
+        char path[640];
+
+        snprintf(path, sizeof path, "%s/%s", g_audio_dir, def->file);
+        if (load_wav_mono(path, pcm) != 0) {
+            fprintf(stderr, "host_audio: missing %s\n", path);
+            return;
+        }
+    }
+#endif
     pcm->volume = def->volume;
     resample_to_device(pcm);
 }
@@ -202,6 +246,11 @@ int host_audio_init(const char *assets_base)
     if (g_ready)
         return 0;
 
+    g_device_rate = odroid_audio_sample_rate_get();
+    if (g_device_rate <= 0)
+        g_device_rate = 22050;
+
+#ifndef CUPCAKE_EMBEDDED_ASSETS
     if (!assets_base || !assets_base[0]) {
 #if defined(CUPCAKE_GNW)
         assets_base = "/retro-go/cupcake";
@@ -209,12 +258,11 @@ int host_audio_init(const char *assets_base)
         assets_base = "/home/odroid/cupcake";
 #endif
     }
-
-    g_device_rate = odroid_audio_sample_rate_get();
-    if (g_device_rate <= 0)
-        g_device_rate = 22050;
-
     snprintf(g_audio_dir, sizeof g_audio_dir, "%s/audio", assets_base);
+#else
+    (void)assets_base;
+    g_audio_dir[0] = '\0';
+#endif
 
     for (i = 0; i < HOST_SFX_COUNT; i++)
         load_catalog_pcm(i);

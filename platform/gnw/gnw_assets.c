@@ -1,5 +1,5 @@
 /*
- * Load PNG/JPG from SD for device overlay (replaced by embedded pack in OV-3).
+ * Load PNG/JPG for device overlay — embedded pack (RG-4) or SD fallback (dev).
  */
 #include "gnw_assets.h"
 
@@ -11,14 +11,28 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef CUPCAKE_EMBEDDED_ASSETS
+#include "cupcake_data.h"
+#endif
+
 static uint8_t *g_bezel_pixels;
 static uint8_t *g_atlas_pixels;
 
 const char *gnw_assets_base(void)
 {
+#ifdef CUPCAKE_EMBEDDED_ASSETS
+    return NULL;
+#else
     return CUPCAKE_GNW_ASSETS_BASE;
+#endif
 }
 
+static uint8_t *load_rgba_memory(const uint8_t *data, int len, int *w, int *h)
+{
+    return stbi_load_from_memory(data, len, w, h, NULL, 4);
+}
+
+#ifndef CUPCAKE_EMBEDDED_ASSETS
 static uint8_t *load_rgba_file(const char *path, int *w, int *h)
 {
     return stbi_load(path, w, h, NULL, 4);
@@ -28,10 +42,10 @@ static void asset_path(char *buf, size_t bufsz, const char *name)
 {
     snprintf(buf, bufsz, "%s/%s", gnw_assets_base(), name);
 }
+#endif
 
 int gnw_assets_load(host_atlas_t *host, host_bezel_t *bezel, int *bezel_w, int *bezel_h)
 {
-    char path[512];
     int aw = 0;
     int ah = 0;
     int bw = 0;
@@ -44,19 +58,33 @@ int gnw_assets_load(host_atlas_t *host, host_bezel_t *bezel, int *bezel_w, int *
     memset(host, 0, sizeof *host);
     memset(bezel, 0, sizeof *bezel);
 
-    asset_path(path, sizeof path, "screen.jpg");
-    g_bezel_pixels = load_rgba_file(path, &bw, &bh);
-    if (!g_bezel_pixels) {
-        asset_path(path, sizeof path, "screen.png");
-        g_bezel_pixels = load_rgba_file(path, &bw, &bh);
-    }
+#ifdef CUPCAKE_EMBEDDED_ASSETS
+    {
+        cupcake_blob_t b = cupcake_embedded_bezel();
+        cupcake_blob_t a = cupcake_embedded_atlas();
 
-    asset_path(path, sizeof path, "sprites-color.png");
-    g_atlas_pixels = load_rgba_file(path, &aw, &ah);
-    if (!g_atlas_pixels) {
-        asset_path(path, sizeof path, "sprites.png");
-        g_atlas_pixels = load_rgba_file(path, &aw, &ah);
+        g_bezel_pixels = load_rgba_memory(b.data, (int)b.size, &bw, &bh);
+        g_atlas_pixels = load_rgba_memory(a.data, (int)a.size, &aw, &ah);
     }
+#else
+    {
+        char path[512];
+
+        asset_path(path, sizeof path, "screen.jpg");
+        g_bezel_pixels = load_rgba_file(path, &bw, &bh);
+        if (!g_bezel_pixels) {
+            asset_path(path, sizeof path, "screen.png");
+            g_bezel_pixels = load_rgba_file(path, &bw, &bh);
+        }
+
+        asset_path(path, sizeof path, "sprites-color.png");
+        g_atlas_pixels = load_rgba_file(path, &aw, &ah);
+        if (!g_atlas_pixels) {
+            asset_path(path, sizeof path, "sprites.png");
+            g_atlas_pixels = load_rgba_file(path, &aw, &ah);
+        }
+    }
+#endif
 
     if (!g_bezel_pixels || !g_atlas_pixels || bw < 1 || bh < 1 || aw < 1 || ah < 1) {
         gnw_assets_free(host, bezel);
@@ -104,7 +132,6 @@ void gnw_assets_free(host_atlas_t *host, host_bezel_t *bezel)
         g_atlas_pixels = NULL;
     }
     if (host && host->lcd_pixels) {
-        /* stbi buffers are freed above; lcd buffer from ram_malloc — no free API in gw_malloc header for single free; leak on shutdown is OK for overlay exit. */
         host->lcd_pixels = NULL;
     }
     if (host)

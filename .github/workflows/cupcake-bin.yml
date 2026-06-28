@@ -18,7 +18,7 @@ jobs:
       - name: Install ARM toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi make
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi make python3-pil
 
       - name: Build cupcake.bin (ABI — port repo only)
         run: make cupcake-bin
