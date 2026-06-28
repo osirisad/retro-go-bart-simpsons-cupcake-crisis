@@ -18,6 +18,8 @@ SECTIONS
 {
   .overlay_cupcake : {
     __ram_emu_cupcake_start__ = .;
+    KEEP(*(.cupcake_entry))
+    KEEP(*(.cupcake_entry*))
     KEEP(*(.text .text*))
     *(.text .text*)
     *(.rodata .rodata*)

@@ -65,6 +65,7 @@ SRCS = \
 	$(PORT_ROOT)/platform/stb/stb_image_impl.c \
 	$(GNW_DIR)/gnw_assets.c \
 	$(GNW_DIR)/abi_stubs.c \
+	$(GNW_DIR)/cupcake_entry.c \
 	$(GNW_DIR)/main_cupcake.c
 
 ifneq ($(wildcard $(ASSETS_SCREEN)),)
