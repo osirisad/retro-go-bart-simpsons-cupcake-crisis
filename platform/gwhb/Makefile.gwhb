@@ -8,7 +8,7 @@
 # Requires: arm-none-eabi-gcc (Ubuntu: gcc-arm-none-eabi)
 #
 # When platform/gwhb/main_gwhb.c is missing, `all` only checks the toolchain
-# (CI stays green until the GWHB host is implemented — see GWHB_SPRINT_BOARD.md).
+# (CI stays green until the GWHB host is implemented — see docs/archive/GWHB_SPRINT_BOARD.md).
 
 CROSS_COMPILE ?= arm-none-eabi-
 CC      = $(CROSS_COMPILE)gcc
@@ -33,7 +33,7 @@ ifeq ($(wildcard $(GWHB_HOST_SRC)),)
 all: toolchain-check
 	@echo ""
 	@echo "GWHB host not built: $(GWHB_HOST_SRC) is missing."
-	@echo "See GWHB_SPRINT_BOARD.md (GW-4..GW-10). CI verifies toolchain only."
+	@echo "See docs/archive/GWHB_SPRINT_BOARD.md (GW-4..GW-10). CI verifies toolchain only."
 
 toolchain-check:
 	@echo "Toolchain: $$($(CC) --version | head -1)"

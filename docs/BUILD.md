@@ -33,7 +33,7 @@ Sprite UV export (optional visual check): `python test/export_sprites.py` — se
 
 ## retro-go / Game & Watch — overlay (active)
 
-Integrate into your retro-go-sd firmware fork using the Celeste overlay model. See [OVERLAY.md](OVERLAY.md) and [OVERLAY_SPRINT_BOARD.md](../OVERLAY_SPRINT_BOARD.md).
+Integrate into your retro-go-sd firmware fork using the Celeste overlay model. See [OVERLAY.md](OVERLAY.md) and [GW_SPRINT_BOARD.md](../GW_SPRINT_BOARD.md).
 
 After shared-code edits: `./build.sh test-overlay-regression` (PC tests; linux emu when firmware tree is available).
 
@@ -74,7 +74,7 @@ Assets are embedded at build time (`cupcake_data.h`), not loose files on SD.
 
 ## GWHB (deferred)
 
-Not used this round. Scaffold under `platform/gwhb/` remains for a future pass — see [GWHB_SPRINT_BOARD.md](../GWHB_SPRINT_BOARD.md).
+Not used this round. Scaffold under `platform/gwhb/` remains for a future pass — see [docs/archive/GWHB_SPRINT_BOARD.md](archive/GWHB_SPRINT_BOARD.md).
 
 ## Asset pipeline
 

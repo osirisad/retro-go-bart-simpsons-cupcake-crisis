@@ -41,7 +41,9 @@ Details: [docs/HAR.md](docs/HAR.md).
 | [docs/HAR.md](docs/HAR.md) | HAR contents and extraction |
 | [docs/HOST_WEB.md](docs/HOST_WEB.md) | Running the original in a browser |
 | [docs/PARITY_CHECKLIST.md](docs/PARITY_CHECKLIST.md) | Manual itch.io parity sign-off |
-| [SPRINT_BOARD.md](SPRINT_BOARD.md) | Development progress |
+| [docs/sprints/README.md](docs/sprints/README.md) | **Which sprint board to use** |
+| [GW_SPRINT_BOARD.md](GW_SPRINT_BOARD.md) | Game & Watch ship (ABI, firmware, device) |
+| [SPRINT_BOARD.md](SPRINT_BOARD.md) | Gameplay parity vs JS (`TASK-*`) |
 
 ## Legal
 

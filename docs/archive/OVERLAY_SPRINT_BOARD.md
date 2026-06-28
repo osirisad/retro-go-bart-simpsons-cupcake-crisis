@@ -1,16 +1,15 @@
-# Cupcake Crisis — Overlay / Game & Watch Sprint Board
+﻿# Overlay sprint board (archived)
 
-> **Archived for remaining work.** Active sprint board: **[RETROGO_SPRINT_BOARD.md](RETROGO_SPRINT_BOARD.md)** (ABI overlay path — no `firmware_imports.ld`). Repo cleanup: **RG-6** in that board.
->
-> This file is kept for historical OV-* task IDs and completed spike notes.
+> **Historical only.** Active G&W work: [GW_SPRINT_BOARD.md](../../GW_SPRINT_BOARD.md) · Index: [docs/sprints/README.md](../sprints/README.md)
 
-**Former ship path:** Celeste-style **named overlay** with per-firmware symbol imports (retired in favor of `gw_firmware_abi`).
-**GWHB is deferred** — see [GWHB_SPRINT_BOARD.md](GWHB_SPRINT_BOARD.md) (on hold). Do not add GWHB loader code to firmware for this round.
+**Former ship path:** Celeste-style named overlay with per-firmware symbol imports — retired in favor of ABI + [GW_SPRINT_BOARD.md](../../GW_SPRINT_BOARD.md).
+
+**GWHB is deferred** — see [docs/archive/GWHB_SPRINT_BOARD.md](GWHB_SPRINT_BOARD.md).
 
 ## How it works (player view)
 
 1. Flash **firmware once** (includes Cupcake overlay slot + launcher dispatch).
-2. Copy **`cupcake.bin`** from this repo’s Releases to `/roms/homebrew/cupcake.bin` on SD.
+2. Copy **`cupcake.bin`** from this repoΓÇÖs Releases to `/roms/homebrew/cupcake.bin` on SD.
 3. Launcher loads the bin into RAM at `__RAM_EMU_START__` (`0x2404B000`), zeros overlay BSS, calls **`app_main_cupcake()`**.
 
 Game updates = replace `cupcake.bin` only. No firmware reflash unless the overlay ABI changes.
@@ -19,8 +18,8 @@ Game updates = replace `cupcake.bin` only. No firmware reflash unless the overla
 
 | Repo | Role |
 |------|------|
-| **This port repo** | Game source, device host (`platform/gnw/`), **`make cupcake-bin`** → `release/cupcake.bin`, GitHub Releases |
-| **Firmware fork** | Linker slot, stub smoke test, launcher dispatch — **minimal upstream PR** (no port sources in firmware Makefile) |
+| **This port repo** | Game source, device host (`platform/gnw/`), **`make cupcake-bin`** ΓåÆ `release/cupcake.bin`, GitHub Releases |
+| **Firmware fork** | Linker slot, stub smoke test, launcher dispatch ΓÇö **minimal upstream PR** (no port sources in firmware Makefile) |
 
 **Port repo is source of truth for game logic.** Firmware ships a tiny in-tree stub; full game is built standalone here via `platform/gnw/Makefile.gnw` + vendored `platform/gnw/sdk/` + `platform/gnw/firmware_imports.ld`.
 
@@ -28,7 +27,7 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 
 **Attribution:** [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md).
 
-**Related:** gameplay parity → [SPRINT_BOARD.md](SPRINT_BOARD.md).
+**Related:** gameplay parity ΓåÆ [SPRINT_BOARD.md](SPRINT_BOARD.md).
 
 ---
 
@@ -37,18 +36,18 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 | In **port repo** | In **firmware fork** (upstream / minimal PR) |
 |------------------|------------------------------------------------|
 | `src/`, `platform/host_*.c`, `platform/gnw/main_cupcake.c` | `.overlay_cupcake` + `.overlay_cupcake_bss` in linker scripts |
-| `make cupcake-bin` → `release/cupcake.bin` | In-tree stub `Core/Src/porting/cupcake/main_cupcake.c` |
-| `platform/gnw/firmware_imports.ld` (symbol map for link) | `rg_emulators.c` — `strcmp(name,"cupcake")` + `app_main_cupcake` |
-| `tools/bundle_overlay_assets.py` → `cupcake_data.h` (OV-3) | Stub `cupcake.bin` in SD homebrew folder on full firmware build |
+| `make cupcake-bin` ΓåÆ `release/cupcake.bin` | In-tree stub `Core/Src/porting/cupcake/main_cupcake.c` |
+| `platform/gnw/firmware_imports.ld` (symbol map for link) | `rg_emulators.c` ΓÇö `strcmp(name,"cupcake")` + `app_main_cupcake` |
+| `tools/bundle_overlay_assets.py` ΓåÆ `cupcake_data.h` (OV-3) | Stub `cupcake.bin` in SD homebrew folder on full firmware build |
 | PC regression (`make test-overlay-regression-pc`) | `docs/OVERLAY_CUPCAKE.md` |
 
 **Not in firmware PR:** `CUPCAKE_PORT` Makefile wiring, linux emu fixes, or pulling port sources into firmware build.
 
-**RAM budget:** `__RAM_EMU_LENGTH__` ≈ 724 KiB (SD linker). OV-3 embedded assets required to fit masks + art.
+**RAM budget:** `__RAM_EMU_LENGTH__` Γëê 724 KiB (SD linker). OV-3 embedded assets required to fit masks + art.
 
 ---
 
-## Gap analysis — today vs overlay target
+## Gap analysis ΓÇö today vs overlay target
 
 | Piece | Today | Target |
 |-------|-------|--------|
@@ -56,18 +55,18 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 | Device host | `platform/gnw/main_cupcake.c` | Done (OV-2) |
 | Display | `host_draw.c` + `gw_lcd` blit | Done |
 | Audio | Odroid path + SD WAVs | Embedded WAV table (OV-3) |
-| Assets | SD PNG/JPG at `/retro-go/cupcake/` (interim) | Build-time bundle → `cupcake_data.h` |
-| Firmware integration | Linker + dispatch (upstream) | Minimal — no port Makefile hook |
+| Assets | SD PNG/JPG at `/retro-go/cupcake/` (interim) | Build-time bundle ΓåÆ `cupcake_data.h` |
+| Firmware integration | Linker + dispatch (upstream) | Minimal ΓÇö no port Makefile hook |
 | Standalone `cupcake.bin` build | Makefile.gnw + sdk; **missing `firmware_imports.ld`** | `make cupcake-bin` + GitHub Releases |
 | Ship artifact | PC `cupcake-sdl.exe` | `cupcake.bin` on SD |
 
 ---
 
-## Sprint OV-1 — Spike & docs
+## Sprint OV-1 ΓÇö Spike & docs
 
 | Task | Title | Status |
 |------|-------|--------|
-| OV-01 | `docs/OVERLAY.md` — Celeste-model guide | [x] |
+| OV-01 | `docs/OVERLAY.md` ΓÇö Celeste-model guide | [x] |
 | OV-02 | RAM / overlay size budget vs `__RAM_EMU` | [x] |
 | OV-03 | PC regression gate (+ optional linux emu) | [x] |
 
@@ -77,7 +76,7 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 
 ### OV-02 RAM / overlay size budget
 
-    Acceptance Criteria: `docs/OVERLAY_RAM_BUDGET.md` + `tools/overlay_size_estimate.py`. Masks ~671 KiB — compression/embed decision deferred to OV-3.
+    Acceptance Criteria: `docs/OVERLAY_RAM_BUDGET.md` + `tools/overlay_size_estimate.py`. Masks ~671 KiB ΓÇö compression/embed decision deferred to OV-3.
 
 ### OV-03 Regression gate
 
@@ -85,7 +84,7 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 
 ---
 
-## Sprint OV-2 — Port device host
+## Sprint OV-2 ΓÇö Port device host
 
 | Task | Title | Status |
 |------|-------|--------|
@@ -94,13 +93,13 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 | OV-06 | Odroid audio (SD WAV interim; embedded in OV-3) | [x] |
 | OV-07 | `host_draw.c` / `host_audio.c` GNW ifdef pass | [x] |
 
-### OV-04–07 notes
+### OV-04ΓÇô07 notes
 
     Host loop, LCD blit, input, odroid audio wired. Interim SD assets via `gnw_assets.c`. `host_audio.c` defaults to `/retro-go/cupcake` when `CUPCAKE_GNW`.
 
 ---
 
-## Sprint OV-2b — Standalone `cupcake.bin` build (port repo)
+## Sprint OV-2b ΓÇö Standalone `cupcake.bin` build (port repo)
 
 | Task | Title | Status |
 |------|-------|--------|
@@ -126,7 +125,7 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 
 ---
 
-## Sprint OV-3 — Embedded assets
+## Sprint OV-3 ΓÇö Embedded assets
 
 | Task | Title | Status |
 |------|-------|--------|
@@ -140,19 +139,19 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 
 ---
 
-## Sprint OV-4 — Firmware (upstream, minimal)
+## Sprint OV-4 ΓÇö Firmware (upstream, minimal)
 
 | Task | Title | Status |
 |------|-------|--------|
 | OV-11 | Linker `.overlay_cupcake` sections | [x] |
 | OV-12 | In-tree stub + SD extract on firmware build | [x] |
-| OV-13 | `rg_emulators.c` — `strcmp(name,"cupcake")` | [x] |
-| OV-14 | Hardware smoke — stub on device | [ ] |
+| OV-13 | `rg_emulators.c` ΓÇö `strcmp(name,"cupcake")` | [x] |
+| OV-14 | Hardware smoke ΓÇö stub on device | [ ] |
 | OV-15 | Player install doc | [~] |
 
-### OV-11–13 (firmware fork)
+### OV-11ΓÇô13 (firmware fork)
 
-    Already in upstream-oriented fork. **OV-12 is stub-only** — not port-repo `CUPCAKE_PORT` integration (reverted to keep upstream PR small).
+    Already in upstream-oriented fork. **OV-12 is stub-only** ΓÇö not port-repo `CUPCAKE_PORT` integration (reverted to keep upstream PR small).
 
 ### OV-14 Hardware smoke (stub)
 
@@ -164,11 +163,11 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 
 ---
 
-## Sprint OV-5 — Polish & ship
+## Sprint OV-5 ΓÇö Polish & ship
 
 | Task | Title | Status |
 |------|-------|--------|
-| OV-24 | Hardware smoke — full `cupcake.bin` from Releases | [ ] |
+| OV-24 | Hardware smoke ΓÇö full `cupcake.bin` from Releases | [ ] |
 | OV-16 | Save states via firmware slots | [ ] |
 | OV-17 | Hardware parity sign-off | [ ] |
 
@@ -177,13 +176,13 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 ## Dependency graph
 
 ```
-OV-01 ── OV-02 ── OV-11..13 (firmware, upstream)
-  │
-OV-03 ── OV-04..07 ── OV-18..20 ── OV-21 ── OV-22 ── OV-23 (standalone build + CI)
-                              │
-                              └── OV-08 ── OV-09 ── OV-24 ── OV-17
-                                        └── OV-10
-                    OV-14 (stub) ── OV-15
+OV-01 ΓöÇΓöÇ OV-02 ΓöÇΓöÇ OV-11..13 (firmware, upstream)
+  Γöé
+OV-03 ΓöÇΓöÇ OV-04..07 ΓöÇΓöÇ OV-18..20 ΓöÇΓöÇ OV-21 ΓöÇΓöÇ OV-22 ΓöÇΓöÇ OV-23 (standalone build + CI)
+                              Γöé
+                              ΓööΓöÇΓöÇ OV-08 ΓöÇΓöÇ OV-09 ΓöÇΓöÇ OV-24 ΓöÇΓöÇ OV-17
+                                        ΓööΓöÇΓöÇ OV-10
+                    OV-14 (stub) ΓöÇΓöÇ OV-15
                               OV-16
 ```
 
@@ -191,15 +190,15 @@ OV-03 ── OV-04..07 ── OV-18..20 ── OV-21 ── OV-22 ── OV-23 (
 
 ## Next actions (recommended order)
 
-1. **OV-21** — Build or obtain matching `firmware.elf`; run `gen_overlay_imports.sh`; commit `firmware_imports.ld`.
-2. **OV-22** — `make cupcake-bin`; fix link errors / size overflow.
-3. **OV-23** — Fix GitHub PAT `workflow` scope; push workflow; tag Release.
-4. **OV-14** — Stub smoke on hardware (validates firmware slot).
-5. **OV-24** — Full game on hardware from Release `cupcake.bin`.
-6. **OV-08/09** — Embedded assets (RAM fit).
+1. **OV-21** ΓÇö Build or obtain matching `firmware.elf`; run `gen_overlay_imports.sh`; commit `firmware_imports.ld`.
+2. **OV-22** ΓÇö `make cupcake-bin`; fix link errors / size overflow.
+3. **OV-23** ΓÇö Fix GitHub PAT `workflow` scope; push workflow; tag Release.
+4. **OV-14** ΓÇö Stub smoke on hardware (validates firmware slot).
+5. **OV-24** ΓÇö Full game on hardware from Release `cupcake.bin`.
+6. **OV-08/09** ΓÇö Embedded assets (RAM fit).
 
 ---
 
 ## When to revisit GWHB
 
-Resume [GWHB_SPRINT_BOARD.md](GWHB_SPRINT_BOARD.md) if you later want a self-contained ABI-only image with no firmware symbol imports.
+Resume [GWHB_SPRINT_BOARD.md](GWHB_SPRINT_BOARD.md) in this folder if you later want a self-contained ABI-only image with no firmware symbol imports.

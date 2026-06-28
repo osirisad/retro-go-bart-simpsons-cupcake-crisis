@@ -1,31 +1,21 @@
 # Standalone Game & Watch overlay build — port repo only.
 #
 # Produces release/cupcake.bin (copy to SD: /roms/homebrew/cupcake.bin).
-# Does NOT compile the full retro-go firmware.
-#
-# Requires:
-#   - arm-none-eabi-gcc on PATH
-#   - A symbol map from the firmware you flash on the device (one of):
-#       platform/gnw/firmware_imports.ld   (checked in, preferred)
-#       FIRMWARE_ELF=/path/to/firmware.elf (from a firmware build or release)
-#
-# Generate imports after flashing a new firmware version:
-#   bash tools/gen_overlay_imports.sh /path/to/firmware.elf > platform/gnw/firmware_imports.ld
+# Links through gw_firmware_abi at runtime — no firmware.elf or imports file.
 #
 # Usage (from port root):
-#   make -f platform/gnw/Makefile.gnw
 #   make cupcake-bin
+#   make cupcake-compile-check
 
 _GNW_MK   := $(abspath $(lastword $(MAKEFILE_LIST)))
 PORT_ROOT := $(abspath $(dir $(_GNW_MK))../..)
+GNW_DIR   := $(PORT_ROOT)/platform/gnw
 BUILD_DIR   := $(PORT_ROOT)/build-gnw
 RELEASE_DIR := $(PORT_ROOT)/release
 TARGET_ELF  := $(BUILD_DIR)/cupcake-overlay.elf
 TARGET_BIN  := $(RELEASE_DIR)/cupcake.bin
-LINKER      := $(PORT_ROOT)/platform/gnw/overlay.ld
-SDK         := $(PORT_ROOT)/platform/gnw/sdk
-IMPORTS_LD  := $(PORT_ROOT)/platform/gnw/firmware_imports.ld
-FIRMWARE_ELF ?=
+LINKER      := $(GNW_DIR)/overlay.ld
+SDK         := $(GNW_DIR)/sdk
 
 CROSS_COMPILE ?= arm-none-eabi-
 CC      = $(CROSS_COMPILE)gcc
@@ -33,14 +23,14 @@ OBJCOPY = $(CROSS_COMPILE)objcopy
 SIZE    = $(CROSS_COMPILE)size
 
 MCU     = -mcpu=cortex-m7 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -mno-unaligned-access
-# Match firmware Makefile.common (Cortex-M7 hard-float + nano/newlib for fopen/mem*)
 SPECS   = -specs=nano.specs -specs=nosys.specs
 BASE_CFLAGS = -std=c99 -Wall -Wextra -Os -g $(MCU) $(SPECS) \
 	-ffunction-sections -fdata-sections -fno-common -nostartfiles \
 	-DSTM32H7B0xx -DUSE_HAL_DRIVER -DIS_LITTLE_ENDIAN -DTARGET_GNW \
-	-DCUPCAKE_GNW -DCUPCAKE_AUDIO_ODROID
+	-DCUPCAKE_GNW -DCUPCAKE_ABI -DCUPCAKE_AUDIO_ODROID
 
 INCLUDES = \
+	-I$(GNW_DIR) \
 	-I$(SDK)/Core/Inc \
 	-I$(SDK)/Core/Inc/porting \
 	-I$(SDK)/Core/Inc/porting/cupcake \
@@ -63,8 +53,9 @@ SRCS = \
 	$(PORT_ROOT)/platform/host_audio_catalog.c \
 	$(PORT_ROOT)/platform/cupcake_input.c \
 	$(PORT_ROOT)/platform/stb/stb_image_impl.c \
-	$(PORT_ROOT)/platform/gnw/gnw_assets.c \
-	$(PORT_ROOT)/platform/gnw/main_cupcake.c
+	$(GNW_DIR)/gnw_assets.c \
+	$(GNW_DIR)/abi_stubs.c \
+	$(GNW_DIR)/main_cupcake.c
 
 CFLAGS  = $(BASE_CFLAGS) $(INCLUDES)
 OBJS    = $(addprefix $(BUILD_DIR)/,$(notdir $(SRCS:.c=.o)))
@@ -72,34 +63,15 @@ vpath %.c $(sort $(dir $(SRCS)))
 
 LDFLAGS = $(MCU) $(SPECS) -nostdlib -T$(LINKER) -Wl,--gc-sections -lgcc
 
-# Imports checked only when linking (compile-only targets work without firmware.elf).
-IMPORTS_LDFLAGS =
-ifneq ($(wildcard $(IMPORTS_LD)),)
-  IMPORTS_LDFLAGS += -T$(IMPORTS_LD)
-else ifneq ($(FIRMWARE_ELF),)
-  ifeq ($(wildcard $(FIRMWARE_ELF)),)
-    $(error FIRMWARE_ELF not found: $(FIRMWARE_ELF))
-  endif
-  IMPORTS_LDFLAGS += -Wl,--just-symbols=$(FIRMWARE_ELF)
-endif
+.PHONY: all clean help size compile-check
 
-.PHONY: all clean help size compile-check imports-check
-
-all: imports-check $(TARGET_BIN)
-
-imports-check:
-	@if [ -z "$(IMPORTS_LDFLAGS)" ]; then \
-	  echo "Need platform/gnw/firmware_imports.ld or FIRMWARE_ELF=/path/to/matching/firmware.elf" >&2; \
-	  echo "  bash tools/gen_overlay_imports.sh /path/to/firmware.elf > platform/gnw/firmware_imports.ld" >&2; \
-	  exit 1; \
-	fi
+all: $(TARGET_BIN)
 
 compile-check: $(OBJS)
-	@echo "Compile OK ($(words $(OBJS)) objects). Run imports-check + link after generating firmware_imports.ld."
+	@echo "Compile OK ($(words $(OBJS)) objects)."
 
 help:
-	@echo "Standalone cupcake.bin build (no firmware source required if firmware_imports.ld exists)."
-	@echo "  make -f platform/gnw/Makefile.gnw"
+	@echo "Standalone cupcake.bin (ABI — no firmware checkout)."
 	@echo "  make cupcake-bin"
 
 $(BUILD_DIR) $(RELEASE_DIR):
@@ -108,8 +80,8 @@ $(BUILD_DIR) $(RELEASE_DIR):
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(TARGET_ELF): $(OBJS) $(LINKER) | $(BUILD_DIR) imports-check
-	$(CC) $(OBJS) $(LDFLAGS) $(IMPORTS_LDFLAGS) -o $@
+$(TARGET_ELF): $(OBJS) $(LINKER) | $(BUILD_DIR)
+	$(CC) $(OBJS) $(LDFLAGS) -o $@
 	$(SIZE) $@
 
 $(TARGET_BIN): $(TARGET_ELF) | $(RELEASE_DIR)

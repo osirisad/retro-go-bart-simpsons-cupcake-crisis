@@ -1,8 +1,8 @@
-# Cupcake Crisis — Retro-Go G&W Sprint Board (ABI overlay)
+# Game & Watch sprint board (active)
 
-> **Active ship path.** Supersedes [OVERLAY_SPRINT_BOARD.md](OVERLAY_SPRINT_BOARD.md) for all remaining work.
+> **This is the only board for shipping on retro-go G&W.** Task IDs: `RG-*`, `CL-*`, `RB-*`, `OP-*`.
 >
-> **GWHB remains deferred** — [GWHB_SPRINT_BOARD.md](GWHB_SPRINT_BOARD.md) (separate loader, same `gw_firmware_abi` idea).
+> Index of all boards: [docs/sprints/README.md](docs/sprints/README.md)
 
 ## Goal
 
@@ -40,8 +40,11 @@ Firmware (minimal PR)
 | LCD / input / audio wiring | [x] | `host_draw.c`, `host_audio.c`, `cupcake_input.c` |
 | Interim SD assets | [x] | `gnw_assets.c` → `/retro-go/cupcake/` |
 | Standalone Makefile + linker | [x] | `Makefile.gnw`, `overlay.ld` |
+| ABI link layer | [x] | `gw_firmware_abi.h`, `rg_abi.h`, `abi_stubs.c` |
 | Vendored SDK headers | [x] | `platform/gnw/sdk/` (compile-time types only) |
-| ARM compile check | [x] | `make cupcake-compile-check` (13 objects) |
+| ARM compile check | [x] | `make cupcake-compile-check` (14 objects) |
+| **`make cupcake-bin`** | [x] | `release/cupcake.bin` — ABI link, no firmware checkout |
+| Overlay RAM budget | [x] | Load 148 KiB + BSS 153 KiB ≈ 302 KiB / 724 KiB slot |
 | Firmware slot + dispatch + stub | [x] | Fork: linker, `rg_emulators.c`, `main_cupcake.c` stub |
 | RAM budget doc + estimator | [x] | `docs/OVERLAY_RAM_BUDGET.md` |
 | Player install draft | [~] | `docs/RELEASE_CUPCAKE_BIN.md` (needs ABI rewrite) |
@@ -65,7 +68,7 @@ Firmware (minimal PR)
 
 **Attribution:** [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md).
 
-**Related:** gameplay parity → [SPRINT_BOARD.md](SPRINT_BOARD.md) · technical background → [docs/OVERLAY.md](docs/OVERLAY.md).
+**Related:** gameplay parity → [SPRINT_BOARD.md](SPRINT_BOARD.md) (TASK-*) · technical background → [docs/OVERLAY.md](docs/OVERLAY.md).
 
 ---
 
@@ -73,8 +76,8 @@ Firmware (minimal PR)
 
 | Piece | Today | Target |
 |-------|-------|--------|
-| Firmware API binding | Direct symbol link (blocked; imports abandoned) | **`gw_firmware_abi` shims** |
-| `make cupcake-bin` | Compile OK; link blocked | Full link, no firmware checkout |
+| Firmware API binding | **`gw_firmware_abi` shims** | Done |
+| `make cupcake-bin` | **`release/cupcake.bin` produced** | Done |
 | CI / Releases | Workflow expects `firmware_imports.ld` | Build from port repo only |
 | Assets on device | SD PNG/JPG/WAV (interim) | Embedded pack (RAM fit) |
 | Hardware validation | Not run | Stub smoke → full game smoke |
@@ -86,12 +89,12 @@ Firmware (minimal PR)
 
 | Task | Title | Status |
 |------|-------|--------|
-| RG-01 | Vendor `gw_firmware_abi.h` (+ minimal `ff.h` if needed) | [ ] |
-| RG-02 | `platform/gnw/rg_abi.h` — accessors, version check macro | [ ] |
-| RG-03 | `platform/gnw/abi_stubs.c` — firmware-facing symbol implementations | [ ] |
-| RG-04 | `common_emu_state` via `GW_FIRMWARE_ABI.common_emu_state_ptr` | [ ] |
-| RG-05 | Variadic libc wrappers (`printf`, `snprintf`, `fprintf`) | [ ] |
-| RG-06 | Startup ABI guard in `main_cupcake.c` | [ ] |
+| RG-01 | Vendor `gw_firmware_abi.h` (+ minimal `ff.h` if needed) | [x] |
+| RG-02 | `platform/gnw/rg_abi.h` — accessors, version check macro | [x] |
+| RG-03 | `platform/gnw/abi_stubs.c` — firmware-facing symbol implementations | [x] |
+| RG-04 | `common_emu_state` via `GW_FIRMWARE_ABI.common_emu_state_ptr` | [x] |
+| RG-05 | Variadic libc wrappers (`printf`, `snprintf`, `fprintf`) | [x] |
+| RG-06 | Startup ABI guard in `main_cupcake.c` | [x] |
 
 ### RG-01 Vendor ABI header
 
@@ -132,9 +135,9 @@ Firmware (minimal PR)
 
 | Task | Title | Status |
 |------|-------|--------|
-| RG-07 | Update `Makefile.gnw` — ABI sources, remove imports | [ ] |
-| RG-08 | First successful `make cupcake-bin` link | [ ] |
-| RG-09 | Overlay size check vs `__RAM_EMU` (~724 KiB) | [ ] |
+| RG-07 | Update `Makefile.gnw` — ABI sources, remove imports | [x] |
+| RG-08 | First successful `make cupcake-bin` link | [x] |
+| RG-09 | Overlay size check vs `__RAM_EMU` (~724 KiB) | [x] |
 | RG-10 | Retire imports tooling from docs/CI | [ ] |
 | RG-11 | `.github/workflows/cupcake-bin.yml` — port-only build | [ ] |
 | RG-12 | GitHub Release attaches `cupcake.bin` + attribution | [ ] |
@@ -153,9 +156,11 @@ Firmware (minimal PR)
 
     Acceptance Criteria: Record `.overlay_cupcake` load size + BSS estimate. If over budget, RG-4 (embedded/compressed assets) is blocking for hardware ship.
 
+    **Recorded (2026-06-27):** `cupcake.bin` = **152 212 B** (148 KiB load). BSS = **157 120 B** (153 KiB). Combined runtime ≈ **302 KiB** — **42% of 724 KiB** `__RAM_EMU` slot. Headroom remains for RG-4 embedded assets without blocking hardware smoke.
+
 ### RG-10 Retire imports path
 
-    Superseded by **Sprint RG-6** ([CL-P01](RETROGO_SPRINT_BOARD.md#cl-p01-remove-symbol-import-toolchain), [CL-P04](RETROGO_SPRINT_BOARD.md#cl-p04-docs-sweep)). Mark complete when CL-P01 + CL-P04 done.
+    Superseded by **Sprint RG-6** (CL-P01, CL-P04). Mark complete when CL-P01 + CL-P04 done.
 
     Acceptance Criteria: No references to `firmware_imports.ld` or `gen_overlay_imports.sh` in ship docs or Makefile.
 
@@ -258,8 +263,8 @@ Leftovers from symbol-import linking, firmware-in-tree builds, and deferred GWHB
 | Makefile alias | Port | `platform/gnw/Makefile.overlay` | **Delete** or keep thin alias → document one command |
 | CI imports job | Port | `.github/workflows/cupcake-bin.yml` `regen-imports` | **Delete** job |
 | Stale import docs | Port | `docs/RELEASE_CUPCAKE_BIN.md`, `docs/OVERLAY.md`, `platform/gnw/README.md`, `platform/gnw/sdk/README.md` | **Rewrite** (RG-10 / CL-P05) |
-| Archived sprint board | Port | `OVERLAY_SPRINT_BOARD.md` | **Trim** to pointer + completed OV table, or move to `docs/archive/` |
-| GWHB scaffold | Port | `platform/gwhb/Makefile.gwhb`, root `make gwhb` | **Keep deferred** — add banner; do not expand until GWHB revisit |
+| Archived sprint board | Port | `docs/archive/OVERLAY_SPRINT_BOARD.md` | Historical OV-* only |
+| GWHB plan | Port | `docs/archive/GWHB_SPRINT_BOARD.md` | Deferred GW-* |
 | Linux emu host | Port | `platform/retrogo/Makefile.cupcake` | **Keep** — valid dev regression (not abandoned) |
 | Vendored SDK headers | Port | `platform/gnw/sdk/` | **Slim** after ABI — types only; drop fake `extern` firmware API |
 | Local build artifacts | Port | `build-gnw/`, `build-cupcake/` (gitignored) | **Purge** locally; confirm `.gitignore` |
@@ -275,8 +280,8 @@ Leftovers from symbol-import linking, firmware-in-tree builds, and deferred GWHB
 | CL-P02 | Consolidate overlay build entry points | [ ] |
 | CL-P03 | Slim `platform/gnw/sdk/` for ABI model | [ ] |
 | CL-P04 | Rewrite docs + READMEs (ABI, single board link) | [ ] |
-| CL-P05 | Trim archived `OVERLAY_SPRINT_BOARD.md` | [ ] |
-| CL-P06 | GWHB deferred hygiene | [ ] |
+| CL-P05 | Trim archived `OVERLAY_SPRINT_BOARD.md` | [x] |
+| CL-P06 | GWHB deferred hygiene | [x] |
 | CL-P07 | `.gitignore` + local artifact purge | [ ] |
 
 ### CL-P01 Remove symbol-import toolchain
@@ -297,7 +302,7 @@ Leftovers from symbol-import linking, firmware-in-tree builds, and deferred GWHB
 
 ### CL-P04 Docs sweep
 
-    Acceptance Criteria: All player/dev docs point to [RETROGO_SPRINT_BOARD.md](RETROGO_SPRINT_BOARD.md). Update:
+    Acceptance Criteria: All player/dev docs point to [GW_SPRINT_BOARD.md](GW_SPRINT_BOARD.md). Update:
 
     - `docs/RELEASE_CUPCAKE_BIN.md` — no firmware ELF, no imports file
     - `docs/OVERLAY.md` — ABI binding, `make cupcake-bin`, link RETROGO board not OV board
@@ -309,11 +314,11 @@ Leftovers from symbol-import linking, firmware-in-tree builds, and deferred GWHB
 
 ### CL-P05 Trim archived overlay board
 
-    Acceptance Criteria: `OVERLAY_SPRINT_BOARD.md` is ≤30 lines: pointer to RETROGO board, table of completed OV-1..OV-7 / OV-11..13, note “OV-21+ retired.” Remove stale next-actions and import instructions.
+    Acceptance Criteria: Historical OV-* lives only in `docs/archive/OVERLAY_SPRINT_BOARD.md` (no root copy).
 
 ### CL-P06 GWHB deferred hygiene
 
-    Acceptance Criteria: Banner at top of [GWHB_SPRINT_BOARD.md](GWHB_SPRINT_BOARD.md) (same pattern as archived OV board). `platform/gwhb/Makefile.gwhb` comment: deferred, do not use for Retro-Go ship. Root `make gwhb` prints skip message only (already does if no `main_gwhb.c`). No new GWHB code in firmware PR.
+    Acceptance Criteria: GWHB plan only in `docs/archive/GWHB_SPRINT_BOARD.md`. `platform/gwhb/Makefile.gwhb` comment: deferred. No new GWHB code in firmware PR.
 
 ### CL-P07 Gitignore and artifacts
 
@@ -704,9 +709,6 @@ RG-22 + CL-* + RB-* ── OP-01 ── OP-10..14 (size) ── OP-40
 
 ---
 
-## Superseded boards
+## Other boards
 
-| Board | Status |
-|-------|--------|
-| [OVERLAY_SPRINT_BOARD.md](OVERLAY_SPRINT_BOARD.md) | **Archived** — trim in CL-P05 |
-| [GWHB_SPRINT_BOARD.md](GWHB_SPRINT_BOARD.md) | **Deferred** — alternative ship format (`CUPCAKE.bin`), same ABI |
+See [docs/sprints/README.md](docs/sprints/README.md). Archived overlay + deferred GWHB plans live under `docs/archive/`.

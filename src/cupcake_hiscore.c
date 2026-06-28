@@ -31,10 +31,14 @@ static int level_index(int level)
 
 void cupcake_hiscore_default_path(char *buf, size_t bufsz)
 {
-    const char *override;
-
     if (!buf || bufsz == 0)
         return;
+
+#if defined(CUPCAKE_GNW)
+    snprintf(buf, bufsz, "/retro-go/saves/cupcake_hiscores.dat");
+    return;
+#else
+    const char *override;
 
     override = getenv("CUPCAKE_HISCORE_PATH");
     if (override && override[0]) {
@@ -63,6 +67,7 @@ void cupcake_hiscore_default_path(char *buf, size_t bufsz)
     }
 
     snprintf(buf, bufsz, "cupcake_hiscores.dat");
+#endif
 }
 
 void cupcake_hiscore_set_path(const char *path)

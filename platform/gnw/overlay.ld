@@ -29,13 +29,14 @@ SECTIONS
   _OVERLAY_CUPCAKE_LOAD_START = LOADADDR(.overlay_cupcake);
   _OVERLAY_CUPCAKE_SIZE = SIZEOF(.overlay_cupcake);
 
-  .overlay_cupcake_bss : {
+  .overlay_cupcake_bss _OVERLAY_CUPCAKE_LOAD_END : {
     _OVERLAY_CUPCAKE_BSS_START = .;
     *(.bss .bss*)
     *(COMMON)
     . = ALIGN(4);
     __ram_emu_cupcake_end__ = .;
     _OVERLAY_CUPCAKE_BSS_END = .;
+    ASSERT(ABSOLUTE(_OVERLAY_CUPCAKE_BSS_END) < __RAM_EMU_END__, "Error: CUPCAKE BSS overflow");
   } > RAM_EMU
 
   _OVERLAY_CUPCAKE_BSS_SIZE = SIZEOF(.overlay_cupcake_bss);
@@ -44,6 +45,4 @@ SECTIONS
     *(.comment)
     *(.note*)
   }
-
-  ASSERT(_OVERLAY_CUPCAKE_BSS_END <= __RAM_EMU_END__, "Cupcake overlay exceeds __RAM_EMU");
 }

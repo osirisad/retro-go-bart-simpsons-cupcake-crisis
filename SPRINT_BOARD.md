@@ -1,19 +1,23 @@
-# Cupcake Crisis C Port — Sprint Board
+# Cupcake Crisis C Port — Gameplay sprint board
 
-## Sprint roadmap (high level)
+> **G&W / retro-go ship work:** [GW_SPRINT_BOARD.md](GW_SPRINT_BOARD.md) · **Board index:** [docs/sprints/README.md](docs/sprints/README.md)
 
-| Phase | Sprints | When |
-|-------|---------|------|
-| Ship Retro-Go overlay | RG-1..5 | Now |
-| Port repo cleanup | RG-6 (CL-P*) | After first ABI link |
-| **Fresh upstream firmware** | **RG-6b (RB-*)** | **After RG-08; before optimization & public PR** |
-| Code optimization | RG-7 (OP-*) | **Last — after RG-22 + RG-6b** |
+This file tracks **gameplay parity** with the original JS game (PC/SDL + shared `src/`). Task IDs: `TASK-*`.
 
-**Game & Watch ship path:** ABI overlay → [RETROGO_SPRINT_BOARD.md](RETROGO_SPRINT_BOARD.md) (**active**).
+## G&W phases (separate board)
 
-**GWHB SD-drop** (single `CUPCAKE.bin`, no firmware rebuild): [GWHB_SPRINT_BOARD.md](GWHB_SPRINT_BOARD.md) — **on hold** until GWHB firmware is stable on hardware.
+Device overlay, ABI, firmware, and optimization live in **[GW_SPRINT_BOARD.md](GW_SPRINT_BOARD.md)** — not here.
 
-Gap analysis comparing the original JavaScript game (`assets/build.js`, logic slice in `docs/AcclaimCupcakeCrisis.js`) against the current C port (`src/`).
+| Phase | Sprint | When |
+|-------|--------|------|
+| Ship overlay | RG-1..5 | Now |
+| Port cleanup | RG-6 (`CL-*`) | After first ABI link |
+| Fresh firmware | RG-6b (`RB-*`) | Before optimization / PR |
+| Optimization | RG-7 (`OP-*`) | Last |
+
+---
+
+## Gap analysis (JS vs C) (`assets/build.js`, logic slice in `docs/AcclaimCupcakeCrisis.js`) against the current C port (`src/`).
 
 **Legend — JS source of truth**
 

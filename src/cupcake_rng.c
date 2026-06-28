@@ -53,6 +53,12 @@ void cupcake_rng_set_state(uint32_t state)
 
 void cupcake_rng_init(void)
 {
+#if defined(CUPCAKE_GNW)
+    uint32_t seed = 0xC170CAFEu;
+
+    seed ^= (uint32_t)(uintptr_t)&seed;
+    cupcake_rng_seed(seed);
+#else
     const char *env = getenv("CUPCAKE_RNG_SEED");
     uint32_t seed;
 
@@ -70,6 +76,7 @@ void cupcake_rng_init(void)
     seed ^= (uint32_t)(uintptr_t)&seed;
     seed ^= (uint32_t)time(NULL);
     cupcake_rng_seed(seed);
+#endif
 }
 
 int cupcake_rand(int n)

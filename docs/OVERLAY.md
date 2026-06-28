@@ -4,7 +4,7 @@ Cupcake Crisis ships on **retro-go Game & Watch** as a firmware **RAM overlay** 
 
 This repo stays the **source of truth** for game logic and the device host. The firmware fork owns the linker slot and launcher dispatch.
 
-**Related:** [OVERLAY_RAM_BUDGET.md](OVERLAY_RAM_BUDGET.md) · [BUILD.md](BUILD.md) · [OVERLAY_SPRINT_BOARD.md](../OVERLAY_SPRINT_BOARD.md) · firmware [OVERLAY_CUPCAKE.md](../../game-and-watch-retro-go-sd-cupcake/docs/OVERLAY_CUPCAKE.md)
+**Related:** [OVERLAY_RAM_BUDGET.md](OVERLAY_RAM_BUDGET.md) · [BUILD.md](BUILD.md) · [GW_SPRINT_BOARD.md](../GW_SPRINT_BOARD.md) · [docs/sprints/README.md](sprints/README.md) · firmware [OVERLAY_CUPCAKE.md](../../game-and-watch-retro-go-sd-cupcake/docs/OVERLAY_CUPCAKE.md)
 
 ---
 
@@ -122,7 +122,7 @@ For device overlay, use **`make cupcake-bin`** — see [RELEASE_CUPCAKE_BIN.md](
 | API | Firmware symbols (`odroid_*`, `gw_lcd`, …) | `gw_firmware_abi` only |
 | Port host | `platform/gnw/` | `platform/gwhb/` |
 | Update game | Replace SD `cupcake.bin` | Replace SD `CUPCAKE.bin` |
-| Sprint board | [OVERLAY_SPRINT_BOARD.md](../OVERLAY_SPRINT_BOARD.md) | [GWHB_SPRINT_BOARD.md](../GWHB_SPRINT_BOARD.md) |
+| Sprint board | [GW_SPRINT_BOARD.md](../GW_SPRINT_BOARD.md) | [GWHB (deferred, archived)](../docs/archive/GWHB_SPRINT_BOARD.md) |
 
 Do **not** mix GWHB loader changes into the overlay firmware round. Revisit GWHB if you want ABI-only bins built entirely outside the firmware ELF.
 

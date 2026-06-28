@@ -15,6 +15,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#if defined(CUPCAKE_GNW)
+#define CUPCAKE_DEV_LOG(...) ((void)0)
+#else
+#define CUPCAKE_DEV_LOG(...) fprintf(stderr, __VA_ARGS__)
+#endif
+
 typedef struct {
     uint32_t magic;
     uint32_t version;
@@ -95,6 +101,10 @@ typedef struct {
     int lcd_y;
 } cupcake_pin_entry_t;
 
+#if defined(CUPCAKE_GNW)
+static int debug_pin_freeze_demo;
+static int debug_pin_solo;
+#else /* host tuning — lcd_tune.txt live reload, debug pin */
 static char debug_pin_name[32];
 static cupcake_pin_entry_t debug_pin_tune[CUPCAKE_PIN_MAX];
 static int debug_pin_tune_count;
@@ -107,11 +117,7 @@ static int g_lcd_tune_logged;
 
 static int load_lcd_tune_entries(cupcake_pin_entry_t *out, int max_entries);
 static void tune_file_path(char *buf, size_t bufsz);
-
-static int debug_pin_is_active(void)
-{
-    return debug_pin_tune_count > 0 || debug_pin_name[0] != '\0';
-}
+#endif
 
 /* ~30 Hz tick; demo.model rate 0.25s -> 8 ticks per frame */
 #define CUPCAKE_DEMO_TICKS_PER_FRAME 8
@@ -148,6 +154,38 @@ static void host_on_score_change(void)
         cupcake_on_phase_complete();
 }
 
+#if defined(CUPCAKE_GNW)
+
+static int debug_pin_is_active(void)
+{
+    return 0;
+}
+
+static void refresh_lcd_tune_override(void)
+{
+}
+
+static void draw_sprite_auto(const char *name)
+{
+    host_sprite(name, CUPCAKE_LCD_AUTO, CUPCAKE_LCD_AUTO);
+}
+
+static void draw_debug_pin(void)
+{
+}
+
+void cupcake_log_sprite_lcd(const char *name)
+{
+    (void)name;
+}
+
+#else
+
+static int debug_pin_is_active(void)
+{
+    return debug_pin_tune_count > 0 || debug_pin_name[0] != '\0';
+}
+
 static void refresh_lcd_tune_override(void)
 {
     char path[512];
@@ -158,9 +196,9 @@ static void refresh_lcd_tune_override(void)
         g_lcd_tune_logged = 1;
         tune_file_path(path, sizeof path);
         if (n > 0)
-            fprintf(stderr, "lcd_tune: %d sprites from %s (live reload)\n", n, path);
+            CUPCAKE_DEV_LOG("lcd_tune: %d sprites from %s (live reload)\n", n, path);
         else
-            fprintf(stderr,
+            CUPCAKE_DEV_LOG(
                     "lcd_tune: not loaded (%s missing?) — using cupcake_sprite_lcd.h\n", path);
     }
     g_lcd_tune_override_count = n;
@@ -191,12 +229,6 @@ static void draw_sprite_auto(const char *name)
         host_sprite(name, tx, ty);
     else
         host_sprite(name, CUPCAKE_LCD_AUTO, CUPCAKE_LCD_AUTO);
-}
-
-static void draw_scoreboard_sprite(const char *name, void *ctx)
-{
-    (void)ctx;
-    draw_sprite_auto(name);
 }
 
 static void tune_file_path(char *buf, size_t bufsz)
@@ -275,7 +307,7 @@ static int load_lcd_tune_entries(cupcake_pin_entry_t *out, int max_entries)
         if (!parse_lcd_tune_line(line, entry, sizeof entry, &x, &y))
             continue;
         if (n >= max_entries) {
-            fprintf(stderr, "lcd_tune.txt: only first %d sprites pinned (raise CUPCAKE_PIN_MAX)\n",
+            CUPCAKE_DEV_LOG("lcd_tune.txt: only first %d sprites pinned (raise CUPCAKE_PIN_MAX)\n",
                     max_entries);
             break;
         }
@@ -299,9 +331,9 @@ void cupcake_log_sprite_lcd(const char *name)
         cupcake_pin_entry_t tmp[CUPCAKE_PIN_MAX];
         int n = load_lcd_tune_entries(tmp, CUPCAKE_PIN_MAX);
 
-        fprintf(stderr, "  %s (%d sprites):\n", path, n);
+        CUPCAKE_DEV_LOG("  %s (%d sprites):\n", path, n);
         for (i = 0; i < n; i++)
-            fprintf(stderr, "    %s %d %d\n", tmp[i].name, tmp[i].lcd_x, tmp[i].lcd_y);
+            CUPCAKE_DEV_LOG("    %s %d %d\n", tmp[i].name, tmp[i].lcd_x, tmp[i].lcd_y);
         return;
     }
 
@@ -313,19 +345,19 @@ void cupcake_log_sprite_lcd(const char *name)
         if (lcd) {
             int draw_y = cupcake_sprite_lcd_resolve_y(name, lcd->lcd_y);
 
-            fprintf(stderr, "  %s in binary (cupcake_sprite_lcd.h): %d, %d\n", name, lcd->lcd_x,
+            CUPCAKE_DEV_LOG("  %s in binary (cupcake_sprite_lcd.h): %d, %d\n", name, lcd->lcd_x,
                     lcd->lcd_y);
             if (draw_y != lcd->lcd_y)
-                fprintf(stderr, "  %s header draws at Y %d (marge hair needs Y >= %d)\n", name,
+                CUPCAKE_DEV_LOG("  %s header draws at Y %d (marge hair needs Y >= %d)\n", name,
                         draw_y, draw_y);
         } else
-            fprintf(stderr, "  %s: not in cupcake_sprite_lcd.h\n", name);
+            CUPCAKE_DEV_LOG("  %s: not in cupcake_sprite_lcd.h\n", name);
 
         if (load_lcd_tune(name, &tx, &ty))
-            fprintf(stderr, "  %s override (assets/lcd_tune.txt): %d, %d (used as-is)\n", name,
+            CUPCAKE_DEV_LOG("  %s override (assets/lcd_tune.txt): %d, %d (used as-is)\n", name,
                     tx, ty);
         else
-            fprintf(stderr, "  (no %s line for %s — using header)\n", path, name);
+            CUPCAKE_DEV_LOG("  (no %s line for %s — using header)\n", path, name);
     }
 }
 
@@ -352,6 +384,14 @@ static void draw_debug_pin(void)
         host_sprite(debug_pin_name, tx, ty);
     else
         draw_sprite_auto(debug_pin_name);
+}
+
+#endif /* !CUPCAKE_GNW */
+
+static void draw_scoreboard_sprite(const char *name, void *ctx)
+{
+    (void)ctx;
+    draw_sprite_auto(name);
 }
 
 /* Grid names from $P.Cupcakes — lane 1 uses cake01-05, lane 2 cake11-15, etc. */
@@ -423,7 +463,7 @@ void cupcake_on_game_over(void)
     p->mode = CUPCAKE_MODE_OVER;
     cupcake_on_stop();
     cupcake_hiscore_on_score_change(p);
-    fprintf(stderr, "Game over — press Select for CON (phase %u)\n", p->phase);
+    CUPCAKE_DEV_LOG( "Game over — press Select for CON (phase %u)\n", p->phase);
 }
 
 void cupcake_miss_increase(void)
@@ -1135,7 +1175,7 @@ static void cupcake_on_select_over(void)
     g.play.scoreboard.show_con = 1;
     g.play.mode = CUPCAKE_MODE_DEMO;
     cupcake_on_stop();
-    fprintf(stderr, "CON — press Action to continue at phase %u\n", g.play.phase);
+    CUPCAKE_DEV_LOG( "CON — press Action to continue at phase %u\n", g.play.phase);
 }
 
 static void cupcake_stop(void)
@@ -1419,7 +1459,7 @@ void cupcake_apply_debug_start(void)
     cupcake_resume();
     host_on_score_change();
 
-    fprintf(stderr, "Debug start: level %d phase %d score %u (target %u)\n", level, phase,
+    CUPCAKE_DEV_LOG( "Debug start: level %d phase %d score %u (target %u)\n", level, phase,
             (unsigned)points, (unsigned)cupcake_phase_score_target(p));
 }
 
@@ -1442,7 +1482,7 @@ void cupcake_debug_cheat_phase(int phase_1_to_6)
     cupcake_scoreboard_set_phase(p, phase_1_to_6);
     cupcake_on_phase_complete();
 
-    fprintf(stderr, "Debug cheat: jump to phase %d\n", phase_1_to_6);
+    CUPCAKE_DEV_LOG( "Debug cheat: jump to phase %d\n", phase_1_to_6);
 }
 
 void cupcake_on_quick_start(int level)
@@ -1458,7 +1498,7 @@ void cupcake_on_quick_start(int level)
     p->level = (uint8_t)level;
     cupcake_scoreboard_set_level(p, level);
     cupcake_on_start(1, 1);
-    fprintf(stderr, "Quick start level %d\n", level);
+    CUPCAKE_DEV_LOG( "Quick start level %d\n", level);
 }
 
 static void cupcake_bart_action(void)
@@ -1495,7 +1535,7 @@ static void cupcake_on_action(void)
         return;
     }
     if (p->mode == CUPCAKE_MODE_DEMO && p->level == 0) {
-        fprintf(stderr, "Press Select (X) to cycle level, Action (Z) to start\n");
+        CUPCAKE_DEV_LOG( "Press Select (X) to cycle level, Action (Z) to start\n");
         return;
     }
     if (cupcake_play_active()) {
@@ -1543,7 +1583,7 @@ static void cupcake_on_phase_start(int game_timer_start_tick)
     cupcake_marge_start(p);
     couch_entity_start(p, 0);
     cupcake_game_timer_start(game_timer_start_tick);
-    fprintf(stderr, "Phase start: level %u phase %u (play mode)\n", p->level, p->phase);
+    CUPCAKE_DEV_LOG( "Phase start: level %u phase %u (play mode)\n", p->level, p->phase);
 }
 
 static void tmr_start_seq_on_start(void *ctx, int tick)
@@ -1693,7 +1733,7 @@ void cupcake_on_start(int phase, int show_level)
     cfg.on_tick = tmr_start_seq_on_tick;
     cupcake_timer_start(&g_timers, CUPCAKE_TMR_START, &cfg);
 
-    fprintf(stderr, "Start intro: level %u phase %d (show_level=%d)\n", p->level, phase,
+    CUPCAKE_DEV_LOG( "Start intro: level %u phase %d (show_level=%d)\n", p->level, phase,
             show_level);
 }
 
@@ -1710,31 +1750,45 @@ void cupcake_set_buttons(uint16_t buttons)
 
 void cupcake_set_debug_pin(const char *name, int freeze_demo)
 {
+#if !defined(CUPCAKE_GNW)
     debug_pin_tune_count = 0;
     debug_pin_name[0] = '\0';
     debug_pin_freeze_demo = freeze_demo;
     if (name && name[0]) {
         snprintf(debug_pin_name, sizeof debug_pin_name, "%s", name);
-        fprintf(stderr, "Debug pin: %s (freeze demo=%d)\n", debug_pin_name, freeze_demo);
+        CUPCAKE_DEV_LOG("Debug pin: %s (freeze demo=%d)\n", debug_pin_name, freeze_demo);
     }
+#else
+    (void)name;
+    (void)freeze_demo;
+#endif
 }
 
 int cupcake_set_debug_pin_from_tune(int freeze_demo)
 {
+#if !defined(CUPCAKE_GNW)
     char path[512];
 
     debug_pin_name[0] = '\0';
     debug_pin_freeze_demo = freeze_demo;
     debug_pin_tune_count = load_lcd_tune_entries(debug_pin_tune, CUPCAKE_PIN_MAX);
     tune_file_path(path, sizeof path);
-    fprintf(stderr, "Debug pin: %d sprite(s) from %s (freeze demo=%d)\n", debug_pin_tune_count,
+    CUPCAKE_DEV_LOG("Debug pin: %d sprite(s) from %s (freeze demo=%d)\n", debug_pin_tune_count,
             path, freeze_demo);
     return debug_pin_tune_count;
+#else
+    (void)freeze_demo;
+    return 0;
+#endif
 }
 
 void cupcake_set_debug_pin_solo(int solo)
 {
+#if !defined(CUPCAKE_GNW)
     debug_pin_solo = solo ? 1 : 0;
+#else
+    (void)solo;
+#endif
 }
 
 void cupcake_init(void)

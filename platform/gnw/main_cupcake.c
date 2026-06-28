@@ -1,6 +1,6 @@
 /*
- * Game & Watch overlay host — Celeste-model firmware overlay entry.
- * Build via platform/gnw/Makefile.overlay → cupcake.bin on SD.
+ * Game & Watch overlay host — loads via firmware homebrew slot; calls firmware through ABI.
+ * Build: make cupcake-bin
  */
 #include <odroid_system.h>
 #include <string.h>
@@ -14,6 +14,7 @@
 #include "appid.h"
 #include "gw_malloc.h"
 #include "odroid_overlay.h"
+#include "rg_abi.h"
 
 #include "cupcake.h"
 #include "cupcake_port.h"
@@ -124,10 +125,24 @@ void app_main_cupcake(uint8_t load_state, uint8_t start_paused, int8_t save_slot
 {
     odroid_dialog_choice_t options[] = {ODROID_DIALOG_CHOICE_LAST};
     odroid_gamepad_state_t pad;
+    common_emu_state_t *emu;
     int visible_bezel_h;
     int audio_frames;
 
     (void)save_slot;
+
+    if (!gw_abi_ok()) {
+        odroid_overlay_alert("Cupcake: firmware ABI mismatch.\nFlash recent retro-go-sd.");
+        return;
+    }
+
+    gw_abi_bind_stdio();
+
+    emu = gw_common_emu_state();
+    if (!emu) {
+        odroid_overlay_alert("Cupcake: firmware ABI incomplete.");
+        return;
+    }
 
     if (gnw_assets_load(&g_host, &g_bezel, &g_bezel_w, &g_bezel_h) != 0) {
         odroid_overlay_alert("Cupcake: copy screen.jpg,\nsprites-color.png, audio/\nto /retro-go/cupcake/ on SD");
@@ -146,10 +161,10 @@ void app_main_cupcake(uint8_t load_state, uint8_t start_paused, int8_t save_slot
     audio_start_playing((uint16_t)audio_frames);
 
     if (start_paused)
-        common_emu_state.pause_after_frames = 2;
+        emu->pause_after_frames = 2;
     else
-        common_emu_state.pause_after_frames = 0;
-    common_emu_state.frame_time_10us = (uint16_t)(100000 / CUPCAKE_FPS + 0.5f);
+        emu->pause_after_frames = 0;
+    emu->frame_time_10us = (uint16_t)(100000 / CUPCAKE_FPS + 0.5f);
 
     setup_hiscore_path();
     cupcake_init();
