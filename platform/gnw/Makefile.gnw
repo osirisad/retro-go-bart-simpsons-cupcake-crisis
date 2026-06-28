@@ -25,7 +25,12 @@ ASSETS_SCREEN  := $(ASSETS_DIR)/screen.jpg
 CUPCAKE_DATA_C := $(GNW_DIR)/cupcake_data.c
 CUPCAKE_DATA_H := $(GNW_DIR)/cupcake_data.h
 BUNDLE_PY      := $(PORT_ROOT)/tools/bundle_overlay_assets.py
-PYTHON        ?= python3
+# Asset bundler needs Pillow. MSYS python3 often lacks it; prefer Windows Python 3.13 if present.
+ifeq ($(wildcard C:/Python313/python.exe),C:/Python313/python.exe)
+PYTHON        ?= C:/Python313/python.exe
+else
+PYTHON        ?= $(shell command -v python3 2>/dev/null || command -v python 2>/dev/null || echo python3)
+endif
 
 CROSS_COMPILE ?= arm-none-eabi-
 CC      = $(CROSS_COMPILE)gcc
@@ -81,9 +86,16 @@ SRCS   += $(EMBED_SRCS)
 OBJS    = $(addprefix $(BUILD_DIR)/,$(notdir $(SRCS:.c=.o)))
 vpath %.c $(sort $(dir $(SRCS)))
 
+ifneq ($(wildcard $(ASSETS_SCREEN)),)
+# host_audio.c / gnw_assets.c include cupcake_data.h — bundle before any compile.
+$(OBJS): | $(CUPCAKE_DATA_C)
+endif
+
 LDFLAGS = $(MCU) $(SPECS) -nostdlib -T$(LINKER) -Wl,--gc-sections -lgcc
 
 .PHONY: all clean help size compile-check bundle-assets
+
+.DEFAULT_GOAL := all
 
 all: $(TARGET_BIN)
 
@@ -99,7 +111,7 @@ bundle-assets: $(CUPCAKE_DATA_C)
 $(BUILD_DIR) $(RELEASE_DIR):
 	mkdir -p $@
 
-$(CUPCAKE_DATA_C): $(BUNDLE_PY) $(ASSETS_SCREEN) $(ASSETS_DIR)/sprites-color.png $(PORT_ROOT)/platform/host_audio_catalog.c
+$(CUPCAKE_DATA_C) $(CUPCAKE_DATA_H): $(BUNDLE_PY) $(ASSETS_SCREEN) $(ASSETS_DIR)/sprites-color.png $(PORT_ROOT)/platform/host_audio_catalog.c
 	$(PYTHON) $(BUNDLE_PY) --assets $(ASSETS_DIR)
 
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)

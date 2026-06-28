@@ -509,7 +509,7 @@ gwhb:
 
 # Device overlay — standalone cupcake.bin via ABI (see docs/RELEASE_CUPCAKE_BIN.md)
 cupcake-bin:
-	$(MAKE) -f platform/gnw/Makefile.gnw
+	$(MAKE) -f platform/gnw/Makefile.gnw all
 
 cupcake-compile-check:
 	$(MAKE) -f platform/gnw/Makefile.gnw compile-check
