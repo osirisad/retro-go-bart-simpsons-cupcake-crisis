@@ -23,6 +23,7 @@
 #include "host_audio.h"
 #include "cupcake_input.h"
 #include "gnw_assets.h"
+#include "cupcake_trace.h"
 
 #define CUPCAKE_FPS        30
 #define CUPCAKE_SAMPLE_RATE 22050
@@ -132,26 +133,31 @@ void app_main_cupcake(uint8_t load_state, uint8_t start_paused, int8_t save_slot
     (void)save_slot;
 
     if (!gw_abi_ok()) {
-        odroid_overlay_alert("Cupcake: firmware ABI mismatch.\nFlash recent retro-go-sd.");
+        cupcake_trace("fail: firmware ABI mismatch (version/size)");
+        odroid_overlay_alert("Cupcake: firmware ABI mismatch.\nFlash recent retro-go-sd.\nSee SD: retro-go/saves/cupcake_debug.log");
         return;
     }
 
     gw_abi_bind_stdio();
+    cupcake_trace("app_main: ABI ok");
 
     emu = gw_common_emu_state();
     if (!emu) {
-        odroid_overlay_alert("Cupcake: firmware ABI incomplete.");
+        cupcake_trace("fail: common_emu_state NULL");
+        odroid_overlay_alert("Cupcake: firmware ABI incomplete.\nSee SD: retro-go/saves/cupcake_debug.log");
         return;
     }
 
     if (gnw_assets_load(&g_host, &g_bezel, &g_bezel_w, &g_bezel_h) != 0) {
+        cupcake_trace("fail: gnw_assets_load");
 #ifdef CUPCAKE_EMBEDDED_ASSETS
-        odroid_overlay_alert("Cupcake: embedded assets failed.\nRebuild cupcake.bin with assets/");
+        odroid_overlay_alert("Cupcake: embedded assets failed.\nRebuild cupcake.bin with assets/\nSee SD: retro-go/saves/cupcake_debug.log");
 #else
-        odroid_overlay_alert("Cupcake: copy screen.jpg,\nsprites-color.png, audio/\nto /retro-go/cupcake/ on SD");
+        odroid_overlay_alert("Cupcake: copy screen.jpg,\nsprites-color.png, audio/\nto /retro-go/cupcake/ on SD\nSee SD: retro-go/saves/cupcake_debug.log");
 #endif
         return;
     }
+    cupcake_trace("app_main: assets ok bezel %dx%d", g_bezel_w, g_bezel_h);
 
     visible_bezel_h = CUPCAKE_BEZEL_VISIBLE_H;
     if (g_bezel_h < visible_bezel_h)
@@ -160,6 +166,7 @@ void app_main_cupcake(uint8_t load_state, uint8_t start_paused, int8_t save_slot
 
     odroid_system_init(APPID_HOMEBREW, CUPCAKE_SAMPLE_RATE);
     odroid_system_emu_init(&LoadState, &SaveState, NULL, NULL, NULL, NULL);
+    cupcake_trace("app_main: odroid_system_init ok");
 
     audio_frames = CUPCAKE_SAMPLE_RATE / CUPCAKE_FPS;
     audio_start_playing((uint16_t)audio_frames);
@@ -173,8 +180,10 @@ void app_main_cupcake(uint8_t load_state, uint8_t start_paused, int8_t save_slot
     setup_hiscore_path();
     cupcake_init();
     cupcake_set_callback(cupcake_cb_wrap);
+    cupcake_trace("app_main: cupcake_init ok");
 
     if (host_audio_init(gnw_assets_base()) != 0) {
+        cupcake_trace("warn: host_audio_init failed (continuing muted)");
 #ifdef CUPCAKE_EMBEDDED_ASSETS
         odroid_overlay_alert("Cupcake: embedded audio failed.\nRebuild cupcake.bin with assets/");
 #else
@@ -187,11 +196,19 @@ void app_main_cupcake(uint8_t load_state, uint8_t start_paused, int8_t save_slot
     else
         lcd_clear_buffers();
 
+    cupcake_trace("app_main: entering main loop");
+
     while (true) {
         bool draw_frame;
+        static uint32_t s_frame_log;
 
         wdog_refresh();
         draw_frame = common_emu_frame_loop();
+
+        if (s_frame_log < 3u) {
+            cupcake_trace("frame %lu", (unsigned long)s_frame_log);
+            s_frame_log++;
+        }
 
         odroid_input_read_gamepad(&pad);
         cupcake_input_from_odroid(&pad, &g_buttons);

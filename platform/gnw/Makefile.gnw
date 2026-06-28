@@ -71,6 +71,7 @@ SRCS = \
 	$(GNW_DIR)/gnw_assets.c \
 	$(GNW_DIR)/abi_stubs.c \
 	$(GNW_DIR)/cupcake_entry.c \
+	$(GNW_DIR)/cupcake_trace.c \
 	$(GNW_DIR)/main_cupcake.c
 
 ifneq ($(wildcard $(ASSETS_SCREEN)),)

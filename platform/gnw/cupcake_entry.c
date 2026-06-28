@@ -6,6 +6,7 @@
 
 #include "gw_firmware_abi.h"
 #include "main_cupcake.h"
+#include "cupcake_trace.h"
 
 __attribute__((section(".cupcake_entry"), used, noinline))
 void cupcake_overlay_entry(uint8_t load_state, uint8_t start_paused, int8_t save_slot)
@@ -23,5 +24,13 @@ void cupcake_overlay_entry(uint8_t load_state, uint8_t start_paused, int8_t save
     if (abi && abi->ram_start_ptr)
         *abi->ram_start_ptr = (uint32_t)(uintptr_t)_OVERLAY_CUPCAKE_BSS_END;
 
+    cupcake_trace_init();
+    cupcake_trace("entry: ram_start=0x%08lx bss_end=0x%08lx",
+                  abi && abi->ram_start_ptr ? (unsigned long)*abi->ram_start_ptr : 0UL,
+                  (unsigned long)(uintptr_t)_OVERLAY_CUPCAKE_BSS_END);
+
     app_main_cupcake(load_state, start_paused, save_slot);
+
+    /* Full port build loops forever; reaching here means stub bin or early crash return. */
+    cupcake_trace("exit: app_main_cupcake returned");
 }
