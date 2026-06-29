@@ -67,7 +67,6 @@ SRCS = \
 	$(PORT_ROOT)/platform/host_audio.c \
 	$(PORT_ROOT)/platform/host_audio_catalog.c \
 	$(PORT_ROOT)/platform/cupcake_input.c \
-	$(PORT_ROOT)/platform/stb/stb_image_impl.c \
 	$(GNW_DIR)/gnw_assets.c \
 	$(GNW_DIR)/abi_stubs.c \
 	$(GNW_DIR)/cupcake_entry.c \
@@ -80,6 +79,7 @@ EMBED_SRCS   := $(GNW_DIR)/cupcake_data.c $(GNW_DIR)/cupcake_adpcm.c
 else
 EMBED_CFLAGS :=
 EMBED_SRCS   :=
+SRCS += $(PORT_ROOT)/platform/stb/stb_image_impl.c
 endif
 
 CFLAGS  = $(BASE_CFLAGS) $(EMBED_CFLAGS) $(INCLUDES)

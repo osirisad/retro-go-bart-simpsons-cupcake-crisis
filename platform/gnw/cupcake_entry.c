@@ -25,9 +25,13 @@ void cupcake_overlay_entry(uint8_t load_state, uint8_t start_paused, int8_t save
         *abi->ram_start_ptr = (uint32_t)(uintptr_t)_OVERLAY_CUPCAKE_BSS_END;
 
     cupcake_trace_init();
+    cupcake_trace("entry: load_state=%u start_paused=%u save_slot=%d",
+                  (unsigned)load_state, (unsigned)start_paused, (int)save_slot);
     cupcake_trace("entry: ram_start=0x%08lx bss_end=0x%08lx",
                   abi && abi->ram_start_ptr ? (unsigned long)*abi->ram_start_ptr : 0UL,
                   (unsigned long)(uintptr_t)_OVERLAY_CUPCAKE_BSS_END);
+    if (abi && abi->ram_get_free_size)
+        cupcake_trace("entry: heap free=%u bytes", (unsigned)abi->ram_get_free_size());
 
     app_main_cupcake(load_state, start_paused, save_slot);
 

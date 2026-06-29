@@ -244,14 +244,31 @@ void odroid_audio_submit(short *stereoAudioBuffer, int frameCount)
 {
     int16_t *dst;
     int i;
+    uint8_t vol;
 
     if (!stereoAudioBuffer || frameCount <= 0)
         return;
+
+    if (A->common_emu_sound_loop_is_muted && A->common_emu_sound_loop_is_muted())
+        return;
+
     dst = A->audio_get_active_buffer();
     if (!dst)
         return;
-    for (i = 0; i < frameCount; i++)
-        dst[i] = stereoAudioBuffer[i];
+
+    vol = A->common_emu_sound_get_volume ? A->common_emu_sound_get_volume() : (uint8_t)255;
+
+    /* Match GW/Celeste ports: volume_tbl factor with >>4, not >>8. */
+    for (i = 0; i < frameCount; i++) {
+        int32_t sample = (int32_t)stereoAudioBuffer[i] * (int32_t)vol;
+
+        sample >>= 4;
+        if (sample > 32767)
+            sample = 32767;
+        if (sample < -32768)
+            sample = -32768;
+        dst[i] = (int16_t)sample;
+    }
 }
 
 int odroid_audio_sample_rate_get(void)

@@ -30,10 +30,18 @@ DEFAULT_ASSETS = os.path.join(PORT_ROOT, "assets")
 DEFAULT_OUT_H = os.path.join(PORT_ROOT, "platform", "gnw", "cupcake_data.h")
 DEFAULT_OUT_C = os.path.join(PORT_ROOT, "platform", "gnw", "cupcake_data.c")
 
-# Measured baseline from 2026-06-27 ABI link (code load + BSS without embedded assets).
-DEFAULT_CODE_LOAD = 152212
+# Measured baseline from GNW overlay link (code in .overlay_cupcake excluding embed).
+DEFAULT_CODE_LOAD = 138000
 DEFAULT_BSS = 157120
 DEFAULT_RAM_SLOT = 724 * 1024
+GNW_MAX_WAV_SECONDS = 2.0
+
+# Device framebuffer + pre-baked RGB565 embed (no runtime JPEG decode on GNW).
+GNW_BEZEL_W = 320
+GNW_BEZEL_H = 240
+GNW_BEZEL_VISIBLE_H = 800
+GNW_ATLAS_SOURCE_W = 1024
+GNW_ATLAS_SOURCE_H = 1024
 
 STEP_TABLE = [
     7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 21, 23, 25, 28, 31,
@@ -101,7 +109,68 @@ def screen_to_jpeg_bytes(jpg_path: str, quality: int) -> bytes:
     return buf.getvalue()
 
 
-def read_wav_mono_pcm(path: str) -> tuple[list[int], int]:
+def _rgb888_to_rgb565(r: int, g: int, b: int) -> int:
+    return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
+
+
+def _image_to_rgb565_bytes(im: Image.Image, out_w: int, out_h: int) -> bytes:
+    im = im.resize((out_w, out_h), Image.Resampling.LANCZOS)
+    if im.mode == "RGBA":
+        bg = Image.new("RGB", im.size, (0, 0, 0))
+        bg.paste(im, mask=im.split()[3])
+        im = bg
+    elif im.mode != "RGB":
+        im = im.convert("RGB")
+    out = bytearray(out_w * out_h * 2)
+    px = im.load()
+    for y in range(out_h):
+        for x in range(out_w):
+            r, g, b = px[x, y][:3]
+            struct.pack_into("<H", out, (y * out_w + x) * 2, _rgb888_to_rgb565(r, g, b))
+    return bytes(out)
+
+
+def screen_to_gnw_bezel_rgb565(screen_path: str) -> bytes:
+    im = Image.open(screen_path)
+    if im.height > GNW_BEZEL_VISIBLE_H:
+        im = im.crop((0, 0, im.width, GNW_BEZEL_VISIBLE_H))
+    return _image_to_rgb565_bytes(im, GNW_BEZEL_W, GNW_BEZEL_H)
+
+
+def atlas_to_gnw_rgb565(atlas_path: str, out_w: int, out_h: int) -> bytes:
+    im = Image.open(atlas_path)
+    return _image_to_rgb565_bytes(im, out_w, out_h)
+
+
+def pick_gnw_rgb565_layout(
+    atlas_path: str,
+    screen_path: str,
+    code_load: int,
+    bss: int,
+    ram_slot: int,
+    audio_bytes: int,
+) -> tuple[int, int, bytes, bytes]:
+    """Pick the largest atlas that fits; bezel is fixed 320x240 RGB565."""
+    bezel = screen_to_gnw_bezel_rgb565(screen_path)
+    best: tuple[int, int, bytes, bytes] | None = None
+    for atlas_w in range(256, 95, -16):
+        for atlas_h in range(256, 95, -16):
+            if abs(atlas_w - atlas_h) > 32:
+                continue
+            atlas = atlas_to_gnw_rgb565(atlas_path, atlas_w, atlas_h)
+            embed = len(bezel) + len(atlas) + audio_bytes
+            if code_load + embed + bss <= ram_slot:
+                if best is None or (atlas_w * atlas_h) > (best[0] * best[1]):
+                    best = (atlas_w, atlas_h, bezel, atlas)
+    if best is None:
+        raise RuntimeError(
+            f"GNW RGB565 assets do not fit RAM slot ({ram_slot} B); "
+            f"code={code_load} bss={bss} audio={audio_bytes}"
+        )
+    return best
+
+
+def read_wav_mono_pcm(path: str, max_seconds: float | None = None) -> tuple[list[int], int]:
     with wave.open(path, "rb") as wf:
         channels = wf.getnchannels()
         width = wf.getsampwidth()
@@ -109,6 +178,10 @@ def read_wav_mono_pcm(path: str) -> tuple[list[int], int]:
         frames = wf.getnframes()
         if width != 2:
             raise RuntimeError(f"{path}: expected 16-bit WAV, got {width * 8}-bit")
+        if max_seconds is not None and max_seconds > 0:
+            max_frames = int(rate * max_seconds)
+            if max_frames < frames:
+                frames = max_frames
         raw = wf.readframes(frames)
     samples: list[int] = []
     for i in range(0, len(raw), 2):
@@ -194,7 +267,7 @@ def encode_all_wav(catalog: list[SfxEntry], audio_dir: str) -> list[AdpcmBlob]:
         path = os.path.join(audio_dir, entry.file)
         if not os.path.isfile(path):
             raise FileNotFoundError(path)
-        samples, rate = read_wav_mono_pcm(path)
+        samples, rate = read_wav_mono_pcm(path, GNW_MAX_WAV_SECONDS)
         if rate != 22050:
             print(f"warning: {entry.file} is {rate} Hz (expected 22050)", file=sys.stderr)
         payload = adpcm_encode(samples)
@@ -237,6 +310,22 @@ def c_bytes_array(name: str, data: bytes, line_width: int = 16) -> str:
     return "\n".join(lines)
 
 
+def c_uint16_array(name: str, data: bytes, line_width: int = 12) -> str:
+    lines = [f"const uint16_t {name}[] = {{"]
+    row: list[str] = []
+    for i in range(0, len(data), 2):
+        val = struct.unpack_from("<H", data, i)[0]
+        row.append(f"0x{val:04x}")
+        if len(row) >= line_width:
+            lines.append("    " + ", ".join(row) + ",")
+            row = []
+    if row:
+        lines.append("    " + ", ".join(row) + ",")
+    lines.append("};")
+    lines.append(f"const uint32_t {name}_count = (uint32_t)(sizeof({name}) / sizeof({name}[0]));")
+    return "\n".join(lines)
+
+
 def sanitize_sym(s: str) -> str:
     return re.sub(r"[^a-zA-Z0-9_]", "_", s)
 
@@ -244,17 +333,17 @@ def sanitize_sym(s: str) -> str:
 def emit_files(
     out_h: str,
     out_c: str,
-    bezel: bytes,
-    atlas: bytes,
+    atlas_w: int,
+    atlas_h: int,
+    bezel_rgb565: bytes,
+    atlas_rgb565: bytes,
     wav_blobs: list[AdpcmBlob],
-    aq: int,
-    sq: int,
     code_load: int,
     bss: int,
     ram_slot: int,
 ) -> None:
     audio_bytes = sum(len(b.payload) for b in wav_blobs)
-    embed_total = len(bezel) + len(atlas) + audio_bytes
+    embed_total = len(bezel_rgb565) + len(atlas_rgb565) + audio_bytes
     load_total = code_load + embed_total
     ram_total = load_total + bss
 
@@ -265,26 +354,27 @@ def emit_files(
 #include <stdint.h>
 
 typedef struct {{
-    const uint8_t *data;
-    uint32_t size;
-}} cupcake_blob_t;
-
-typedef struct {{
     const char *file;
     const uint8_t *adpcm;
     uint32_t adpcm_size;
     uint32_t pcm_samples;
 }} cupcake_embedded_wav_t;
 
-#define CUPCAKE_EMBED_ATLAS_JPEG_QUALITY {aq}
-#define CUPCAKE_EMBED_BEZEL_JPEG_QUALITY {sq}
+#define CUPCAKE_GNW_BEZEL_W {GNW_BEZEL_W}
+#define CUPCAKE_GNW_BEZEL_H {GNW_BEZEL_H}
+#define CUPCAKE_GNW_ATLAS_W {atlas_w}
+#define CUPCAKE_GNW_ATLAS_H {atlas_h}
+#define CUPCAKE_GNW_ATLAS_SOURCE_W {GNW_ATLAS_SOURCE_W}
+#define CUPCAKE_GNW_ATLAS_SOURCE_H {GNW_ATLAS_SOURCE_H}
 #define CUPCAKE_EMBED_AUDIO_COUNT {len(wav_blobs)}
 #define CUPCAKE_EMBED_BYTES {embed_total}
 #define CUPCAKE_EMBED_LOAD_ESTIMATE {load_total}
 #define CUPCAKE_EMBED_RAM_ESTIMATE {ram_total}
 
-cupcake_blob_t cupcake_embedded_bezel(void);
-cupcake_blob_t cupcake_embedded_atlas(void);
+const uint16_t *cupcake_gnw_bezel_rgb565(void);
+const uint16_t *cupcake_gnw_atlas_rgb565(void);
+int cupcake_gnw_bezel_pixel_count(void);
+int cupcake_gnw_atlas_pixel_count(void);
 int cupcake_embedded_wav_count(void);
 const cupcake_embedded_wav_t *cupcake_embedded_wav_by_file(const char *file);
 
@@ -295,14 +385,14 @@ const cupcake_embedded_wav_t *cupcake_embedded_wav_by_file(const char *file);
         "/* Auto-generated by tools/bundle_overlay_assets.py — do not edit. */",
         '#include "cupcake_data.h"',
         "",
-        c_bytes_array("cupcake_bezel_jpeg", bezel),
+        c_uint16_array("cupcake_gnw_bezel_rgb565_data", bezel_rgb565),
         "",
-        c_bytes_array("cupcake_atlas_jpeg", atlas),
+        c_uint16_array("cupcake_gnw_atlas_rgb565_data", atlas_rgb565),
         "",
     ]
 
     wav_rows: list[str] = []
-    for i, blob in enumerate(wav_blobs):
+    for blob in wav_blobs:
         sym = f"cupcake_wav_{sanitize_sym(os.path.splitext(blob.file)[0])}"
         c_parts.append(c_bytes_array(sym, blob.payload))
         c_parts.append("")
@@ -316,16 +406,24 @@ const cupcake_embedded_wav_t *cupcake_embedded_wav_by_file(const char *file);
             *wav_rows,
             "};",
             "",
-            "cupcake_blob_t cupcake_embedded_bezel(void)",
+            "const uint16_t *cupcake_gnw_bezel_rgb565(void)",
             "{",
-            "    cupcake_blob_t b = { cupcake_bezel_jpeg, cupcake_bezel_jpeg_size };",
-            "    return b;",
+            "    return cupcake_gnw_bezel_rgb565_data;",
             "}",
             "",
-            "cupcake_blob_t cupcake_embedded_atlas(void)",
+            "const uint16_t *cupcake_gnw_atlas_rgb565(void)",
             "{",
-            "    cupcake_blob_t b = { cupcake_atlas_jpeg, cupcake_atlas_jpeg_size };",
-            "    return b;",
+            "    return cupcake_gnw_atlas_rgb565_data;",
+            "}",
+            "",
+            "int cupcake_gnw_bezel_pixel_count(void)",
+            "{",
+            "    return (int)cupcake_gnw_bezel_rgb565_data_count;",
+            "}",
+            "",
+            "int cupcake_gnw_atlas_pixel_count(void)",
+            "{",
+            "    return (int)cupcake_gnw_atlas_rgb565_data_count;",
             "}",
             "",
             "int cupcake_embedded_wav_count(void)",
@@ -365,10 +463,10 @@ const cupcake_embedded_wav_t *cupcake_embedded_wav_by_file(const char *file);
     print(f"Wrote {out_h}")
     print(f"Wrote {out_c}")
     print(
-        f"Embed: bezel {len(bezel)} B, atlas {len(atlas)} B, "
+        f"Embed: bezel RGB565 {len(bezel_rgb565)} B ({GNW_BEZEL_W}x{GNW_BEZEL_H}), "
+        f"atlas RGB565 {len(atlas_rgb565)} B ({atlas_w}x{atlas_h}), "
         f"audio {audio_bytes} B ({len(wav_blobs)} clips)"
     )
-    print(f"JPEG quality: atlas={aq}, bezel={sq}")
     print(f"Estimated load {load_total} B + BSS {bss} B = {ram_total} B / {ram_slot} B")
     if ram_total > ram_slot:
         print(
@@ -406,24 +504,22 @@ def main() -> None:
     wav_blobs = encode_all_wav(catalog, audio_dir)
     audio_bytes = sum(len(b.payload) for b in wav_blobs)
 
-    embed_budget = args.ram_slot - args.bss - args.code_load - audio_bytes
-    if embed_budget < 4096:
-        print(
-            f"ERROR: audio alone leaves only {embed_budget} B for images "
-            f"(code={args.code_load}, bss={args.bss})",
-            file=sys.stderr,
-        )
-        sys.exit(1)
-
-    aq, sq, atlas, bezel = pick_jpeg_qualities(atlas_path, screen_path, embed_budget)
+    atlas_w, atlas_h, bezel_rgb565, atlas_rgb565 = pick_gnw_rgb565_layout(
+        atlas_path,
+        screen_path,
+        args.code_load,
+        args.bss,
+        args.ram_slot,
+        audio_bytes,
+    )
     emit_files(
         args.out_h,
         args.out_c,
-        bezel,
-        atlas,
+        atlas_w,
+        atlas_h,
+        bezel_rgb565,
+        atlas_rgb565,
         wav_blobs,
-        aq,
-        sq,
         args.code_load,
         args.bss,
         args.ram_slot,

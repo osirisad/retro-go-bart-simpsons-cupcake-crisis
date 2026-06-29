@@ -18,6 +18,98 @@ static const int8_t index_table[16] = {
     -1, -1, -1, -1, 2, 4, 6, 8
 };
 
+static int16_t adpcm_decode_nibble(int *predictor, int *step_index, int nibble)
+{
+    int step;
+    int diff;
+
+    step = step_table[*step_index];
+    diff = step >> 3;
+    if (nibble & 1)
+        diff += step >> 2;
+    if (nibble & 2)
+        diff += step >> 1;
+    if (nibble & 4)
+        diff += step;
+    if (nibble & 8)
+        diff = -diff;
+
+    *predictor += diff;
+    if (*predictor > 32767)
+        *predictor = 32767;
+    if (*predictor < -32768)
+        *predictor = -32768;
+
+    *step_index += index_table[nibble];
+    if (*step_index < 0)
+        *step_index = 0;
+    if (*step_index > 88)
+        *step_index = 88;
+
+    return (int16_t)*predictor;
+}
+
+void cupcake_adpcm_stream_init(cupcake_adpcm_stream_t *st, const uint8_t *in, size_t in_len,
+                               int pcm_samples)
+{
+    if (!st)
+        return;
+
+    st->in = in;
+    st->in_len = in_len;
+    st->pos = 0;
+    st->nibble_phase = 0;
+    st->cur_byte = 0;
+    st->samples_left = pcm_samples;
+    st->header_pending = 0;
+
+    if (!in || in_len < 3u || pcm_samples < 1) {
+        st->samples_left = 0;
+        st->predictor = 0;
+        st->step_index = 0;
+        return;
+    }
+
+    st->predictor = (int16_t)((uint16_t)in[0] | ((uint16_t)in[1] << 8));
+    st->step_index = (int)in[2];
+    if (st->step_index < 0)
+        st->step_index = 0;
+    if (st->step_index > 88)
+        st->step_index = 88;
+    st->pos = 3;
+    st->header_pending = 1;
+}
+
+int16_t cupcake_adpcm_stream_next(cupcake_adpcm_stream_t *st)
+{
+    int nibble;
+
+    if (!st || st->samples_left <= 0)
+        return 0;
+
+    if (st->header_pending) {
+        st->header_pending = 0;
+        st->samples_left--;
+        return (int16_t)st->predictor;
+    }
+
+    if (st->nibble_phase == 0) {
+        if (st->pos >= st->in_len) {
+            st->samples_left = 0;
+            return (int16_t)st->predictor;
+        }
+        st->cur_byte = st->in[st->pos++];
+        nibble = st->cur_byte & 0x0f;
+        st->nibble_phase = 1;
+    } else {
+        nibble = (st->cur_byte >> 4) & 0x0f;
+        st->nibble_phase = 0;
+    }
+
+    st->samples_left--;
+    return adpcm_decode_nibble(&st->predictor, &st->step_index, nibble);
+}
+
 int cupcake_adpcm_decode(const uint8_t *in, size_t in_len, int16_t *out, int out_samples)
 {
     int predictor;
@@ -44,8 +136,6 @@ int cupcake_adpcm_decode(const uint8_t *in, size_t in_len, int16_t *out, int out
     out[sample_idx++] = (int16_t)predictor;
 
     while (sample_idx < out_samples) {
-        int step;
-        int diff;
         int nibble;
 
         if (nibble_phase == 0) {
@@ -59,30 +149,7 @@ int cupcake_adpcm_decode(const uint8_t *in, size_t in_len, int16_t *out, int out
             nibble_phase = 0;
         }
 
-        step = step_table[step_index];
-        diff = step >> 3;
-        if (nibble & 1)
-            diff += step >> 2;
-        if (nibble & 2)
-            diff += step >> 1;
-        if (nibble & 4)
-            diff += step;
-        if (nibble & 8)
-            diff = -diff;
-
-        predictor += diff;
-        if (predictor > 32767)
-            predictor = 32767;
-        if (predictor < -32768)
-            predictor = -32768;
-
-        out[sample_idx++] = (int16_t)predictor;
-
-        step_index += index_table[nibble];
-        if (step_index < 0)
-            step_index = 0;
-        if (step_index > 88)
-            step_index = 88;
+        out[sample_idx++] = adpcm_decode_nibble(&predictor, &step_index, nibble);
     }
 
     while (sample_idx < out_samples)

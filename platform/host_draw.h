@@ -7,6 +7,7 @@
 
 typedef struct {
     const uint8_t *atlas;
+    const uint16_t *atlas_rgb565;
     int atlas_w;
     int atlas_h;
     int atlas_stride;
@@ -16,9 +17,10 @@ typedef struct {
     int lcd_stride;
 } host_atlas_t;
 
-/* RGBA bezel (screen.jpg); visible_h crops to top rows (see CUPCAKE_BEZEL_VISIBLE_H). */
+/* Bezel art; rgb565 set for GNW embedded, pixels for SD RGBA path. */
 typedef struct {
     const uint8_t *pixels;
+    const uint16_t *rgb565;
     int w;
     int h;
     int visible_h;
@@ -35,6 +37,10 @@ void host_clear_lcd_transparent(host_atlas_t *host);
 int host_sprite_rect_ok(const char *name);
 
 void host_draw_sprite(const host_atlas_t *host, const char *name, int lcd_x, int lcd_y);
+
+/* GNW: draw sprite directly into RGB565 framebuffer (embedded atlas, no lcd_pixels). */
+void host_draw_sprite_rgb565_fb(const host_atlas_t *host, uint16_t *fb, int fb_w, int fb_h,
+                                const char *name, int lcd_x, int lcd_y);
 
 /* LCD destination rect when scaling bezel to fb_w x fb_h (SDL + retro-go parity). */
 host_lcd_rect_t host_lcd_rect_for_framebuffer(int fb_w, int fb_h, int bezel_w, int bezel_visible_h);

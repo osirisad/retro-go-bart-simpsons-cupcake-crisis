@@ -1,5 +1,5 @@
 /*
- * Load PNG/JPG for device overlay — embedded pack (RG-4) or SD fallback (dev).
+ * Load art for device overlay — embedded RGB565 (GNW) or SD PNG/JPG fallback.
  */
 #include "gnw_assets.h"
 
@@ -25,11 +25,6 @@ const char *gnw_assets_base(void)
 #else
     return CUPCAKE_GNW_ASSETS_BASE;
 #endif
-}
-
-static uint8_t *load_rgba_memory(const uint8_t *data, int len, int *w, int *h)
-{
-    return stbi_load_from_memory(data, len, w, h, NULL, 4);
 }
 
 #ifndef CUPCAKE_EMBEDDED_ASSETS
@@ -60,11 +55,35 @@ int gnw_assets_load(host_atlas_t *host, host_bezel_t *bezel, int *bezel_w, int *
 
 #ifdef CUPCAKE_EMBEDDED_ASSETS
     {
-        cupcake_blob_t b = cupcake_embedded_bezel();
-        cupcake_blob_t a = cupcake_embedded_atlas();
+        const uint16_t *bezel565 = cupcake_gnw_bezel_rgb565();
+        const uint16_t *atlas565 = cupcake_gnw_atlas_rgb565();
 
-        g_bezel_pixels = load_rgba_memory(b.data, (int)b.size, &bw, &bh);
-        g_atlas_pixels = load_rgba_memory(a.data, (int)a.size, &aw, &ah);
+        bw = CUPCAKE_GNW_BEZEL_W;
+        bh = CUPCAKE_GNW_BEZEL_H;
+        aw = CUPCAKE_GNW_ATLAS_W;
+        ah = CUPCAKE_GNW_ATLAS_H;
+
+        if (!bezel565 || !atlas565 || bw < 1 || bh < 1 || aw < 1 || ah < 1)
+            return -1;
+
+        host->atlas_rgb565 = atlas565;
+        host->atlas_w = aw;
+        host->atlas_h = ah;
+        host->lcd_w = 0;
+        host->lcd_h = 0;
+        host->lcd_pixels = NULL;
+
+        bezel->rgb565 = bezel565;
+        bezel->w = bw;
+        bezel->h = bh;
+        bezel->pixels = NULL;
+        bezel->visible_h = CUPCAKE_BEZEL_VISIBLE_H;
+        if (bh < bezel->visible_h)
+            bezel->visible_h = bh;
+
+        *bezel_w = bw;
+        *bezel_h = bh;
+        return 0;
     }
 #else
     {
@@ -84,7 +103,6 @@ int gnw_assets_load(host_atlas_t *host, host_bezel_t *bezel, int *bezel_w, int *
             g_atlas_pixels = load_rgba_file(path, &aw, &ah);
         }
     }
-#endif
 
     if (!g_bezel_pixels || !g_atlas_pixels || bw < 1 || bh < 1 || aw < 1 || ah < 1) {
         gnw_assets_free(host, bezel);
@@ -113,16 +131,19 @@ int gnw_assets_load(host_atlas_t *host, host_bezel_t *bezel, int *bezel_w, int *
     bezel->w = bw;
     bezel->h = bh;
     bezel->visible_h = visible_h;
+    bezel->rgb565 = NULL;
 
     *bezel_w = bw;
     *bezel_h = bh;
     return 0;
+#endif
 }
 
 void gnw_assets_free(host_atlas_t *host, host_bezel_t *bezel)
 {
     (void)bezel;
 
+#ifndef CUPCAKE_EMBEDDED_ASSETS
     if (g_bezel_pixels) {
         stbi_image_free(g_bezel_pixels);
         g_bezel_pixels = NULL;
@@ -131,9 +152,7 @@ void gnw_assets_free(host_atlas_t *host, host_bezel_t *bezel)
         stbi_image_free(g_atlas_pixels);
         g_atlas_pixels = NULL;
     }
-    if (host && host->lcd_pixels) {
-        host->lcd_pixels = NULL;
-    }
+#endif
     if (host)
         memset(host, 0, sizeof *host);
 }
