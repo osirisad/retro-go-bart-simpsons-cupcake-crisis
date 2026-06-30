@@ -59,9 +59,11 @@ void cupcake_input_from_odroid(const odroid_gamepad_state_t *pad, uint16_t *butt
     /* G&W B + TIME = Select — cycle demo level 0→1→2→0 (btnSelect). */
     if (pad->values[ODROID_INPUT_B] || pad->values[ODROID_INPUT_SELECT])
         b |= CUPCAKE_BTN_SELECT;
-    /* G&W PAUSE = Sound on/off (btnSound). */
+#if !defined(CUPCAKE_GNW) && !defined(TARGET_GNW)
+    /* G&W PAUSE/SET is retro-go menu + volume — do not map to in-game mute on device. */
     if (pad->values[ODROID_INPUT_VOLUME])
         b |= CUPCAKE_BTN_SOUND;
+#endif
 
     *buttons = b;
 }

@@ -168,6 +168,34 @@ static void setup_hiscore_path(void)
     cupcake_hiscore_set_path(path);
 }
 
+/*
+ * common_emu_input_loop() can block inside retro-go menus. Refresh frame
+ * timing, restart SAI DMA after firmware mute, and re-sync gamepad edges so a
+ * PAUSE release from closing the menu does not look like an in-game button
+ * release to cupcake_update().
+ */
+static void cupcake_resume_after_blocking_input(common_emu_state_t *emu, uint16_t audio_frames,
+                                                odroid_gamepad_state_t *pad, uint32_t blocked_ms)
+{
+    const gw_firmware_abi_t *abi = gw_firmware_abi();
+
+    if (!emu || blocked_ms < 40u)
+        return;
+
+    if (abi && abi->HAL_GetTick)
+        emu->last_sync_time = abi->HAL_GetTick();
+
+    audio_start_playing(audio_frames);
+
+    if (pad) {
+        odroid_input_read_gamepad(pad);
+        cupcake_input_from_odroid(pad, &g_buttons);
+        cupcake_buttons_sync(g_buttons);
+    }
+
+    cupcake_trace("audio: resume after menu block (%lu ms)", (unsigned long)blocked_ms);
+}
+
 void app_main_cupcake(uint8_t load_state, uint8_t start_paused, int8_t save_slot)
 {
     odroid_dialog_choice_t options[] = {ODROID_DIALOG_CHOICE_LAST};
@@ -252,8 +280,8 @@ void app_main_cupcake(uint8_t load_state, uint8_t start_paused, int8_t save_slot
         odroid_overlay_alert("Cupcake: audio disabled.\nCopy WAVs to /retro-go/cupcake/audio/");
 #endif
     } else {
-        cupcake_trace("app_main: host_audio_init ok (ADPCM stream, rate=%d)",
-                      odroid_audio_sample_rate_get());
+        cupcake_trace("app_main: host_audio_init ok (ADPCM stream, rate=%d, pack_gain=%.2f)",
+                      odroid_audio_sample_rate_get(), (double)CUPCAKE_GNW_PCM_PACK_GAIN);
     }
 
     if (load_state)
@@ -273,7 +301,6 @@ void app_main_cupcake(uint8_t load_state, uint8_t start_paused, int8_t save_slot
 
         odroid_input_read_gamepad(&pad);
         cupcake_input_from_odroid(&pad, &g_buttons);
-        cupcake_set_buttons(g_buttons);
 
         if (s_frame_log < 5u) {
             cupcake_trace("frame %lu draw=%d buttons=0x%04x", (unsigned long)s_frame_log,
@@ -287,8 +314,24 @@ void app_main_cupcake(uint8_t load_state, uint8_t start_paused, int8_t save_slot
             s_last_buttons = g_buttons;
         }
 
-        common_emu_input_loop(&pad, options, &blit_frame);
+        {
+            const gw_firmware_abi_t *abi = gw_firmware_abi();
+            uint32_t input_t0 = 0;
+            uint32_t input_ms = 0;
+
+            if (abi && abi->HAL_GetTick)
+                input_t0 = abi->HAL_GetTick();
+
+            common_emu_input_loop(&pad, options, &blit_frame);
+
+            if (abi && abi->HAL_GetTick)
+                input_ms = abi->HAL_GetTick() - input_t0;
+
+            cupcake_resume_after_blocking_input(emu, (uint16_t)audio_frames, &pad, input_ms);
+        }
         common_emu_input_loop_handle_turbo(&pad);
+
+        cupcake_set_buttons(g_buttons);
 
         cupcake_update();
         cupcake_draw();

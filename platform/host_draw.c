@@ -230,6 +230,16 @@ static uint16_t gnw_atlas_sample_bilinear(const host_atlas_t *host, int src_x, i
     return HOST_RGB565((uint8_t)(r << 3), (uint8_t)(g << 2), (uint8_t)(b << 3));
 }
 
+static inline uint16_t gnw_fixup_masked_pixel(uint16_t px, int masked)
+{
+    if (!masked)
+        return px;
+    if (px != 0)
+        return px;
+    /* Mask says opaque but RGB565 is 0 — dark LED red lost in quantize. */
+    return HOST_RGB565(255, 0, 0);
+}
+
 void host_draw_sprite_rgb565_fb(const host_atlas_t *host, uint16_t *fb, int fb_w, int fb_h,
                                 const char *name, int lcd_x, int lcd_y)
 {
@@ -238,7 +248,7 @@ void host_draw_sprite_rgb565_fb(const host_atlas_t *host, uint16_t *fb, int fb_w
     const cupcake_sprite_mask_t *msk;
     int dx0, dy0;
     int fb_sw, fb_sh;
-    int row, col;
+    int row;
 
     if (!host || !host->atlas_rgb565 || !fb || fb_w < 1 || fb_h < 1)
         return;
@@ -272,7 +282,7 @@ void host_draw_sprite_rgb565_fb(const host_atlas_t *host, uint16_t *fb, int fb_w
     for (row = 0; row < fb_sh; row++) {
         int dy = dy0 + row;
         int col;
-        int use_nearest = host_sprite_is_hud_digit(name);
+        int use_nearest = 1;
 
         if (dy < 0 || dy >= fb_h)
             continue;
@@ -283,6 +293,7 @@ void host_draw_sprite_rgb565_fb(const host_atlas_t *host, uint16_t *fb, int fb_w
             int src_y;
             int mask_col;
             int mask_row;
+            int masked;
             uint16_t px;
 
             if (dx < 0 || dx >= fb_w)
@@ -293,14 +304,20 @@ void host_draw_sprite_rgb565_fb(const host_atlas_t *host, uint16_t *fb, int fb_w
             mask_col = col * spr->w / fb_sw;
             mask_row = row * spr->h / fb_sh;
 
-            if (msk && !cupcake_sprite_mask_get(msk, mask_col, mask_row, spr->w, spr->h))
-                continue;
+            masked = 1;
+            if (msk) {
+                masked = cupcake_sprite_mask_get(msk, mask_col, mask_row, spr->w, spr->h);
+                if (!masked)
+                    continue;
+            }
 
             if (use_nearest)
                 px = gnw_atlas_sample_nearest(host, src_x, src_y);
             else
                 px = gnw_atlas_sample_bilinear(host, src_x, src_y);
-            if (px == 0)
+
+            px = gnw_fixup_masked_pixel(px, masked);
+            if (!msk && px == 0)
                 continue;
 
             fb[dy * fb_w + dx] = px;

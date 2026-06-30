@@ -128,6 +128,7 @@ $(TARGET_ELF): $(OBJS) $(LINKER) | $(BUILD_DIR)
 $(TARGET_BIN): $(TARGET_ELF) | $(RELEASE_DIR)
 	$(OBJCOPY) -O binary --only-section=.overlay_cupcake $< $@
 	@echo "Built $@ ($(shell wc -c < $@ | tr -d ' ') bytes) — copy to /roms/homebrew/cupcake.bin"
+	@echo "Also copy release/cupcake_sd/roms/homebrew/cupcake/audio/ to /roms/homebrew/cupcake/audio/"
 
 size: $(TARGET_ELF)
 	$(SIZE) $(TARGET_ELF)

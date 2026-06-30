@@ -18,6 +18,10 @@ static int g_muted;
 #ifdef CUPCAKE_EMBEDDED_ASSETS
 #include "cupcake_data.h"
 #include "cupcake_adpcm.h"
+#include "gnw_assets.h"
+#if defined(CUPCAKE_GNW)
+#include "cupcake_trace.h"
+#endif
 #endif
 
 #define HOST_VOICE_MAX 12
@@ -35,6 +39,9 @@ typedef struct {
     cupcake_adpcm_stream_t dec;
     int pcm_len;
     int pos;
+    int sample_rate;
+    uint32_t rate_acc;
+    int16_t cur_sample;
     float gain;
     int active;
 } host_adpcm_voice_t;
@@ -193,22 +200,118 @@ static void resample_to_device(host_pcm_t *pcm)
 }
 
 #ifdef CUPCAKE_EMBEDDED_ASSETS
-static void load_catalog_embedded(int index)
+static void adpcm_voice_release(host_adpcm_voice_t *voice)
 {
-    host_pcm_t *pcm = &g_pcm[index];
-
-    if (pcm->len > 0)
+    if (!voice)
         return;
+    voice->active = 0;
+    cupcake_adpcm_stream_close(&voice->dec);
+}
 
-    pcm->volume = host_sfx_catalog[index].volume;
-    pcm->len = 1;
+static int parse_meta_line_int(const char *line, const char *key, int *out)
+{
+    const char *p = line;
+    size_t i = 0;
+
+    if (!line || !key || !out)
+        return 0;
+    while (key[i] && p[i] && key[i] == p[i])
+        i++;
+    if (key[i] != '\0' || p[i] != '=')
+        return 0;
+
+    p += i + 1;
+    if (*p < '0' || *p > '9')
+        return 0;
+    *out = 0;
+    while (*p >= '0' && *p <= '9') {
+        *out = *out * 10 + (*p - '0');
+        p++;
+    }
+    return 1;
+}
+
+static void wav_file_stem(const char *wav_file, char *stem, size_t stem_sz)
+{
+    const char *p = wav_file;
+    const char *last_dot = NULL;
+
+    if (!wav_file || !stem || stem_sz < 2u) {
+        if (stem && stem_sz > 0u)
+            stem[0] = '\0';
+        return;
+    }
+
+    while (*p) {
+        if (*p == '.')
+            last_dot = p;
+        p++;
+    }
+
+    if (last_dot && last_dot > wav_file) {
+        size_t n = (size_t)(last_dot - wav_file);
+        if (n >= stem_sz)
+            n = stem_sz - 1u;
+        memcpy(stem, wav_file, n);
+        stem[n] = '\0';
+    } else {
+        snprintf(stem, stem_sz, "%s", wav_file);
+    }
+}
+
+static int open_sd_adpcm_clip(const char *wav_file, FILE **out_fp, int *out_pcm_samples,
+                              int *out_sample_rate)
+{
+    char stem[64];
+    char adpcm_path[384];
+    char meta_path[384];
+    char line[96];
+    FILE *meta_fp;
+    FILE *adpcm_fp;
+    int pcm_samples = 0;
+    int sample_rate = 0;
+    int got_samples = 0;
+    int got_rate = 0;
+
+    if (!wav_file || !out_fp || !out_pcm_samples || !out_sample_rate || !g_audio_dir[0])
+        return -1;
+
+    *out_fp = NULL;
+    wav_file_stem(wav_file, stem, sizeof stem);
+    if (!stem[0])
+        return -1;
+
+    snprintf(adpcm_path, sizeof adpcm_path, "%s/%s.adpcm", g_audio_dir, stem);
+    snprintf(meta_path, sizeof meta_path, "%s/%s.meta", g_audio_dir, stem);
+
+    meta_fp = fopen(meta_path, "r");
+    if (!meta_fp)
+        return -1;
+    while (fgets(line, sizeof line, meta_fp)) {
+        if (!got_samples && parse_meta_line_int(line, "pcm_samples", &pcm_samples))
+            got_samples = 1;
+        if (!got_rate && parse_meta_line_int(line, "sample_rate", &sample_rate))
+            got_rate = 1;
+    }
+    fclose(meta_fp);
+    if (!got_samples || !got_rate || pcm_samples < 1 || sample_rate < 1)
+        return -1;
+
+    adpcm_fp = fopen(adpcm_path, "rb");
+    if (!adpcm_fp)
+        return -1;
+
+    *out_fp = adpcm_fp;
+    *out_pcm_samples = pcm_samples;
+    *out_sample_rate = sample_rate;
+    return 0;
 }
 #endif
 
 static void load_catalog_pcm(int index)
 {
 #ifdef CUPCAKE_EMBEDDED_ASSETS
-    load_catalog_embedded(index);
+    (void)index;
 #else
     const host_sfx_def_t *def = &host_sfx_catalog[index];
     host_pcm_t *pcm = &g_pcm[index];
@@ -235,7 +338,7 @@ static void stop_voices(void)
     int i;
 #ifdef CUPCAKE_EMBEDDED_ASSETS
     for (i = 0; i < HOST_VOICE_MAX; i++)
-        g_adpcm_voices[i].active = 0;
+        adpcm_voice_release(&g_adpcm_voices[i]);
 #else
     for (i = 0; i < HOST_VOICE_MAX; i++)
         g_voices[i].active = 0;
@@ -264,7 +367,10 @@ int host_audio_init(const char *assets_base)
     snprintf(g_audio_dir, sizeof g_audio_dir, "%s/audio", assets_base);
 #else
     (void)assets_base;
-    g_audio_dir[0] = '\0';
+    snprintf(g_audio_dir, sizeof g_audio_dir, "%s", CUPCAKE_GNW_SD_AUDIO_DIR);
+#if defined(CUPCAKE_GNW)
+    cupcake_trace("audio: sd music dir %s", g_audio_dir);
+#endif
 #endif
 
     for (i = 0; i < HOST_SFX_COUNT; i++)
@@ -293,6 +399,57 @@ void host_audio_shutdown(void)
     g_ready = 0;
 }
 
+#ifdef CUPCAKE_EMBEDDED_ASSETS
+static int start_adpcm_voice_mem(host_adpcm_voice_t *voice, const uint8_t *payload,
+                                 size_t payload_len, int pcm_samples, int sample_rate,
+                                 float gain)
+{
+    if (!voice || !payload || payload_len < 3u || pcm_samples < 1)
+        return -1;
+
+    adpcm_voice_release(voice);
+    cupcake_adpcm_stream_init(&voice->dec, payload, payload_len, pcm_samples);
+    if (voice->dec.samples_left <= 0) {
+        adpcm_voice_release(voice);
+        return -1;
+    }
+    voice->pcm_len = pcm_samples;
+    voice->sample_rate = (sample_rate > 0) ? sample_rate : 22050;
+    voice->pos = 0;
+    voice->rate_acc = 0;
+    voice->cur_sample = 0;
+    voice->gain = gain;
+    voice->active = 1;
+    voice->cur_sample = cupcake_adpcm_stream_next(&voice->dec);
+    voice->pos = 1;
+    return 0;
+}
+
+static int start_adpcm_voice_file(host_adpcm_voice_t *voice, FILE *fp, int pcm_samples,
+                                  int sample_rate, float gain)
+{
+    if (!voice || !fp || pcm_samples < 1)
+        return -1;
+
+    adpcm_voice_release(voice);
+    cupcake_adpcm_stream_init_file(&voice->dec, fp, pcm_samples);
+    if (voice->dec.samples_left <= 0) {
+        adpcm_voice_release(voice);
+        return -1;
+    }
+    voice->pcm_len = pcm_samples;
+    voice->sample_rate = (sample_rate > 0) ? sample_rate : 22050;
+    voice->pos = 0;
+    voice->rate_acc = 0;
+    voice->cur_sample = 0;
+    voice->gain = gain;
+    voice->active = 1;
+    voice->cur_sample = cupcake_adpcm_stream_next(&voice->dec);
+    voice->pos = 1;
+    return 0;
+}
+#endif
+
 int host_audio_play(const char *sfx_id)
 {
     const host_sfx_def_t *def;
@@ -317,16 +474,39 @@ int host_audio_play(const char *sfx_id)
 #ifdef CUPCAKE_EMBEDDED_ASSETS
     {
         const cupcake_embedded_wav_t *ew;
+        FILE *sd_fp = NULL;
+        int sd_samples = 0;
+        int sd_rate = 0;
+        int rc;
 
         ew = cupcake_embedded_wav_by_file(def->file);
-        if (!ew || !ew->adpcm || ew->adpcm_size < 3u || ew->pcm_samples < 1u)
-            return -1;
-
-        for (i = 0; i < HOST_SFX_COUNT; i++) {
-            if (strcmp(host_sfx_catalog[i].id, sfx_id) == 0) {
-                load_catalog_embedded(i);
-                break;
+        if (ew && ew->adpcm && ew->adpcm_size >= 3u && ew->pcm_samples >= 1u) {
+            for (i = 0; i < HOST_VOICE_MAX; i++) {
+                if (!g_adpcm_voices[i].active) {
+                    slot = i;
+                    break;
+                }
             }
+            if (slot < 0)
+                return -1;
+
+            rc = start_adpcm_voice_mem(&g_adpcm_voices[slot], ew->adpcm, (size_t)ew->adpcm_size,
+                                       (int)ew->pcm_samples, CUPCAKE_GNW_SFX_SAMPLE_RATE,
+                                       def->volume);
+            if (rc != 0)
+                return -1;
+#if defined(CUPCAKE_GNW)
+            cupcake_trace("audio: play %s (embed, %u samples @ %d Hz)", def->file,
+                          (unsigned)ew->pcm_samples, CUPCAKE_GNW_SFX_SAMPLE_RATE);
+#endif
+            return 0;
+        }
+
+        if (open_sd_adpcm_clip(def->file, &sd_fp, &sd_samples, &sd_rate) != 0) {
+#if defined(CUPCAKE_GNW)
+            cupcake_trace("audio: missing sd clip %s (dir %s)", def->file, g_audio_dir);
+#endif
+            return -1;
         }
 
         for (i = 0; i < HOST_VOICE_MAX; i++) {
@@ -335,15 +515,21 @@ int host_audio_play(const char *sfx_id)
                 break;
             }
         }
-        if (slot < 0)
+        if (slot < 0) {
+            fclose(sd_fp);
             return -1;
+        }
 
-        cupcake_adpcm_stream_init(&g_adpcm_voices[slot].dec, ew->adpcm, ew->adpcm_size,
-                                  (int)ew->pcm_samples);
-        g_adpcm_voices[slot].pcm_len = (int)ew->pcm_samples;
-        g_adpcm_voices[slot].pos = 0;
-        g_adpcm_voices[slot].gain = def->volume;
-        g_adpcm_voices[slot].active = 1;
+        rc = start_adpcm_voice_file(&g_adpcm_voices[slot], sd_fp, sd_samples, sd_rate,
+                                    def->volume);
+        if (rc != 0) {
+            fclose(sd_fp);
+            return -1;
+        }
+#if defined(CUPCAKE_GNW)
+        cupcake_trace("audio: sd stream %s/%s.adpcm (%d samples @ %d Hz)", g_audio_dir,
+                      def->file, sd_samples, sd_rate);
+#endif
         return 0;
     }
 #else
@@ -400,17 +586,27 @@ void host_audio_pump(int frame_count)
 #ifdef CUPCAKE_EMBEDDED_ASSETS
         for (v = 0; v < HOST_VOICE_MAX; v++) {
             host_adpcm_voice_t *voice = &g_adpcm_voices[v];
-            int16_t sample;
+            int voice_rate;
 
             if (!voice->active)
                 continue;
-            if (voice->pos >= voice->pcm_len || voice->dec.samples_left <= 0) {
-                voice->active = 0;
-                continue;
+
+            mix += (int32_t)((float)voice->cur_sample * voice->gain);
+
+            voice_rate = voice->sample_rate;
+            if (voice_rate < 1)
+                voice_rate = g_device_rate;
+
+            voice->rate_acc += (uint32_t)voice_rate;
+            while (voice->rate_acc >= (uint32_t)g_device_rate) {
+                voice->rate_acc -= (uint32_t)g_device_rate;
+                if (voice->pos >= voice->pcm_len || voice->dec.samples_left <= 0) {
+                    adpcm_voice_release(voice);
+                    break;
+                }
+                voice->cur_sample = cupcake_adpcm_stream_next(&voice->dec);
+                voice->pos++;
             }
-            sample = cupcake_adpcm_stream_next(&voice->dec);
-            voice->pos++;
-            mix += (int32_t)((float)sample * voice->gain);
         }
 #else
         for (v = 0; v < HOST_VOICE_MAX; v++) {

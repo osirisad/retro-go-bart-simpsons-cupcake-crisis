@@ -74,11 +74,22 @@ Users download **`cupcake.bin`** and copy to SD. No compile step.
 ## SD card layout (player)
 
 ```
-/roms/homebrew/cupcake.bin          ← game (from Release)
-/retro-go/cupcake/screen.jpg        ← assets (interim; RG-4 will embed)
-/retro-go/cupcake/sprites-color.png
-/retro-go/cupcake/audio/*.wav
+/roms/homebrew/cupcake.bin
+/roms/homebrew/cupcake/audio/start.adpcm
+/roms/homebrew/cupcake/audio/start.meta
+/roms/homebrew/cupcake/audio/phase.adpcm
+/roms/homebrew/cupcake/audio/phase.meta
+/roms/homebrew/cupcake/audio/over.adpcm
+/roms/homebrew/cupcake/audio/over.meta
 ```
+
+All gameplay sounds (`step`, `move`, `throw`, `couch`, etc.) are **inside `cupcake.bin`**. Only the three long music tracks use SD sidecars (raw ADPCM + `.meta`).
+
+Copy from `release/` after `make cupcake-bin`:
+- `release/cupcake.bin` → `/roms/homebrew/cupcake.bin`
+- `release/cupcake_sd/roms/homebrew/cupcake/audio/` → `/roms/homebrew/cupcake/audio/`
+
+Remove any old `cupcake_audio.dat` or `cupcake_audio/` folder on SD if present.
 
 ---
 

@@ -8,6 +8,11 @@
 #define CUPCAKE_GNW_ASSETS_BASE "/retro-go/cupcake"
 #endif
 
+/* Long music ADPCM sidecars — /roms/homebrew/cupcake/audio/ on SD. */
+#ifndef CUPCAKE_GNW_SD_AUDIO_DIR
+#define CUPCAKE_GNW_SD_AUDIO_DIR "/roms/homebrew/cupcake/audio"
+#endif
+
 /* NULL when assets are embedded in cupcake.bin. */
 const char *gnw_assets_base(void);
 

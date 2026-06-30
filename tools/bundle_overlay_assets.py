@@ -34,7 +34,20 @@ DEFAULT_OUT_C = os.path.join(PORT_ROOT, "platform", "gnw", "cupcake_data.c")
 DEFAULT_CODE_LOAD = 138000
 DEFAULT_BSS = 157120
 DEFAULT_RAM_SLOT = 724 * 1024
-GNW_MAX_WAV_SECONDS = 2.0
+# All embedded clips at device-native 22.05 kHz.
+GNW_SFX_SAMPLE_RATE = 22050
+GNW_MUSIC_SAMPLE_RATE = 22050
+# Long music streams as individual .adpcm + .meta files on SD (one FILE per voice).
+# All gameplay SFX embed in cupcake.bin.
+GNW_SD_WAV_FILES = frozenset({
+    "start.wav",
+    "phase.wav",
+    "over.wav",
+})
+# Leave headroom so link-time BSS does not overflow the 724 KiB slot.
+GNW_RAM_SAFETY_MARGIN = 8192
+# Scale PCM before ADPCM encode (device only — does not modify assets/audio/*.wav on disk).
+GNW_PCM_PACK_GAIN = 0.10
 
 # Device framebuffer + pre-baked RGB565 embed (no runtime JPEG decode on GNW).
 GNW_BEZEL_W = 320
@@ -74,6 +87,7 @@ class SfxEntry:
 class AdpcmBlob:
     file: str
     pcm_samples: int
+    sample_rate: int
     payload: bytes
 
 
@@ -109,24 +123,27 @@ def screen_to_jpeg_bytes(jpg_path: str, quality: int) -> bytes:
     return buf.getvalue()
 
 
-def _rgb888_to_rgb565(r: int, g: int, b: int) -> int:
+def _rgb888_to_rgb565(r: int, g: int, b: int, alpha: int = 255) -> int:
+  # 7-segment / LED art uses very dark red (e.g. RGB 4,3,3) that becomes 0x0000 in RGB565.
+    if alpha > 32 and (r + g + b) > 0 and r < 48:
+        r = 48
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
 
 
 def _image_to_rgb565_bytes(im: Image.Image, out_w: int, out_h: int) -> bytes:
     im = im.resize((out_w, out_h), Image.Resampling.LANCZOS)
-    if im.mode == "RGBA":
-        bg = Image.new("RGB", im.size, (0, 0, 0))
-        bg.paste(im, mask=im.split()[3])
-        im = bg
-    elif im.mode != "RGB":
-        im = im.convert("RGB")
+    if im.mode != "RGBA":
+        im = im.convert("RGBA")
     out = bytearray(out_w * out_h * 2)
     px = im.load()
     for y in range(out_h):
         for x in range(out_w):
-            r, g, b = px[x, y][:3]
-            struct.pack_into("<H", out, (y * out_w + x) * 2, _rgb888_to_rgb565(r, g, b))
+            r, g, b, a = px[x, y]
+            if a < 16:
+                val = 0
+            else:
+                val = _rgb888_to_rgb565(r, g, b, a)
+            struct.pack_into("<H", out, (y * out_w + x) * 2, val)
     return bytes(out)
 
 
@@ -153,13 +170,13 @@ def pick_gnw_rgb565_layout(
     """Pick the largest atlas that fits; bezel is fixed 320x240 RGB565."""
     bezel = screen_to_gnw_bezel_rgb565(screen_path)
     best: tuple[int, int, bytes, bytes] | None = None
-    for atlas_w in range(256, 95, -16):
-        for atlas_h in range(256, 95, -16):
+    for atlas_w in range(320, 95, -16):
+        for atlas_h in range(320, 95, -16):
             if abs(atlas_w - atlas_h) > 32:
                 continue
             atlas = atlas_to_gnw_rgb565(atlas_path, atlas_w, atlas_h)
             embed = len(bezel) + len(atlas) + audio_bytes
-            if code_load + embed + bss <= ram_slot:
+            if code_load + embed + bss <= ram_slot - GNW_RAM_SAFETY_MARGIN:
                 if best is None or (atlas_w * atlas_h) > (best[0] * best[1]):
                     best = (atlas_w, atlas_h, bezel, atlas)
     if best is None:
@@ -170,7 +187,7 @@ def pick_gnw_rgb565_layout(
     return best
 
 
-def read_wav_mono_pcm(path: str, max_seconds: float | None = None) -> tuple[list[int], int]:
+def read_wav_mono_pcm(path: str) -> tuple[list[int], int]:
     with wave.open(path, "rb") as wf:
         channels = wf.getnchannels()
         width = wf.getsampwidth()
@@ -178,10 +195,6 @@ def read_wav_mono_pcm(path: str, max_seconds: float | None = None) -> tuple[list
         frames = wf.getnframes()
         if width != 2:
             raise RuntimeError(f"{path}: expected 16-bit WAV, got {width * 8}-bit")
-        if max_seconds is not None and max_seconds > 0:
-            max_frames = int(rate * max_seconds)
-            if max_frames < frames:
-                frames = max_frames
         raw = wf.readframes(frames)
     samples: list[int] = []
     for i in range(0, len(raw), 2):
@@ -194,6 +207,53 @@ def read_wav_mono_pcm(path: str, max_seconds: float | None = None) -> tuple[list
             mono.append(int(sum(chunk) / len(chunk)))
         samples = mono
     return samples, rate
+
+
+def embed_sample_rate_for(file: str) -> int:
+    if file in GNW_SD_WAV_FILES:
+        return GNW_MUSIC_SAMPLE_RATE
+    return GNW_SFX_SAMPLE_RATE
+
+
+def _prefilter_for_downsample(samples: list[int]) -> list[int]:
+    """Light smoothing before decimation to reduce aliasing on music beds."""
+    if len(samples) < 3:
+        return samples
+    out = [samples[0]]
+    for i in range(1, len(samples) - 1):
+        out.append((samples[i - 1] + 2 * samples[i] + samples[i + 1]) // 4)
+    out.append(samples[-1])
+    return out
+
+
+def resample_pcm(samples: list[int], src_rate: int, dst_rate: int) -> list[int]:
+    """Linear resample mono PCM (used to pack SFX at GNW_EMBED_SAMPLE_RATE)."""
+    if not samples or src_rate == dst_rate:
+        return samples
+    if src_rate < 1 or dst_rate < 1:
+        return samples
+
+    if dst_rate < src_rate:
+        samples = _prefilter_for_downsample(samples)
+
+    out_len = max(1, int(round(len(samples) * dst_rate / src_rate)))
+    out: list[int] = []
+    for i in range(out_len):
+        src_pos = i * src_rate / dst_rate
+        idx = int(src_pos)
+        frac = src_pos - idx
+        if idx >= len(samples) - 1:
+            s = samples[-1]
+        else:
+            a = samples[idx]
+            b = samples[idx + 1]
+            s = int(a + (b - a) * frac)
+        if s > 32767:
+            s = 32767
+        if s < -32768:
+            s = -32768
+        out.append(s)
+    return out
 
 
 def adpcm_encode(samples: list[int]) -> bytes:
@@ -261,17 +321,85 @@ def adpcm_encode(samples: list[int]) -> bytes:
     return bytes(out)
 
 
-def encode_all_wav(catalog: list[SfxEntry], audio_dir: str) -> list[AdpcmBlob]:
+def apply_pcm_pack_gain(samples: list[int]) -> list[int]:
+    """Attenuate mono PCM before GNW ADPCM encode."""
+    gain = GNW_PCM_PACK_GAIN
+    if gain >= 0.999:
+        return samples
+    if gain <= 0.0:
+        return [0] * len(samples)
+    out: list[int] = []
+    for s in samples:
+        v = int(round(s * gain))
+        if v > 32767:
+            v = 32767
+        if v < -32768:
+            v = -32768
+        out.append(v)
+    return out
+
+
+def encode_wav_file(path: str, file: str, target_rate: int) -> AdpcmBlob:
+    samples, rate = read_wav_mono_pcm(path)
+    if rate != target_rate:
+        samples = resample_pcm(samples, rate, target_rate)
+        rate = target_rate
+    samples = apply_pcm_pack_gain(samples)
+    payload = adpcm_encode(samples)
+    return AdpcmBlob(file, len(samples), rate, payload)
+
+
+def export_sd_adpcm_files(catalog: list[SfxEntry], audio_dir: str, out_dir: str) -> list[AdpcmBlob]:
+    """Write raw .adpcm + .meta sidecars for long music tracks on SD."""
     blobs: list[AdpcmBlob] = []
+    audio_out = os.path.join(out_dir, "audio")
+    os.makedirs(audio_out, exist_ok=True)
+
     for entry in catalog:
+        if entry.file not in GNW_SD_WAV_FILES:
+            continue
         path = os.path.join(audio_dir, entry.file)
         if not os.path.isfile(path):
             raise FileNotFoundError(path)
-        samples, rate = read_wav_mono_pcm(path, GNW_MAX_WAV_SECONDS)
-        if rate != 22050:
-            print(f"warning: {entry.file} is {rate} Hz (expected 22050)", file=sys.stderr)
-        payload = adpcm_encode(samples)
-        blobs.append(AdpcmBlob(entry.file, len(samples), payload))
+        target_rate = embed_sample_rate_for(entry.file)
+        blob = encode_wav_file(path, entry.file, target_rate)
+        base = os.path.splitext(blob.file)[0]
+        adpcm_path = os.path.join(audio_out, f"{base}.adpcm")
+        meta_path = os.path.join(audio_out, f"{base}.meta")
+        with open(adpcm_path, "wb") as f:
+            f.write(blob.payload)
+        with open(meta_path, "w", encoding="utf-8", newline="\n") as f:
+            f.write(f"pcm_samples={blob.pcm_samples}\n")
+            f.write(f"sample_rate={blob.sample_rate}\n")
+        print(
+            f"audio-sd: {base}.adpcm + {base}.meta @ {blob.sample_rate} Hz "
+            f"({blob.pcm_samples} samples, {len(blob.payload)} B ADPCM, gain={GNW_PCM_PACK_GAIN})",
+            file=sys.stderr,
+        )
+        blobs.append(blob)
+
+    print(f"Wrote {len(blobs)} SD clip pairs to {audio_out}/", file=sys.stderr)
+    return blobs
+
+
+def encode_embed_wav(catalog: list[SfxEntry], audio_dir: str) -> list[AdpcmBlob]:
+    """ADPCM blobs linked into cupcake.bin (all SFX — no SD reads at runtime)."""
+    blobs: list[AdpcmBlob] = []
+    for entry in catalog:
+        if entry.file in GNW_SD_WAV_FILES:
+            continue
+        path = os.path.join(audio_dir, entry.file)
+        if not os.path.isfile(path):
+            raise FileNotFoundError(path)
+        target_rate = embed_sample_rate_for(entry.file)
+        blob = encode_wav_file(path, entry.file, target_rate)
+        gain = GNW_PCM_PACK_GAIN
+        print(
+            f"audio-embed: {entry.file} @ {blob.sample_rate} Hz "
+            f"({blob.pcm_samples} samples, {len(blob.payload)} B ADPCM, gain={gain})",
+            file=sys.stderr,
+        )
+        blobs.append(blob)
     return blobs
 
 
@@ -338,6 +466,8 @@ def emit_files(
     bezel_rgb565: bytes,
     atlas_rgb565: bytes,
     wav_blobs: list[AdpcmBlob],
+    sd_audio_bytes: int,
+    sd_audio_clips: int,
     code_load: int,
     bss: int,
     ram_slot: int,
@@ -366,6 +496,11 @@ typedef struct {{
 #define CUPCAKE_GNW_ATLAS_H {atlas_h}
 #define CUPCAKE_GNW_ATLAS_SOURCE_W {GNW_ATLAS_SOURCE_W}
 #define CUPCAKE_GNW_ATLAS_SOURCE_H {GNW_ATLAS_SOURCE_H}
+#define CUPCAKE_GNW_SFX_SAMPLE_RATE {GNW_SFX_SAMPLE_RATE}
+#define CUPCAKE_GNW_MUSIC_SAMPLE_RATE {GNW_MUSIC_SAMPLE_RATE}
+#define CUPCAKE_GNW_PCM_PACK_GAIN {GNW_PCM_PACK_GAIN}
+#define CUPCAKE_GNW_SD_AUDIO_BYTES {sd_audio_bytes}
+#define CUPCAKE_GNW_SD_AUDIO_CLIPS {sd_audio_clips}
 #define CUPCAKE_EMBED_AUDIO_COUNT {len(wav_blobs)}
 #define CUPCAKE_EMBED_BYTES {embed_total}
 #define CUPCAKE_EMBED_LOAD_ESTIMATE {load_total}
@@ -444,7 +579,7 @@ const cupcake_embedded_wav_t *cupcake_embedded_wav_by_file(const char *file);
             "                a++;",
             "                b++;",
             "            }",
-            "            if (*a == 0 && *b == 0)",
+            "            if (*a == '\\0' && *b == '\\0')",
             "                return &cupcake_embedded_wavs[i];",
             "        }",
             "    }",
@@ -465,7 +600,11 @@ const cupcake_embedded_wav_t *cupcake_embedded_wav_by_file(const char *file);
     print(
         f"Embed: bezel RGB565 {len(bezel_rgb565)} B ({GNW_BEZEL_W}x{GNW_BEZEL_H}), "
         f"atlas RGB565 {len(atlas_rgb565)} B ({atlas_w}x{atlas_h}), "
-        f"audio {audio_bytes} B ({len(wav_blobs)} clips)"
+        f"audio {audio_bytes} B ({len(wav_blobs)} clips in bin)"
+    )
+    print(
+        f"SD audio: {sd_audio_bytes} B ({sd_audio_clips} clip pairs in cupcake_sd/.../audio/ — "
+        f"{', '.join(sorted(GNW_SD_WAV_FILES))})"
     )
     print(f"Estimated load {load_total} B + BSS {bss} B = {ram_total} B / {ram_slot} B")
     if ram_total > ram_slot:
@@ -486,6 +625,11 @@ def main() -> None:
     ap.add_argument("--code-load", type=int, default=DEFAULT_CODE_LOAD)
     ap.add_argument("--bss", type=int, default=DEFAULT_BSS)
     ap.add_argument("--ram-slot", type=int, default=DEFAULT_RAM_SLOT)
+    ap.add_argument(
+        "--export-sd-audio-dir",
+        default=os.path.join(PORT_ROOT, "release", "cupcake_sd", "roms", "homebrew", "cupcake"),
+        help="write music .adpcm+.meta (copy audio/ to /roms/homebrew/cupcake/audio/)",
+    )
     args = ap.parse_args()
 
     screen_path = os.path.join(args.assets, "screen.jpg")
@@ -501,8 +645,10 @@ def main() -> None:
         sys.exit(1)
 
     catalog = parse_catalog(args.catalog)
-    wav_blobs = encode_all_wav(catalog, audio_dir)
-    audio_bytes = sum(len(b.payload) for b in wav_blobs)
+    embed_blobs = encode_embed_wav(catalog, audio_dir)
+    embed_audio_bytes = sum(len(b.payload) for b in embed_blobs)
+    sd_blobs = export_sd_adpcm_files(catalog, audio_dir, args.export_sd_audio_dir)
+    sd_audio_bytes = sum(len(b.payload) for b in sd_blobs)
 
     atlas_w, atlas_h, bezel_rgb565, atlas_rgb565 = pick_gnw_rgb565_layout(
         atlas_path,
@@ -510,7 +656,7 @@ def main() -> None:
         args.code_load,
         args.bss,
         args.ram_slot,
-        audio_bytes,
+        embed_audio_bytes,
     )
     emit_files(
         args.out_h,
@@ -519,7 +665,9 @@ def main() -> None:
         atlas_h,
         bezel_rgb565,
         atlas_rgb565,
-        wav_blobs,
+        embed_blobs,
+        sd_audio_bytes,
+        len(sd_blobs),
         args.code_load,
         args.bss,
         args.ram_slot,

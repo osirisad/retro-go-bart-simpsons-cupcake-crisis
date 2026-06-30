@@ -3,13 +3,20 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
+
+#define CUPCAKE_ADPCM_FILE_CHUNK 512
 
 typedef struct {
     const uint8_t *in;
+    FILE *fp;
+    uint8_t file_buf[CUPCAKE_ADPCM_FILE_CHUNK];
+    size_t file_buf_pos;
+    size_t file_buf_len;
     size_t in_len;
+    size_t pos;
     int predictor;
     int step_index;
-    size_t pos;
     int nibble_phase;
     uint8_t cur_byte;
     int samples_left;
@@ -18,13 +25,10 @@ typedef struct {
 
 void cupcake_adpcm_stream_init(cupcake_adpcm_stream_t *st, const uint8_t *in, size_t in_len,
                                int pcm_samples);
+void cupcake_adpcm_stream_init_file(cupcake_adpcm_stream_t *st, FILE *fp, int pcm_samples);
+void cupcake_adpcm_stream_close(cupcake_adpcm_stream_t *st);
 int16_t cupcake_adpcm_stream_next(cupcake_adpcm_stream_t *st);
 
-/*
- * Decode IMA ADPCM produced by tools/bundle_overlay_assets.py.
- * in: adpcm payload after the 7-byte header (see cupcake_embedded_wav_t).
- * out_samples: number of mono int16 samples to write (from header pcm_samples).
- */
 int cupcake_adpcm_decode(const uint8_t *in, size_t in_len, int16_t *out, int out_samples);
 
 #endif

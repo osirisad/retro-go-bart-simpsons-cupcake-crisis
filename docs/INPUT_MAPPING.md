@@ -19,7 +19,7 @@ On the real G&W there are **no** separate Level 1 / Level 2 buttons (those are b
 | 5 | `SELECT` | `Select` | **B** + **TIME** — level / **CON** | `onSelect` | **X** | **B**, **TIME** | **X** |
 | 6 | `LEVEL1` | `Level1` | *(browser only — hidden on device)* | `onQuickStart(1)` | **1** | — | **1** |
 | 7 | `LEVEL2` | `Level2` | *(browser only — hidden on device)* | `onQuickStart(2)` | **2** | — | **2** |
-| 8 | `SOUND` | `Sound` (`onRelease`) | **PAUSE** — Sound on/off | host mute toggle | **F6** | **PAUSE** | **F6** |
+| 8 | `SOUND` | `Sound` (`onRelease`) | **PAUSE** — Sound on/off *(PC / linux emu only; G&W PAUSE is retro-go menu)* | host mute toggle | **F6** | — | **F6** |
 
 \* retro-go `Makefile.cupcake` linux emu build defines `LINUX_EMU` and uses the same SDL keyboard table as the PC port (Z/X/F6/1/2), not the generic `odroid_input.c` key map.
 

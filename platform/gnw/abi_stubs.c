@@ -258,7 +258,7 @@ void odroid_audio_submit(short *stereoAudioBuffer, int frameCount)
 
     vol = A->common_emu_sound_get_volume ? A->common_emu_sound_get_volume() : (uint8_t)255;
 
-    /* Match GW/Celeste ports: volume_tbl factor with >>4, not >>8. */
+    /* >>4 matches GW emu ports (firmware volume stacks on top). */
     for (i = 0; i < frameCount; i++) {
         int32_t sample = (int32_t)stereoAudioBuffer[i] * (int32_t)vol;
 

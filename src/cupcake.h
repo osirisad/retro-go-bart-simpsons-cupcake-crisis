@@ -113,6 +113,9 @@ void cupcake_draw(void);
 
 void cupcake_set_buttons(uint16_t buttons);
 
+/* Set current/previous buttons equal — no press/release edges (after retro-go menu). */
+void cupcake_buttons_sync(uint16_t buttons);
+
 
 
 /* Always draw `name` for LCD alignment work; NULL clears. freeze_demo=1 pauses demo frames. */

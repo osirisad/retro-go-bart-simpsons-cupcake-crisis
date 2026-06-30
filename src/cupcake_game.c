@@ -1748,6 +1748,12 @@ void cupcake_set_buttons(uint16_t buttons)
     g_buttons = buttons;
 }
 
+void cupcake_buttons_sync(uint16_t buttons)
+{
+    g_buttons_prev = buttons;
+    g_buttons = buttons;
+}
+
 void cupcake_set_debug_pin(const char *name, int freeze_demo)
 {
 #if !defined(CUPCAKE_GNW)
