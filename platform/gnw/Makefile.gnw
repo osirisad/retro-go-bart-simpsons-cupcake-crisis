@@ -5,6 +5,7 @@
 #
 # Usage (from port root):
 #   make cupcake-bin
+#   make cupcake-bin CUPCAKE_TRACE_SD=1   # SD session trace log (bring-up only)
 #   make cupcake-compile-check
 #
 # When assets/screen.jpg exists, runs tools/bundle_overlay_assets.py and embeds
@@ -44,6 +45,15 @@ BASE_CFLAGS = -std=c99 -Wall -Wextra -Os -g $(MCU) $(SPECS) \
 	-DSTM32H7B0xx -DUSE_HAL_DRIVER -DIS_LITTLE_ENDIAN -DTARGET_GNW \
 	-DCUPCAKE_GNW -DCUPCAKE_ABI -DCUPCAKE_AUDIO_ODROID
 
+# SD session trace log — off by default (avoids filling /data/homebrew on release builds).
+CUPCAKE_TRACE_SD ?= 0
+TRACE_CFLAGS :=
+TRACE_SRCS :=
+ifeq ($(CUPCAKE_TRACE_SD),1)
+TRACE_CFLAGS := -DCUPCAKE_TRACE_SD
+TRACE_SRCS := $(GNW_DIR)/cupcake_trace.c
+endif
+
 INCLUDES = \
 	-I$(GNW_DIR) \
 	-I$(SDK)/Core/Inc \
@@ -70,7 +80,7 @@ SRCS = \
 	$(GNW_DIR)/gnw_assets.c \
 	$(GNW_DIR)/abi_stubs.c \
 	$(GNW_DIR)/cupcake_entry.c \
-	$(GNW_DIR)/cupcake_trace.c \
+	$(TRACE_SRCS) \
 	$(GNW_DIR)/main_cupcake.c
 
 ifneq ($(wildcard $(ASSETS_SCREEN)),)
@@ -82,7 +92,7 @@ EMBED_SRCS   :=
 SRCS += $(PORT_ROOT)/platform/stb/stb_image_impl.c
 endif
 
-CFLAGS  = $(BASE_CFLAGS) $(EMBED_CFLAGS) $(INCLUDES)
+CFLAGS  = $(BASE_CFLAGS) $(EMBED_CFLAGS) $(TRACE_CFLAGS) $(INCLUDES)
 SRCS   += $(EMBED_SRCS)
 OBJS    = $(addprefix $(BUILD_DIR)/,$(notdir $(SRCS:.c=.o)))
 vpath %.c $(sort $(dir $(SRCS)))
@@ -106,6 +116,7 @@ compile-check: $(OBJS)
 help:
 	@echo "Standalone cupcake.bin (ABI — no firmware checkout)."
 	@echo "  make cupcake-bin"
+	@echo "  make cupcake-bin CUPCAKE_TRACE_SD=1  (SD debug log — off by default)"
 
 bundle-assets: $(CUPCAKE_DATA_C)
 

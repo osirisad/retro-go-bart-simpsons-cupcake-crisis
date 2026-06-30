@@ -1,3 +1,6 @@
+/* Compiled only when CUPCAKE_TRACE_SD=1 (see Makefile.gnw). */
+#ifdef CUPCAKE_TRACE_SD
+
 #include "cupcake_trace.h"
 
 #include <stdarg.h>
@@ -133,3 +136,5 @@ void cupcake_trace(const char *fmt, ...)
     va_end(ap);
     trace_write_line(line, 0);
 }
+
+#endif /* CUPCAKE_TRACE_SD */
