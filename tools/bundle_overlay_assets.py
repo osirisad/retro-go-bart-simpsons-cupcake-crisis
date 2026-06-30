@@ -49,8 +49,8 @@ GNW_DAT_SFX_SLOTS = 4
 GNW_DAT_SFX_SLOT_BYTES = 17000
 GNW_DAT_STREAM_MIN_BYTES = GNW_DAT_SFX_SLOT_BYTES + 1
 GNW_DAT_EXTRA_BSS = GNW_DAT_SFX_SLOTS * GNW_DAT_SFX_SLOT_BYTES
-AUDIO_DAT_MAGIC = 0x434B4144  # 'CKAD'
-AUDIO_DAT_VERSION = 1
+ASSETS_DAT_MAGIC = 0x434B4144  # 'CKAD'
+ASSETS_DAT_VERSION = 1
 # Leave headroom so link-time BSS does not overflow the 724 KiB slot.
 GNW_RAM_SAFETY_MARGIN = 8192
 # Scale PCM before ADPCM encode (device only — does not modify assets/audio/*.wav on disk).
@@ -395,8 +395,8 @@ def export_sd_adpcm_files(catalog: list[SfxEntry], audio_dir: str, out_dir: str)
     return blobs
 
 
-def export_audio_dat(catalog: list[SfxEntry], audio_dir: str, out_path: str) -> list[AdpcmBlob]:
-    """Pack all clips into one cupcake_audio.dat (ADPCM payloads + index table)."""
+def export_assets_dat(catalog: list[SfxEntry], audio_dir: str, out_path: str) -> list[AdpcmBlob]:
+    """Pack all clips into one cupcake_assets.dat (ADPCM payloads + index table)."""
     blobs: list[AdpcmBlob] = []
     for entry in catalog:
         path = os.path.join(audio_dir, entry.file)
@@ -406,7 +406,7 @@ def export_audio_dat(catalog: list[SfxEntry], audio_dir: str, out_path: str) -> 
         blob = encode_wav_file(path, entry.file, target_rate)
         blobs.append(blob)
         print(
-            f"audio-dat: {entry.file} @ {blob.sample_rate} Hz "
+            f"assets-dat: {entry.file} @ {blob.sample_rate} Hz "
             f"({blob.pcm_samples} samples, {len(blob.payload)} B ADPCM, gain={GNW_PCM_PACK_GAIN})",
             file=sys.stderr,
         )
@@ -415,7 +415,7 @@ def export_audio_dat(catalog: list[SfxEntry], audio_dir: str, out_path: str) -> 
     offset = header_bytes
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, "wb") as f:
-        f.write(struct.pack("<IHH", AUDIO_DAT_MAGIC, AUDIO_DAT_VERSION, len(blobs)))
+        f.write(struct.pack("<IHH", ASSETS_DAT_MAGIC, ASSETS_DAT_VERSION, len(blobs)))
         f.write(b"\x00\x00\x00\x00")
         payload_offset = offset
         for blob in blobs:
@@ -537,10 +537,10 @@ def emit_files(
     ram_total = load_total + bss
 
     if audio_mode == "dat":
-        audio_cfg = f"""#define CUPCAKE_GNW_AUDIO_DAT 1
-#define CUPCAKE_GNW_AUDIO_DAT_PATH "/roms/homebrew/cupcake_audio.dat"
-#define CUPCAKE_GNW_AUDIO_DAT_BYTES {sd_audio_bytes}
-#define CUPCAKE_GNW_AUDIO_DAT_CLIPS {sd_audio_clips}
+        audio_cfg = f"""#define CUPCAKE_GNW_ASSETS_DAT 1
+#define CUPCAKE_GNW_ASSETS_DAT_PATH "/roms/homebrew/cupcake_assets.dat"
+#define CUPCAKE_GNW_ASSETS_DAT_BYTES {sd_audio_bytes}
+#define CUPCAKE_GNW_ASSETS_DAT_CLIPS {sd_audio_clips}
 #define CUPCAKE_GNW_DAT_SFX_SLOTS {GNW_DAT_SFX_SLOTS}
 #define CUPCAKE_GNW_DAT_SFX_SLOT_BYTES {GNW_DAT_SFX_SLOT_BYTES}
 #define CUPCAKE_GNW_SD_AUDIO_BYTES 0
@@ -675,7 +675,7 @@ const cupcake_embedded_wav_t *cupcake_embedded_wav_by_file(const char *file);
     )
     if audio_mode == "dat":
         print(
-            f"SD audio: cupcake_audio.dat {sd_audio_bytes} B ({sd_audio_clips} clips, "
+            f"SD assets: cupcake_assets.dat {sd_audio_bytes} B ({sd_audio_clips} clips, "
             f"{GNW_DAT_SFX_SLOTS}x{GNW_DAT_SFX_SLOT_BYTES} B SFX pool in BSS)"
         )
     else:
@@ -706,12 +706,12 @@ def main() -> None:
         "--audio-mode",
         choices=("dat", "sidecar"),
         default="dat",
-        help="dat: one cupcake_audio.dat on SD (frees embed RAM); sidecar: embed SFX + music .adpcm/.meta",
+        help="dat: one cupcake_assets.dat on SD (frees embed RAM); sidecar: embed SFX + music .adpcm/.meta",
     )
     ap.add_argument(
-        "--export-audio-dat",
-        default=os.path.join(PORT_ROOT, "release", "cupcake_audio.dat"),
-        help="write ADPCM archive (copy to /roms/homebrew/cupcake_audio.dat on SD)",
+        "--export-assets-dat",
+        default=os.path.join(PORT_ROOT, "release", "cupcake_assets.dat"),
+        help="write ADPCM archive (copy to /roms/homebrew/cupcake_assets.dat on SD)",
     )
     ap.add_argument(
         "--export-sd-audio-dir",
@@ -735,7 +735,7 @@ def main() -> None:
     catalog = parse_catalog(args.catalog)
     bss = args.bss
     if args.audio_mode == "dat":
-        dat_blobs = export_audio_dat(catalog, audio_dir, args.export_audio_dat)
+        dat_blobs = export_assets_dat(catalog, audio_dir, args.export_assets_dat)
         embed_blobs: list[AdpcmBlob] = []
         sd_audio_bytes = sum(len(b.payload) for b in dat_blobs) + 12 + len(dat_blobs) * 48
         sd_audio_clips = len(dat_blobs)

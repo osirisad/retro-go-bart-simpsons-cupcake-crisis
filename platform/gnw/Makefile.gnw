@@ -76,8 +76,8 @@ SRCS = \
 ifneq ($(wildcard $(ASSETS_SCREEN)),)
 EMBED_CFLAGS := -DCUPCAKE_EMBEDDED_ASSETS
 EMBED_SRCS   := $(GNW_DIR)/cupcake_data.c $(GNW_DIR)/cupcake_adpcm.c
-ifneq ($(shell grep -c 'define CUPCAKE_GNW_AUDIO_DAT 1' $(CUPCAKE_DATA_H) 2>/dev/null),0)
-EMBED_SRCS   += $(GNW_DIR)/cupcake_audio_dat.c
+ifneq ($(shell grep -c 'define CUPCAKE_GNW_ASSETS_DAT 1' $(CUPCAKE_DATA_H) 2>/dev/null),0)
+EMBED_SRCS   += $(GNW_DIR)/cupcake_assets_dat.c
 endif
 else
 EMBED_CFLAGS :=
@@ -131,8 +131,8 @@ $(TARGET_ELF): $(OBJS) $(LINKER) | $(BUILD_DIR)
 $(TARGET_BIN): $(TARGET_ELF) | $(RELEASE_DIR)
 	$(OBJCOPY) -O binary --only-section=.overlay_cupcake $< $@
 	@echo "Built $@ ($(shell wc -c < $@ | tr -d ' ') bytes) — copy to /roms/homebrew/cupcake.bin"
-	@if grep -q 'define CUPCAKE_GNW_AUDIO_DAT 1' $(CUPCAKE_DATA_H) 2>/dev/null; then \
-		echo "Also copy release/cupcake_audio.dat to /roms/homebrew/cupcake_audio.dat"; \
+	@if grep -q 'define CUPCAKE_GNW_ASSETS_DAT 1' $(CUPCAKE_DATA_H) 2>/dev/null; then \
+		echo "Also copy release/cupcake_assets.dat to /roms/homebrew/cupcake_assets.dat"; \
 	else \
 		echo "Also copy release/cupcake_sd/roms/homebrew/cupcake/audio/ to /roms/homebrew/cupcake/audio/"; \
 	fi

@@ -8,8 +8,8 @@
 #if defined(CUPCAKE_EMBEDDED_ASSETS)
 #include "cupcake_data.h"
 #endif
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
-#include "cupcake_audio_dat.h"
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
+#include "cupcake_assets_dat.h"
 #endif
 
 static const int16_t step_table[89] = {
@@ -90,7 +90,7 @@ static int stream_read_byte(cupcake_adpcm_stream_t *st, uint8_t *out)
         return 1;
     }
 
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
     if (st->use_dat) {
         if (st->dat_pos >= st->dat_len)
             return 0;
@@ -103,7 +103,7 @@ static int stream_read_byte(cupcake_adpcm_stream_t *st, uint8_t *out)
                 chunk = (size_t)remain;
             if (chunk == 0)
                 return 0;
-            if (cupcake_audio_dat_read(st->dat_offset + st->dat_pos, st->file_buf, chunk) != 0)
+            if (cupcake_assets_dat_read(st->dat_offset + st->dat_pos, st->file_buf, chunk) != 0)
                 return 0;
 
             st->file_buf_pos = 0;
@@ -184,14 +184,14 @@ void cupcake_adpcm_stream_init_dat(cupcake_adpcm_stream_t *st, uint32_t offset, 
     if (!st)
         return;
 
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
     st->use_dat = 1;
     st->dat_offset = offset;
     st->dat_len = len;
     st->dat_pos = 0;
 
     if (len < 3u || pcm_samples < 1 ||
-        cupcake_audio_dat_read(offset, hdr, 3) != 0) {
+        cupcake_assets_dat_read(offset, hdr, 3) != 0) {
         st->samples_left = 0;
         return;
     }

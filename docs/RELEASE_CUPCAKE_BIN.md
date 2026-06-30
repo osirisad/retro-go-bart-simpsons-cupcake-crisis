@@ -77,14 +77,14 @@ Users download **`cupcake.bin`** and copy to SD. No compile step.
 
 ```
 /roms/homebrew/cupcake.bin
-/roms/homebrew/cupcake_audio.dat
+/roms/homebrew/cupcake_assets.dat
 ```
 
-All 17 clips live in `cupcake_audio.dat` (22 kHz ADPCM). Short SFX are copied into a small RAM pool at play time; long music streams from the archive. Graphics stay in `cupcake.bin` (freed embed RAM → larger atlas).
+All 17 clips live in `cupcake_assets.dat` (22 kHz ADPCM). Short SFX are copied into a small RAM pool at play time; long music streams from the archive. Graphics stay in `cupcake.bin` (freed embed RAM → larger atlas).
 
 Copy from `release/` after `make cupcake-bin`:
 - `release/cupcake.bin` → `/roms/homebrew/cupcake.bin`
-- `release/cupcake_audio.dat` → `/roms/homebrew/cupcake_audio.dat`
+- `release/cupcake_assets.dat` → `/roms/homebrew/cupcake_assets.dat`
 
 The `.dat` does not appear in the Homebrew list (only `.bin` files and folders do).
 
@@ -108,7 +108,7 @@ Copy from `release/`:
 - `release/cupcake.bin` → `/roms/homebrew/cupcake.bin`
 - `release/cupcake_sd/roms/homebrew/cupcake/audio/` → `/roms/homebrew/cupcake/audio/`
 
-Remove any old `cupcake_audio.dat` or `cupcake_audio/` folder on SD if switching layouts.
+Remove any old `cupcake_audio.dat` or `cupcake_audio/` folder on SD when upgrading to `cupcake_assets.dat`.
 
 ---
 

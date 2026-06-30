@@ -13,9 +13,9 @@
 #define CUPCAKE_GNW_SD_AUDIO_DIR "/roms/homebrew/cupcake/audio"
 #endif
 
-/* Single-file ADPCM archive — /roms/homebrew/cupcake_audio.dat (dat audio mode). */
-#ifndef CUPCAKE_GNW_AUDIO_DAT_PATH
-#define CUPCAKE_GNW_AUDIO_DAT_PATH "/roms/homebrew/cupcake_audio.dat"
+/* Single-file ADPCM archive — /roms/homebrew/cupcake_assets.dat (dat audio mode). */
+#ifndef CUPCAKE_GNW_ASSETS_DAT_PATH
+#define CUPCAKE_GNW_ASSETS_DAT_PATH "/roms/homebrew/cupcake_assets.dat"
 #endif
 
 /* NULL when assets are embedded in cupcake.bin. */

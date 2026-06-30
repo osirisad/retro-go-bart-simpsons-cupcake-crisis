@@ -1,11 +1,11 @@
 /*
- * Single-file ADPCM archive reader for GNW SD audio.
+ * Single-file ADPCM archive reader for GNW SD assets (cupcake_assets.dat).
  *
  * FatFs is built with FF_FS_TINY=1: one sector buffer per volume, shared by all
  * FILE objects. Never open the same .dat twice or seek concurrently — use one
- * global FILE* and serialize all reads through cupcake_audio_dat_read().
+ * global FILE* and serialize all reads through cupcake_assets_dat_read().
  */
-#include "cupcake_audio_dat.h"
+#include "cupcake_assets_dat.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -58,7 +58,7 @@ static void wav_stem(const char *wav_file, char *stem, size_t stem_sz)
     }
 }
 
-int cupcake_audio_dat_read(uint32_t offset, void *buf, size_t len)
+int cupcake_assets_dat_read(uint32_t offset, void *buf, size_t len)
 {
     size_t got;
 
@@ -81,7 +81,7 @@ int cupcake_audio_dat_read(uint32_t offset, void *buf, size_t len)
     return got == len ? 0 : -1;
 }
 
-int cupcake_audio_dat_init(const char *path)
+int cupcake_assets_dat_init(const char *path)
 {
     FILE *fp;
     uint32_t magic;
@@ -89,7 +89,7 @@ int cupcake_audio_dat_init(const char *path)
     uint16_t count;
     int i;
 
-    cupcake_audio_dat_shutdown();
+    cupcake_assets_dat_shutdown();
 
     if (!path || !path[0])
         return -1;
@@ -98,7 +98,7 @@ int cupcake_audio_dat_init(const char *path)
     if (!fp)
         return -1;
 
-    if (read_u32_le(fp, &magic) != 0 || magic != CUPCAKE_AUDIO_DAT_MAGIC) {
+    if (read_u32_le(fp, &magic) != 0 || magic != CUPCAKE_ASSETS_DAT_MAGIC) {
         fclose(fp);
         return -1;
     }
@@ -161,7 +161,7 @@ fail:
     return -1;
 }
 
-void cupcake_audio_dat_shutdown(void)
+void cupcake_assets_dat_shutdown(void)
 {
     if (g_dat_fp) {
         fclose(g_dat_fp);
@@ -172,19 +172,19 @@ void cupcake_audio_dat_shutdown(void)
     g_dat_io_lock = 0;
 }
 
-int cupcake_audio_dat_clip_count(void)
+int cupcake_assets_dat_clip_count(void)
 {
     return g_clip_count;
 }
 
-const cupcake_dat_clip_t *cupcake_audio_dat_clip(int index)
+const cupcake_dat_clip_t *cupcake_assets_dat_clip(int index)
 {
     if (index < 0 || index >= g_clip_count)
         return NULL;
     return &g_clips[index];
 }
 
-int cupcake_audio_dat_lookup(const char *wav_file, cupcake_dat_clip_t *out)
+int cupcake_assets_dat_lookup(const char *wav_file, cupcake_dat_clip_t *out)
 {
     char stem[32];
     int i;

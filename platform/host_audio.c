@@ -22,8 +22,8 @@ static int g_muted;
 #if defined(CUPCAKE_GNW)
 #include "cupcake_trace.h"
 #endif
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
-#include "cupcake_audio_dat.h"
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
+#include "cupcake_assets_dat.h"
 #endif
 #endif
 
@@ -47,12 +47,12 @@ typedef struct {
     int16_t cur_sample;
     float gain;
     int active;
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
     int sfx_slot;
 #endif
 } host_adpcm_voice_t;
 
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
 #define DAT_SFX_SLOT_NONE (-1)
 static uint8_t g_dat_sfx_bufs[CUPCAKE_GNW_DAT_SFX_SLOTS][CUPCAKE_GNW_DAT_SFX_SLOT_BYTES];
 static uint8_t g_dat_sfx_slot_used[CUPCAKE_GNW_DAT_SFX_SLOTS];
@@ -216,7 +216,7 @@ static void adpcm_voice_release(host_adpcm_voice_t *voice)
 {
     if (!voice)
         return;
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
     if (voice->sfx_slot >= 0 && voice->sfx_slot < CUPCAKE_GNW_DAT_SFX_SLOTS)
         g_dat_sfx_slot_used[voice->sfx_slot] = 0;
     voice->sfx_slot = DAT_SFX_SLOT_NONE;
@@ -225,7 +225,7 @@ static void adpcm_voice_release(host_adpcm_voice_t *voice)
     cupcake_adpcm_stream_close(&voice->dec);
 }
 
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
 static int dat_sfx_slot_alloc(void)
 {
     int i;
@@ -240,7 +240,7 @@ static int dat_sfx_slot_alloc(void)
 }
 #endif
 
-#ifndef CUPCAKE_GNW_AUDIO_DAT
+#ifndef CUPCAKE_GNW_ASSETS_DAT
 static int parse_meta_line_int(const char *line, const char *key, int *out)
 {
     const char *p = line;
@@ -339,7 +339,7 @@ static int open_sd_adpcm_clip(const char *wav_file, FILE **out_fp, int *out_pcm_
     *out_sample_rate = sample_rate;
     return 0;
 }
-#endif /* !CUPCAKE_GNW_AUDIO_DAT */
+#endif /* !CUPCAKE_GNW_ASSETS_DAT */
 #endif
 
 static void load_catalog_pcm(int index)
@@ -401,15 +401,15 @@ int host_audio_init(const char *assets_base)
     snprintf(g_audio_dir, sizeof g_audio_dir, "%s/audio", assets_base);
 #else
     (void)assets_base;
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
-    if (cupcake_audio_dat_init(CUPCAKE_GNW_AUDIO_DAT_PATH) != 0) {
-        cupcake_trace("audio: failed to open %s", CUPCAKE_GNW_AUDIO_DAT_PATH);
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
+    if (cupcake_assets_dat_init(CUPCAKE_GNW_ASSETS_DAT_PATH) != 0) {
+        cupcake_trace("audio: failed to open %s", CUPCAKE_GNW_ASSETS_DAT_PATH);
         return -1;
     }
     memset(g_dat_sfx_slot_used, 0, sizeof g_dat_sfx_slot_used);
     cupcake_trace("audio: dat %s (%u clips, %u B, sfx pool %ux%u B, gain=%.2f)",
-                  CUPCAKE_GNW_AUDIO_DAT_PATH, (unsigned)CUPCAKE_GNW_AUDIO_DAT_CLIPS,
-                  (unsigned)CUPCAKE_GNW_AUDIO_DAT_BYTES, (unsigned)CUPCAKE_GNW_DAT_SFX_SLOTS,
+                  CUPCAKE_GNW_ASSETS_DAT_PATH, (unsigned)CUPCAKE_GNW_ASSETS_DAT_CLIPS,
+                  (unsigned)CUPCAKE_GNW_ASSETS_DAT_BYTES, (unsigned)CUPCAKE_GNW_DAT_SFX_SLOTS,
                   (unsigned)CUPCAKE_GNW_DAT_SFX_SLOT_BYTES, (double)CUPCAKE_GNW_PCM_PACK_GAIN);
 #else
     snprintf(g_audio_dir, sizeof g_audio_dir, "%s", CUPCAKE_GNW_SD_AUDIO_DIR);
@@ -441,8 +441,8 @@ void host_audio_shutdown(void)
     }
 #else
     memset(g_pcm, 0, sizeof g_pcm);
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
-    cupcake_audio_dat_shutdown();
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
+    cupcake_assets_dat_shutdown();
     memset(g_dat_sfx_slot_used, 0, sizeof g_dat_sfx_slot_used);
 #endif
 #endif
@@ -470,7 +470,7 @@ static int start_adpcm_voice_mem(host_adpcm_voice_t *voice, const uint8_t *paylo
     voice->cur_sample = 0;
     voice->gain = gain;
     voice->active = 1;
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
     voice->sfx_slot = DAT_SFX_SLOT_NONE;
 #endif
     voice->cur_sample = cupcake_adpcm_stream_next(&voice->dec);
@@ -497,7 +497,7 @@ static int start_adpcm_voice_file(host_adpcm_voice_t *voice, FILE *fp, int pcm_s
     voice->cur_sample = 0;
     voice->gain = gain;
     voice->active = 1;
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
     voice->sfx_slot = DAT_SFX_SLOT_NONE;
 #endif
     voice->cur_sample = cupcake_adpcm_stream_next(&voice->dec);
@@ -505,7 +505,7 @@ static int start_adpcm_voice_file(host_adpcm_voice_t *voice, FILE *fp, int pcm_s
     return 0;
 }
 
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
 static int start_adpcm_voice_dat(host_adpcm_voice_t *voice, uint32_t offset, uint32_t len,
                                  int pcm_samples, int sample_rate, float gain)
 {
@@ -525,7 +525,7 @@ static int start_adpcm_voice_dat(host_adpcm_voice_t *voice, uint32_t offset, uin
     voice->cur_sample = 0;
     voice->gain = gain;
     voice->active = 1;
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
     voice->sfx_slot = DAT_SFX_SLOT_NONE;
 #endif
     voice->cur_sample = cupcake_adpcm_stream_next(&voice->dec);
@@ -558,12 +558,12 @@ int host_audio_play(const char *sfx_id)
 
 #ifdef CUPCAKE_EMBEDDED_ASSETS
     {
-#if defined(CUPCAKE_GNW_AUDIO_DAT)
+#if defined(CUPCAKE_GNW_ASSETS_DAT)
         cupcake_dat_clip_t clip;
         int sfx_pool = -1;
         int rc;
 
-        if (cupcake_audio_dat_lookup(def->file, &clip) != 0) {
+        if (cupcake_assets_dat_lookup(def->file, &clip) != 0) {
 #if defined(CUPCAKE_GNW)
             cupcake_trace("audio: missing in dat %s", def->file);
 #endif
@@ -583,7 +583,7 @@ int host_audio_play(const char *sfx_id)
             sfx_pool = dat_sfx_slot_alloc();
             if (sfx_pool < 0)
                 return -1;
-            if (cupcake_audio_dat_read(clip.offset, g_dat_sfx_bufs[sfx_pool],
+            if (cupcake_assets_dat_read(clip.offset, g_dat_sfx_bufs[sfx_pool],
                                        (size_t)clip.adpcm_size) != 0) {
                 g_dat_sfx_slot_used[sfx_pool] = 0;
                 return -1;
