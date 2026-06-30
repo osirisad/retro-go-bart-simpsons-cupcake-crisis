@@ -130,12 +130,6 @@ static inline int gnw_map_atlas_y(int y, int atlas_h)
     return y * atlas_h / CUPCAKE_GNW_ATLAS_SOURCE_H;
 }
 
-static inline int host_sprite_is_hud_digit(const char *name)
-{
-    return name && name[0] == 'd' && name[1] == 'i' && name[2] == 'g' && name[3] == 'i' &&
-           name[4] == 't';
-}
-
 static uint16_t gnw_atlas_sample_nearest(const host_atlas_t *host, int src_x, int src_y)
 {
     int aw;
@@ -163,81 +157,6 @@ static uint16_t gnw_atlas_sample_nearest(const host_atlas_t *host, int src_x, in
         sy = ah - 1;
 
     return host->atlas_rgb565[sy * aw + sx];
-}
-
-static uint16_t gnw_atlas_sample_bilinear(const host_atlas_t *host, int src_x, int src_y)
-{
-    int aw;
-    int ah;
-    int x;
-    int y;
-    int x0;
-    int y0;
-    int x1;
-    int y1;
-    int fx;
-    int fy;
-    uint16_t p00;
-    uint16_t p10;
-    uint16_t p01;
-    uint16_t p11;
-    int r;
-    int g;
-    int b;
-
-    if (!host || !host->atlas_rgb565)
-        return 0;
-
-    aw = host->atlas_w;
-    ah = host->atlas_h;
-    if (aw < 1 || ah < 1)
-        return 0;
-
-    x = src_x * aw * 256 / CUPCAKE_GNW_ATLAS_SOURCE_W;
-    y = src_y * ah * 256 / CUPCAKE_GNW_ATLAS_SOURCE_H;
-    x0 = x >> 8;
-    y0 = y >> 8;
-    fx = x & 255;
-    fy = y & 255;
-    if (x0 < 0)
-        x0 = 0;
-    if (y0 < 0)
-        y0 = 0;
-    x1 = x0 + 1;
-    y1 = y0 + 1;
-    if (x1 >= aw)
-        x1 = aw - 1;
-    if (y1 >= ah)
-        y1 = ah - 1;
-
-    p00 = host->atlas_rgb565[y0 * aw + x0];
-    p10 = host->atlas_rgb565[y0 * aw + x1];
-    p01 = host->atlas_rgb565[y1 * aw + x0];
-    p11 = host->atlas_rgb565[y1 * aw + x1];
-    if (p00 == 0 && p10 == 0 && p01 == 0 && p11 == 0)
-        return 0;
-
-    r = (((p00 >> 11) & 0x1f) * (256 - fx) * (256 - fy) + ((p10 >> 11) & 0x1f) * fx * (256 - fy) +
-         ((p01 >> 11) & 0x1f) * (256 - fx) * fy + ((p11 >> 11) & 0x1f) * fx * fy) >>
-        16;
-    g = (((p00 >> 5) & 0x3f) * (256 - fx) * (256 - fy) + ((p10 >> 5) & 0x3f) * fx * (256 - fy) +
-         ((p01 >> 5) & 0x3f) * (256 - fx) * fy + ((p11 >> 5) & 0x3f) * fx * fy) >>
-        16;
-    b = (((p00)&0x1f) * (256 - fx) * (256 - fy) + ((p10)&0x1f) * fx * (256 - fy) +
-         ((p01)&0x1f) * (256 - fx) * fy + ((p11)&0x1f) * fx * fy) >>
-        16;
-
-    return HOST_RGB565((uint8_t)(r << 3), (uint8_t)(g << 2), (uint8_t)(b << 3));
-}
-
-static inline uint16_t gnw_fixup_masked_pixel(uint16_t px, int masked)
-{
-    if (!masked)
-        return px;
-    if (px != 0)
-        return px;
-    /* Mask says opaque but RGB565 is 0 — dark LED red lost in quantize. */
-    return HOST_RGB565(255, 0, 0);
 }
 
 void host_draw_sprite_rgb565_fb(const host_atlas_t *host, uint16_t *fb, int fb_w, int fb_h,
@@ -282,7 +201,6 @@ void host_draw_sprite_rgb565_fb(const host_atlas_t *host, uint16_t *fb, int fb_w
     for (row = 0; row < fb_sh; row++) {
         int dy = dy0 + row;
         int col;
-        int use_nearest = 1;
 
         if (dy < 0 || dy >= fb_h)
             continue;
@@ -311,13 +229,8 @@ void host_draw_sprite_rgb565_fb(const host_atlas_t *host, uint16_t *fb, int fb_w
                     continue;
             }
 
-            if (use_nearest)
-                px = gnw_atlas_sample_nearest(host, src_x, src_y);
-            else
-                px = gnw_atlas_sample_bilinear(host, src_x, src_y);
-
-            px = gnw_fixup_masked_pixel(px, masked);
-            if (!msk && px == 0)
+            px = gnw_atlas_sample_nearest(host, src_x, src_y);
+            if (px == 0)
                 continue;
 
             fb[dy * fb_w + dx] = px;

@@ -130,10 +130,11 @@ def screen_to_jpeg_bytes(jpg_path: str, quality: int) -> bytes:
     return buf.getvalue()
 
 
-def _rgb888_to_rgb565(r: int, g: int, b: int, alpha: int = 255) -> int:
-  # 7-segment / LED art uses very dark red (e.g. RGB 4,3,3) that becomes 0x0000 in RGB565.
-    if alpha > 32 and (r + g + b) > 0 and r < 48:
-        r = 48
+# RGB565 0 is transparent in the atlas; opaque source black encodes to this sentinel.
+GNW_RGB565_OPAQUE_BLACK = 0x0841  # HOST_RGB565(8, 8, 8)
+
+
+def _rgb888_to_rgb565(r: int, g: int, b: int) -> int:
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
 
 
@@ -146,10 +147,15 @@ def _image_to_rgb565_bytes(im: Image.Image, out_w: int, out_h: int) -> bytes:
     for y in range(out_h):
         for x in range(out_w):
             r, g, b, a = px[x, y]
-            if a < 16:
+            if a < 8:
                 val = 0
             else:
-                val = _rgb888_to_rgb565(r, g, b, a)
+                # Crisp 7-segment LED red (opaque source only — not fringe).
+                if a >= 200 and r > g + 4 and r > b + 4 and r < 120:
+                    r = max(r, 72)
+                val = _rgb888_to_rgb565(r, g, b)
+                if val == 0:
+                    val = GNW_RGB565_OPAQUE_BLACK
             struct.pack_into("<H", out, (y * out_w + x) * 2, val)
     return bytes(out)
 
