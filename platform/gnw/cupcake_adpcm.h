@@ -10,6 +10,9 @@
 typedef struct {
     const uint8_t *in;
     FILE *fp;
+    uint32_t dat_offset;
+    uint32_t dat_len;
+    uint32_t dat_pos;
     uint8_t file_buf[CUPCAKE_ADPCM_FILE_CHUNK];
     size_t file_buf_pos;
     size_t file_buf_len;
@@ -21,11 +24,14 @@ typedef struct {
     uint8_t cur_byte;
     int samples_left;
     int header_pending;
+    unsigned use_dat : 1;
 } cupcake_adpcm_stream_t;
 
 void cupcake_adpcm_stream_init(cupcake_adpcm_stream_t *st, const uint8_t *in, size_t in_len,
                                int pcm_samples);
 void cupcake_adpcm_stream_init_file(cupcake_adpcm_stream_t *st, FILE *fp, int pcm_samples);
+void cupcake_adpcm_stream_init_dat(cupcake_adpcm_stream_t *st, uint32_t offset, uint32_t len,
+                                   int pcm_samples);
 void cupcake_adpcm_stream_close(cupcake_adpcm_stream_t *st);
 int16_t cupcake_adpcm_stream_next(cupcake_adpcm_stream_t *st);
 
