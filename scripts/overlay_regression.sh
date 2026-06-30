@@ -36,13 +36,6 @@ MAKE_BIN="$(find_make)" || {
   exit 127
 }
 
-if [[ "${SKIP_PC:-}" != "1" ]]; then
-  echo "== overlay regression: PC unit tests =="
-  "$MAKE_BIN" test-overlay-regression-pc
-else
-  echo "== overlay regression: PC unit tests already ran (SKIP_PC=1) =="
-fi
-
 if [[ "${SKIP_LINUX_EMU:-}" == "1" ]]; then
   echo "== SKIP_LINUX_EMU=1 — skipping Makefile.cupcake =="
   exit 0

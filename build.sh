@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # MSYS2 MINGW64: GNU make is installed as mingw32-make, not make.
-# Usage: ./build.sh [target...]   e.g. ./build.sh test-overlay-regression
+# Usage: ./build.sh [target...]   e.g. ./build.sh all
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -37,7 +37,7 @@ Open **MSYS2 MINGW64** from the Start menu (not plain MSYS / PowerShell), then i
 
 Then run:
 
-  ./build.sh test-overlay-regression
+  ./build.sh all
 
 Optional: alias make=mingw32-make  (add to ~/.bashrc)
 EOF

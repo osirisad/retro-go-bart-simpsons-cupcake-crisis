@@ -8,7 +8,7 @@ Generate src/cupcake_sprites.h and src/cupcake_sprite_masks.h from sprites.json.
 
 Triangle raster + union of significant connected components for rects; 1bpp row-major masks for blit
 
-(same pixels as test/export_sprites.py — avoids atlas bbox overlap bleed).
+(uses triangle-masked raster crops — avoids atlas bbox overlap bleed).
 
 """
 

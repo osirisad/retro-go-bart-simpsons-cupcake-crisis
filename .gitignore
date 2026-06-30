@@ -1,6 +1,5 @@
 # Build outputs
 build-pc/
-build-test/
 build-cupcake/
 build-gwhb/
 build-gnw/
@@ -16,9 +15,6 @@ platform/gnw/cupcake_data.h
 __pycache__/
 *.pyc
 
-# Generated test exports
-test/output/
-
 # Local HAR extract, installers, and other scratch (obtain from itch.io locally)
 ignore/
 
@@ -30,3 +26,6 @@ ignore/
 .vscode/
 .idea/
 **/.DS_Store
+
+# game saves
+*.sav

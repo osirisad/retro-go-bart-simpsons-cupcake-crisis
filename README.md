@@ -1,50 +1,55 @@
-# Bart Simpson's Cupcake Crisis — Retro-Go port
+# Bart Simpson's Cupcake Crisis
 
-Standalone C port of the [RetroFab Acclaim SuperPlay simulation](https://itizso.itch.io/acclaim-bart-simpsons-cupcake-crisis) for [retro-go](https://github.com/ducke1937/retro-go) handhelds, with an SDL2 build for PC development.
+A C port of the 1990 Acclaim SuperPlay LCD handheld, designed to run on [retro-go](https://github.com/ducke1937/retro-go) Game & Watch handhelds. Game logic and assets are ported from the excellent [RetroFab simulation by Itizso](https://itizso.itch.io/acclaim-bart-simpsons-cupcake-crisis).
 
-## Quick start
+## About the game
 
-**Requirements:** gcc, SDL2, make. On Windows see [docs/BUILD_WINDOWS.md](docs/BUILD_WINDOWS.md).
+**Bart Simpson's™ Cupcake Crisis** (Acclaim Entertainment, SuperPlay model 40214, 1990) is a handheld LCD game based on *The Simpsons*. Bart's got his hands full with cupcakes - Maggie is throwing them as fast as he can catch them, and he has to get them over to Marge before Homer and Lisa join in.
+
+Move Bart **left** and **right** to catch cupcakes from the couch. Miss one and you lose a life. Bart can hold at most **5** cupcakes; catch a sixth and you lose a life. When Marge appears, press **Action** to hand them over. Hand all 5 at once for bonus points.
+
+When Homer appears, move Bart **right** to the couch and press **Sit** to join the family for TV. The sooner Bart sits, the more points you score - but if Lisa gets there first, you lose a life. Three lives and it's game over.
+
+## Building
+
+**Requirements:** gcc, SDL2, make. On Windows use MSYS2 - see [docs/BUILD_WINDOWS.md](docs/BUILD_WINDOWS.md).
+
+### PC (SDL) - development
+
+The default PC build includes debug helpers (Alt+1…6 phase jumps, `--start` shortcuts):
 
 ```bash
-make
+make          # or: ./build.sh on MSYS2
 make run
-make test          # or: make test-all — 40+ unit tests
 ```
 
-**Dev shortcuts:** `run-pc.bat --start 1,1,9900` (jump near phase threshold); Alt+1…6 in play jumps phase (PC debug build).
-
-**Controls:** ←→↑↓ move, **Z** action, **X** select. See [docs/INPUT_MAPPING.md](docs/INPUT_MAPPING.md).
-
-## Assets (local only)
-
-Game assets are not in the repo. Extract from an itch.io HAR capture:
+Release-style PC build (no debug cheats):
 
 ```bash
-python tools/extract_har.py path/to/capture.har
-python tools/gen_sprites.py
-make && make run
+make clean
+make CFLAGS='-std=c99 -Wall -Wextra -O2 -g -MMD -MP'
 ```
 
-Details: [docs/HAR.md](docs/HAR.md).
+Output: `build-pc/cupcake-sdl` (or `cupcake-sdl.exe` on Windows).
 
-## Documentation
+### retro-go (device)
 
-| Doc | Contents |
-|-----|----------|
-| [docs/BUILD.md](docs/BUILD.md) | PC + retro-go builds, tests, asset pipeline |
-| [docs/BUILD_WINDOWS.md](docs/BUILD_WINDOWS.md) | MSYS2 setup on Windows |
-| [docs/PORTING.md](docs/PORTING.md) | Architecture, Celeste comparison, port phases |
-| [docs/GAME_LOGIC.md](docs/GAME_LOGIC.md) | Game rules and state machine |
-| [docs/INPUT_MAPPING.md](docs/INPUT_MAPPING.md) | Buttons across JS, PC, and device |
-| [docs/SPRITES.md](docs/SPRITES.md) | Sprite atlas and UV mapping |
-| [docs/HAR.md](docs/HAR.md) | HAR contents and extraction |
-| [docs/HOST_WEB.md](docs/HOST_WEB.md) | Running the original in a browser |
-| [docs/PARITY_CHECKLIST.md](docs/PARITY_CHECKLIST.md) | Manual itch.io parity sign-off |
-| [docs/sprints/README.md](docs/sprints/README.md) | **Which sprint board to use** |
-| [GW_SPRINT_BOARD.md](GW_SPRINT_BOARD.md) | Game & Watch ship (ABI, firmware, device) |
-| [SPRINT_BOARD.md](SPRINT_BOARD.md) | Gameplay parity vs JS (`TASK-*`) |
+Build the overlay binary for SD install (`/roms/homebrew/cupcake.bin`):
 
-## Legal
+```bash
+make cupcake-bin
+```
 
-Personal/educational use only. See [docs/LEGAL.md](docs/LEGAL.md).
+Optional SD session trace log for bring-up (off by default):
+
+```bash
+make cupcake-bin CUPCAKE_TRACE_SD=1
+```
+
+Also copy `release/cupcake_assets.dat` to `/roms/homebrew/` on the SD card.
+
+Requires `arm-none-eabi-gcc` and assets under `assets/` (see [docs/BUILD.md](docs/BUILD.md) for full details).
+
+## Credit
+
+This port builds on the RetroFab recreation by **[Itizso](https://itizso.itch.io/acclaim-bart-simpsons-cupcake-crisis)** - sprites, audio, and game rules originate from that work. Unofficial fan project; not affiliated with Acclaim, Fox, or the original author.

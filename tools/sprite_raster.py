@@ -1,4 +1,4 @@
-"""Shared UV triangle rasterization for gen_sprites.py and test/export_sprites.py."""
+"""Shared UV triangle rasterization for gen_sprites.py."""
 from __future__ import annotations
 
 from collections import defaultdict

@@ -1,1 +1,0 @@
-.AcclaimCupcakeCrisis.prototype=Object.define({constructor:$m.AcclaimCupcakeCrisis,extends:$m
