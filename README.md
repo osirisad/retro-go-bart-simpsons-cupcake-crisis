@@ -12,7 +12,7 @@ When Homer appears, move Bart **right** to the couch and press **Sit** to join t
 
 ## Building
 
-**Requirements:** gcc, SDL2, make. On Windows use MSYS2 - see [docs/BUILD_WINDOWS.md](docs/BUILD_WINDOWS.md).
+**Requirements:** gcc, SDL2, make. On Windows use MSYS2
 
 ### PC (SDL) - development
 
@@ -49,19 +49,6 @@ make cupcake-bin CUPCAKE_TRACE_SD=1
 Also copy `release/cupcake_assets.dat` to `/roms/homebrew/` on the SD card.
 
 Requires `arm-none-eabi-gcc` and assets under `assets/`.
-
-## Releases
-
-Current version: **0.1** (early development). Pre-built device files are published on [GitHub Releases](https://github.com/osirisad/retro-go-bart-simpsons-cupcake-crisis/releases) when a version tag is pushed.
-
-After merging to `main`, tag and push to publish:
-
-```bash
-git tag v0.1
-git push origin v0.1
-```
-
-CI builds `cupcake.bin`, `cupcake_assets.dat`, and `license.txt` and attaches them to that release. Bump `VERSION` when preparing the next tag (e.g. `v0.2`).
 
 ## Credit
 
