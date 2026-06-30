@@ -59,12 +59,26 @@ jobs:
       - name: Verify release outputs
         run: ls -la release/
 
+      # First broken v0.1 run left an empty release + orphan draft; both block finalize.
+      - name: Remove prior release for this tag (safe re-publish)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${{ github.ref_name }}"
+          gh release delete "$tag" -y --cleanup-tag=false 2>/dev/null || true
+          gh api "repos/${{ github.repository }}/releases" \
+            --jq ".[] | select(.draft==true and .tag_name==\"$tag\") | .id" \
+            | while read -r id; do
+                [ -n "$id" ] && gh api -X DELETE "repos/${{ github.repository }}/releases/$id"
+              done
+
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
           fail_on_unmatched_files: true
+          overwrite_files: true
           prerelease: ${{ startsWith(github.ref_name, 'v0.') }}
           body: |
             Early development release — expect rough edges.
