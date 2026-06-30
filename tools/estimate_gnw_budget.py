@@ -29,9 +29,9 @@ print(f"largest on device: {max_w}x{max_h}")
 print(f"naive pack ~{side}x{side} = {side * side * 2} B")
 
 c = (PORT / "platform" / "gnw" / "cupcake_data.h").read_text(encoding="utf-8")
-m = re.search(r"CUPCAKE_GNW_SD_AUDIO_BYTES (\d+)", c)
-m2 = re.search(r"CUPCAKE_GNW_SD_AUDIO_CLIPS (\d+)", c)
+m = re.search(r"CUPCAKE_GNW_ASSETS_DAT_BYTES (\d+)", c)
+m2 = re.search(r"CUPCAKE_GNW_ASSETS_DAT_CLIPS (\d+)", c)
 if m and m2:
-    print(f"SD music (.adpcm): {m.group(1)} B, {m2.group(1)} clips — not embedded in cupcake.bin")
+    print(f"SD audio (cupcake_assets.dat): {m.group(1)} B, {m2.group(1)} clips — not embedded in cupcake.bin")
 else:
-    print("audio: see cupcake_data.h for SD stats")
+    print("audio: see cupcake_data.h for assets.dat stats")

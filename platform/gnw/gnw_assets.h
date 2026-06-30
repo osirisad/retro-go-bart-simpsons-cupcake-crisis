@@ -8,12 +8,7 @@
 #define CUPCAKE_GNW_ASSETS_BASE "/retro-go/cupcake"
 #endif
 
-/* Long music ADPCM sidecars — /roms/homebrew/cupcake/audio/ (sidecar audio mode). */
-#ifndef CUPCAKE_GNW_SD_AUDIO_DIR
-#define CUPCAKE_GNW_SD_AUDIO_DIR "/roms/homebrew/cupcake/audio"
-#endif
-
-/* Single-file ADPCM archive — /roms/homebrew/cupcake_assets.dat (dat audio mode). */
+/* Single-file ADPCM archive — /roms/homebrew/cupcake_assets.dat. */
 #ifndef CUPCAKE_GNW_ASSETS_DAT_PATH
 #define CUPCAKE_GNW_ASSETS_DAT_PATH "/roms/homebrew/cupcake_assets.dat"
 #endif

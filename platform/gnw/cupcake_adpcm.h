@@ -3,13 +3,11 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #define CUPCAKE_ADPCM_FILE_CHUNK 512
 
 typedef struct {
     const uint8_t *in;
-    FILE *fp;
     uint32_t dat_offset;
     uint32_t dat_len;
     uint32_t dat_pos;
@@ -29,7 +27,6 @@ typedef struct {
 
 void cupcake_adpcm_stream_init(cupcake_adpcm_stream_t *st, const uint8_t *in, size_t in_len,
                                int pcm_samples);
-void cupcake_adpcm_stream_init_file(cupcake_adpcm_stream_t *st, FILE *fp, int pcm_samples);
 void cupcake_adpcm_stream_init_dat(cupcake_adpcm_stream_t *st, uint32_t offset, uint32_t len,
                                    int pcm_samples);
 void cupcake_adpcm_stream_close(cupcake_adpcm_stream_t *st);

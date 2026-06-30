@@ -11,7 +11,6 @@
 #if defined(CUPCAKE_GNW_ASSETS_DAT)
 #include "cupcake_assets_dat.h"
 #endif
-
 static const int16_t step_table[89] = {
     7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 21, 23, 25, 28, 31,
     34, 37, 41, 45, 50, 55, 60, 66, 73, 80, 88, 97, 107, 118, 130, 143,
@@ -77,20 +76,6 @@ static int stream_read_byte(cupcake_adpcm_stream_t *st, uint8_t *out)
         return 1;
     }
 
-    if (st->fp) {
-        if (st->file_buf_pos >= st->file_buf_len) {
-            size_t n = fread(st->file_buf, 1, sizeof st->file_buf, st->fp);
-
-            st->file_buf_pos = 0;
-            st->file_buf_len = n;
-            if (n == 0)
-                return 0;
-        }
-        *out = st->file_buf[st->file_buf_pos++];
-        return 1;
-    }
-
-#if defined(CUPCAKE_GNW_ASSETS_DAT)
     if (st->use_dat) {
         if (st->dat_pos >= st->dat_len)
             return 0;
@@ -113,7 +98,6 @@ static int stream_read_byte(cupcake_adpcm_stream_t *st, uint8_t *out)
         *out = st->file_buf[st->file_buf_pos++];
         return 1;
     }
-#endif
 
     return 0;
 }
@@ -157,24 +141,6 @@ void cupcake_adpcm_stream_init(cupcake_adpcm_stream_t *st, const uint8_t *in, si
     adpcm_stream_set_header(st, hdr, pcm_samples);
 }
 
-void cupcake_adpcm_stream_init_file(cupcake_adpcm_stream_t *st, FILE *fp, int pcm_samples)
-{
-    uint8_t hdr[3];
-
-    adpcm_stream_reset(st);
-    if (!st)
-        return;
-
-    st->fp = fp;
-
-    if (!fp || pcm_samples < 1 || fread(hdr, 1, 3, fp) != 3) {
-        st->samples_left = 0;
-        return;
-    }
-
-    adpcm_stream_set_header(st, hdr, pcm_samples);
-}
-
 void cupcake_adpcm_stream_init_dat(cupcake_adpcm_stream_t *st, uint32_t offset, uint32_t len,
                                    int pcm_samples)
 {
@@ -184,7 +150,6 @@ void cupcake_adpcm_stream_init_dat(cupcake_adpcm_stream_t *st, uint32_t offset, 
     if (!st)
         return;
 
-#if defined(CUPCAKE_GNW_ASSETS_DAT)
     st->use_dat = 1;
     st->dat_offset = offset;
     st->dat_len = len;
@@ -198,22 +163,12 @@ void cupcake_adpcm_stream_init_dat(cupcake_adpcm_stream_t *st, uint32_t offset, 
 
     st->dat_pos = 3;
     adpcm_stream_set_header(st, hdr, pcm_samples);
-#else
-    (void)offset;
-    (void)len;
-    (void)pcm_samples;
-    st->samples_left = 0;
-#endif
 }
 
 void cupcake_adpcm_stream_close(cupcake_adpcm_stream_t *st)
 {
     if (!st)
         return;
-    if (st->fp) {
-        fclose(st->fp);
-        st->fp = NULL;
-    }
     st->in = NULL;
     st->file_buf_pos = 0;
     st->file_buf_len = 0;

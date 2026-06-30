@@ -73,14 +73,14 @@ Users download **`cupcake.bin`** and copy to SD. No compile step.
 
 ## SD card layout (player)
 
-### Audio in one file (default build — `--audio-mode dat`)
+### Audio on SD
 
 ```
 /roms/homebrew/cupcake.bin
 /roms/homebrew/cupcake_assets.dat
 ```
 
-All 17 clips live in `cupcake_assets.dat` (22 kHz ADPCM). Short SFX are copied into a small RAM pool at play time; long music streams from the archive. Graphics stay in `cupcake.bin` (freed embed RAM → larger atlas).
+All 17 clips live in `cupcake_assets.dat` (22 kHz ADPCM). Short SFX are copied into a small RAM pool at play time; long music streams from the archive. Graphics stay in `cupcake.bin`.
 
 Copy from `release/` after `make cupcake-bin`:
 - `release/cupcake.bin` → `/roms/homebrew/cupcake.bin`
@@ -88,27 +88,7 @@ Copy from `release/` after `make cupcake-bin`:
 
 The `.dat` does not appear in the Homebrew list (only `.bin` files and folders do).
 
-**Revert to sidecar audio:** `python tools/bundle_overlay_assets.py --audio-mode sidecar`, then rebuild.
-
-### Sidecar audio (`--audio-mode sidecar`)
-
-```
-/roms/homebrew/cupcake.bin
-/roms/homebrew/cupcake/audio/start.adpcm
-/roms/homebrew/cupcake/audio/start.meta
-/roms/homebrew/cupcake/audio/phase.adpcm
-/roms/homebrew/cupcake/audio/phase.meta
-/roms/homebrew/cupcake/audio/over.adpcm
-/roms/homebrew/cupcake/audio/over.meta
-```
-
-Gameplay SFX are **inside `cupcake.bin`**. Only start/phase/over use SD sidecars.
-
-Copy from `release/`:
-- `release/cupcake.bin` → `/roms/homebrew/cupcake.bin`
-- `release/cupcake_sd/roms/homebrew/cupcake/audio/` → `/roms/homebrew/cupcake/audio/`
-
-Remove any old `cupcake_audio.dat` or `cupcake_audio/` folder on SD when upgrading to `cupcake_assets.dat`.
+Remove any old `cupcake_audio.dat` or `cupcake_audio/` folder on SD when upgrading.
 
 ---
 

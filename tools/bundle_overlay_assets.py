@@ -37,14 +37,7 @@ DEFAULT_RAM_SLOT = 724 * 1024
 # All embedded clips at device-native 22.05 kHz.
 GNW_SFX_SAMPLE_RATE = 22050
 GNW_MUSIC_SAMPLE_RATE = 22050
-# Long music streams as individual .adpcm + .meta files on SD (one FILE per voice).
-# All gameplay SFX embed in cupcake.bin. (--audio-mode sidecar)
-GNW_SD_WAV_FILES = frozenset({
-    "start.wav",
-    "phase.wav",
-    "over.wav",
-})
-# SFX buffer pool for .dat mode (FatFs TINY-safe — load short clips into RAM at play).
+# SFX buffer pool for cupcake_assets.dat (FatFs TINY-safe — load short clips into RAM at play).
 GNW_DAT_SFX_SLOTS = 4
 GNW_DAT_SFX_SLOT_BYTES = 17000
 GNW_DAT_STREAM_MIN_BYTES = GNW_DAT_SFX_SLOT_BYTES + 1
@@ -222,9 +215,7 @@ def read_wav_mono_pcm(path: str) -> tuple[list[int], int]:
     return samples, rate
 
 
-def embed_sample_rate_for(file: str) -> int:
-    if file in GNW_SD_WAV_FILES:
-        return GNW_MUSIC_SAMPLE_RATE
+def embed_sample_rate_for(_file: str) -> int:
     return GNW_SFX_SAMPLE_RATE
 
 
@@ -362,39 +353,6 @@ def encode_wav_file(path: str, file: str, target_rate: int) -> AdpcmBlob:
     return AdpcmBlob(file, len(samples), rate, payload)
 
 
-def export_sd_adpcm_files(catalog: list[SfxEntry], audio_dir: str, out_dir: str) -> list[AdpcmBlob]:
-    """Write raw .adpcm + .meta sidecars for long music tracks on SD."""
-    blobs: list[AdpcmBlob] = []
-    audio_out = os.path.join(out_dir, "audio")
-    os.makedirs(audio_out, exist_ok=True)
-
-    for entry in catalog:
-        if entry.file not in GNW_SD_WAV_FILES:
-            continue
-        path = os.path.join(audio_dir, entry.file)
-        if not os.path.isfile(path):
-            raise FileNotFoundError(path)
-        target_rate = embed_sample_rate_for(entry.file)
-        blob = encode_wav_file(path, entry.file, target_rate)
-        base = os.path.splitext(blob.file)[0]
-        adpcm_path = os.path.join(audio_out, f"{base}.adpcm")
-        meta_path = os.path.join(audio_out, f"{base}.meta")
-        with open(adpcm_path, "wb") as f:
-            f.write(blob.payload)
-        with open(meta_path, "w", encoding="utf-8", newline="\n") as f:
-            f.write(f"pcm_samples={blob.pcm_samples}\n")
-            f.write(f"sample_rate={blob.sample_rate}\n")
-        print(
-            f"audio-sd: {base}.adpcm + {base}.meta @ {blob.sample_rate} Hz "
-            f"({blob.pcm_samples} samples, {len(blob.payload)} B ADPCM, gain={GNW_PCM_PACK_GAIN})",
-            file=sys.stderr,
-        )
-        blobs.append(blob)
-
-    print(f"Wrote {len(blobs)} SD clip pairs to {audio_out}/", file=sys.stderr)
-    return blobs
-
-
 def export_assets_dat(catalog: list[SfxEntry], audio_dir: str, out_path: str) -> list[AdpcmBlob]:
     """Pack all clips into one cupcake_assets.dat (ADPCM payloads + index table)."""
     blobs: list[AdpcmBlob] = []
@@ -440,27 +398,6 @@ def export_assets_dat(catalog: list[SfxEntry], audio_dir: str, out_path: str) ->
     return blobs
 
 
-def encode_embed_wav(catalog: list[SfxEntry], audio_dir: str) -> list[AdpcmBlob]:
-    """ADPCM blobs linked into cupcake.bin (all SFX — no SD reads at runtime)."""
-    blobs: list[AdpcmBlob] = []
-    for entry in catalog:
-        if entry.file in GNW_SD_WAV_FILES:
-            continue
-        path = os.path.join(audio_dir, entry.file)
-        if not os.path.isfile(path):
-            raise FileNotFoundError(path)
-        target_rate = embed_sample_rate_for(entry.file)
-        blob = encode_wav_file(path, entry.file, target_rate)
-        gain = GNW_PCM_PACK_GAIN
-        print(
-            f"audio-embed: {entry.file} @ {blob.sample_rate} Hz "
-            f"({blob.pcm_samples} samples, {len(blob.payload)} B ADPCM, gain={gain})",
-            file=sys.stderr,
-        )
-        blobs.append(blob)
-    return blobs
-
-
 def pick_jpeg_qualities(
     atlas_path: str,
     screen_path: str,
@@ -481,21 +418,6 @@ def pick_jpeg_qualities(
     return best
 
 
-def c_bytes_array(name: str, data: bytes, line_width: int = 16) -> str:
-    lines = [f"const uint8_t {name}[] = {{"]
-    row: list[str] = []
-    for i, b in enumerate(data):
-        row.append(f"0x{b:02x}")
-        if len(row) >= line_width:
-            lines.append("    " + ", ".join(row) + ",")
-            row = []
-    if row:
-        lines.append("    " + ", ".join(row) + ",")
-    lines.append("};")
-    lines.append(f"const uint32_t {name}_size = (uint32_t)sizeof({name});")
-    return "\n".join(lines)
-
-
 def c_uint16_array(name: str, data: bytes, line_width: int = 12) -> str:
     lines = [f"const uint16_t {name}[] = {{"]
     row: list[str] = []
@@ -512,10 +434,6 @@ def c_uint16_array(name: str, data: bytes, line_width: int = 12) -> str:
     return "\n".join(lines)
 
 
-def sanitize_sym(s: str) -> str:
-    return re.sub(r"[^a-zA-Z0-9_]", "_", s)
-
-
 def emit_files(
     out_h: str,
     out_c: str,
@@ -523,44 +441,28 @@ def emit_files(
     atlas_h: int,
     bezel_rgb565: bytes,
     atlas_rgb565: bytes,
-    wav_blobs: list[AdpcmBlob],
-    sd_audio_bytes: int,
-    sd_audio_clips: int,
+    assets_dat_bytes: int,
+    assets_dat_clips: int,
     code_load: int,
     bss: int,
     ram_slot: int,
-    audio_mode: str,
 ) -> None:
-    audio_bytes = sum(len(b.payload) for b in wav_blobs)
-    embed_total = len(bezel_rgb565) + len(atlas_rgb565) + audio_bytes
+    embed_total = len(bezel_rgb565) + len(atlas_rgb565)
     load_total = code_load + embed_total
     ram_total = load_total + bss
 
-    if audio_mode == "dat":
-        audio_cfg = f"""#define CUPCAKE_GNW_ASSETS_DAT 1
+    audio_cfg = f"""#define CUPCAKE_GNW_ASSETS_DAT 1
 #define CUPCAKE_GNW_ASSETS_DAT_PATH "/roms/homebrew/cupcake_assets.dat"
-#define CUPCAKE_GNW_ASSETS_DAT_BYTES {sd_audio_bytes}
-#define CUPCAKE_GNW_ASSETS_DAT_CLIPS {sd_audio_clips}
+#define CUPCAKE_GNW_ASSETS_DAT_BYTES {assets_dat_bytes}
+#define CUPCAKE_GNW_ASSETS_DAT_CLIPS {assets_dat_clips}
 #define CUPCAKE_GNW_DAT_SFX_SLOTS {GNW_DAT_SFX_SLOTS}
-#define CUPCAKE_GNW_DAT_SFX_SLOT_BYTES {GNW_DAT_SFX_SLOT_BYTES}
-#define CUPCAKE_GNW_SD_AUDIO_BYTES 0
-#define CUPCAKE_GNW_SD_AUDIO_CLIPS 0"""
-    else:
-        audio_cfg = f"""#define CUPCAKE_GNW_SD_AUDIO_BYTES {sd_audio_bytes}
-#define CUPCAKE_GNW_SD_AUDIO_CLIPS {sd_audio_clips}"""
+#define CUPCAKE_GNW_DAT_SFX_SLOT_BYTES {GNW_DAT_SFX_SLOT_BYTES}"""
 
     header = f"""/* Auto-generated by tools/bundle_overlay_assets.py — do not edit. */
 #ifndef CUPCAKE_DATA_H_
 #define CUPCAKE_DATA_H_
 
 #include <stdint.h>
-
-typedef struct {{
-    const char *file;
-    const uint8_t *adpcm;
-    uint32_t adpcm_size;
-    uint32_t pcm_samples;
-}} cupcake_embedded_wav_t;
 
 #define CUPCAKE_GNW_BEZEL_W {GNW_BEZEL_W}
 #define CUPCAKE_GNW_BEZEL_H {GNW_BEZEL_H}
@@ -572,7 +474,6 @@ typedef struct {{
 #define CUPCAKE_GNW_MUSIC_SAMPLE_RATE {GNW_MUSIC_SAMPLE_RATE}
 #define CUPCAKE_GNW_PCM_PACK_GAIN {GNW_PCM_PACK_GAIN}
 {audio_cfg}
-#define CUPCAKE_EMBED_AUDIO_COUNT {len(wav_blobs)}
 #define CUPCAKE_EMBED_BYTES {embed_total}
 #define CUPCAKE_EMBED_LOAD_ESTIMATE {load_total}
 #define CUPCAKE_EMBED_RAM_ESTIMATE {ram_total}
@@ -581,8 +482,6 @@ const uint16_t *cupcake_gnw_bezel_rgb565(void);
 const uint16_t *cupcake_gnw_atlas_rgb565(void);
 int cupcake_gnw_bezel_pixel_count(void);
 int cupcake_gnw_atlas_pixel_count(void);
-int cupcake_embedded_wav_count(void);
-const cupcake_embedded_wav_t *cupcake_embedded_wav_by_file(const char *file);
 
 #endif
 """
@@ -595,70 +494,27 @@ const cupcake_embedded_wav_t *cupcake_embedded_wav_by_file(const char *file);
         "",
         c_uint16_array("cupcake_gnw_atlas_rgb565_data", atlas_rgb565),
         "",
+        "const uint16_t *cupcake_gnw_bezel_rgb565(void)",
+        "{",
+        "    return cupcake_gnw_bezel_rgb565_data;",
+        "}",
+        "",
+        "const uint16_t *cupcake_gnw_atlas_rgb565(void)",
+        "{",
+        "    return cupcake_gnw_atlas_rgb565_data;",
+        "}",
+        "",
+        "int cupcake_gnw_bezel_pixel_count(void)",
+        "{",
+        "    return (int)cupcake_gnw_bezel_rgb565_data_count;",
+        "}",
+        "",
+        "int cupcake_gnw_atlas_pixel_count(void)",
+        "{",
+        "    return (int)cupcake_gnw_atlas_rgb565_data_count;",
+        "}",
+        "",
     ]
-
-    wav_rows: list[str] = []
-    for blob in wav_blobs:
-        sym = f"cupcake_wav_{sanitize_sym(os.path.splitext(blob.file)[0])}"
-        c_parts.append(c_bytes_array(sym, blob.payload))
-        c_parts.append("")
-        wav_rows.append(
-            f'    {{ "{blob.file}", {sym}, {sym}_size, {blob.pcm_samples}u }},'
-        )
-
-    c_parts.extend(
-        [
-            "static const cupcake_embedded_wav_t cupcake_embedded_wavs[] = {",
-            *wav_rows,
-            "};",
-            "",
-            "const uint16_t *cupcake_gnw_bezel_rgb565(void)",
-            "{",
-            "    return cupcake_gnw_bezel_rgb565_data;",
-            "}",
-            "",
-            "const uint16_t *cupcake_gnw_atlas_rgb565(void)",
-            "{",
-            "    return cupcake_gnw_atlas_rgb565_data;",
-            "}",
-            "",
-            "int cupcake_gnw_bezel_pixel_count(void)",
-            "{",
-            "    return (int)cupcake_gnw_bezel_rgb565_data_count;",
-            "}",
-            "",
-            "int cupcake_gnw_atlas_pixel_count(void)",
-            "{",
-            "    return (int)cupcake_gnw_atlas_rgb565_data_count;",
-            "}",
-            "",
-            "int cupcake_embedded_wav_count(void)",
-            "{",
-            "    return (int)(sizeof cupcake_embedded_wavs / sizeof cupcake_embedded_wavs[0]);",
-            "}",
-            "",
-            "const cupcake_embedded_wav_t *cupcake_embedded_wav_by_file(const char *file)",
-            "{",
-            "    int i;",
-            "    if (!file)",
-            "        return 0;",
-            "    for (i = 0; i < cupcake_embedded_wav_count(); i++) {",
-            "        if (cupcake_embedded_wavs[i].file && cupcake_embedded_wavs[i].file[0]) {",
-            "            const char *a = cupcake_embedded_wavs[i].file;",
-            "            const char *b = file;",
-            "            while (*a && *b && *a == *b) {",
-            "                a++;",
-            "                b++;",
-            "            }",
-            "            if (*a == '\\0' && *b == '\\0')",
-            "                return &cupcake_embedded_wavs[i];",
-            "        }",
-            "    }",
-            "    return 0;",
-            "}",
-            "",
-        ]
-    )
 
     os.makedirs(os.path.dirname(out_h), exist_ok=True)
     with open(out_h, "w", encoding="utf-8", newline="\n") as f:
@@ -670,19 +526,12 @@ const cupcake_embedded_wav_t *cupcake_embedded_wav_by_file(const char *file);
     print(f"Wrote {out_c}")
     print(
         f"Embed: bezel RGB565 {len(bezel_rgb565)} B ({GNW_BEZEL_W}x{GNW_BEZEL_H}), "
-        f"atlas RGB565 {len(atlas_rgb565)} B ({atlas_w}x{atlas_h}), "
-        f"audio {audio_bytes} B ({len(wav_blobs)} clips in bin)"
+        f"atlas RGB565 {len(atlas_rgb565)} B ({atlas_w}x{atlas_h})"
     )
-    if audio_mode == "dat":
-        print(
-            f"SD assets: cupcake_assets.dat {sd_audio_bytes} B ({sd_audio_clips} clips, "
-            f"{GNW_DAT_SFX_SLOTS}x{GNW_DAT_SFX_SLOT_BYTES} B SFX pool in BSS)"
-        )
-    else:
-        print(
-            f"SD audio: {sd_audio_bytes} B ({sd_audio_clips} clip pairs in cupcake_sd/.../audio/ — "
-            f"{', '.join(sorted(GNW_SD_WAV_FILES))})"
-        )
+    print(
+        f"SD assets: cupcake_assets.dat {assets_dat_bytes} B ({assets_dat_clips} clips, "
+        f"{GNW_DAT_SFX_SLOTS}x{GNW_DAT_SFX_SLOT_BYTES} B SFX pool in BSS)"
+    )
     print(f"Estimated load {load_total} B + BSS {bss} B = {ram_total} B / {ram_slot} B")
     if ram_total > ram_slot:
         print(
@@ -703,20 +552,9 @@ def main() -> None:
     ap.add_argument("--bss", type=int, default=DEFAULT_BSS)
     ap.add_argument("--ram-slot", type=int, default=DEFAULT_RAM_SLOT)
     ap.add_argument(
-        "--audio-mode",
-        choices=("dat", "sidecar"),
-        default="dat",
-        help="dat: one cupcake_assets.dat on SD (frees embed RAM); sidecar: embed SFX + music .adpcm/.meta",
-    )
-    ap.add_argument(
         "--export-assets-dat",
         default=os.path.join(PORT_ROOT, "release", "cupcake_assets.dat"),
         help="write ADPCM archive (copy to /roms/homebrew/cupcake_assets.dat on SD)",
-    )
-    ap.add_argument(
-        "--export-sd-audio-dir",
-        default=os.path.join(PORT_ROOT, "release", "cupcake_sd", "roms", "homebrew", "cupcake"),
-        help="sidecar mode: write music .adpcm+.meta under audio/",
     )
     args = ap.parse_args()
 
@@ -733,20 +571,10 @@ def main() -> None:
         sys.exit(1)
 
     catalog = parse_catalog(args.catalog)
-    bss = args.bss
-    if args.audio_mode == "dat":
-        dat_blobs = export_assets_dat(catalog, audio_dir, args.export_assets_dat)
-        embed_blobs: list[AdpcmBlob] = []
-        sd_audio_bytes = sum(len(b.payload) for b in dat_blobs) + 12 + len(dat_blobs) * 48
-        sd_audio_clips = len(dat_blobs)
-        bss += GNW_DAT_EXTRA_BSS
-    else:
-        embed_blobs = encode_embed_wav(catalog, audio_dir)
-        sd_blobs = export_sd_adpcm_files(catalog, audio_dir, args.export_sd_audio_dir)
-        sd_audio_bytes = sum(len(b.payload) for b in sd_blobs)
-        sd_audio_clips = len(sd_blobs)
-
-    embed_audio_bytes = sum(len(b.payload) for b in embed_blobs)
+    bss = args.bss + GNW_DAT_EXTRA_BSS
+    dat_blobs = export_assets_dat(catalog, audio_dir, args.export_assets_dat)
+    assets_dat_bytes = sum(len(b.payload) for b in dat_blobs) + 12 + len(dat_blobs) * 48
+    assets_dat_clips = len(dat_blobs)
 
     atlas_w, atlas_h, bezel_rgb565, atlas_rgb565 = pick_gnw_rgb565_layout(
         atlas_path,
@@ -754,7 +582,7 @@ def main() -> None:
         args.code_load,
         bss,
         args.ram_slot,
-        embed_audio_bytes,
+        0,
     )
     emit_files(
         args.out_h,
@@ -763,13 +591,11 @@ def main() -> None:
         atlas_h,
         bezel_rgb565,
         atlas_rgb565,
-        embed_blobs,
-        sd_audio_bytes,
-        sd_audio_clips,
+        assets_dat_bytes,
+        assets_dat_clips,
         args.code_load,
         bss,
         args.ram_slot,
-        args.audio_mode,
     )
 
 

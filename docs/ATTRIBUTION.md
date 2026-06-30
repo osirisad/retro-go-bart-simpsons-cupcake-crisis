@@ -15,7 +15,7 @@ Sprites, bezel art, audio, and game rules in the G&W build are derived from that
 
 ## What we ship
 
-The release **`cupcake.bin`** (overlay extract) embeds the art and audio needed to play. Users install it to `/roms/homebrew/` alongside a firmware build that includes the Cupcake overlay. If you redistribute the binary, keep this attribution with it.
+The release **`cupcake.bin`** embeds game graphics; audio clips ship in **`cupcake_assets.dat`** on SD. Install both under `/roms/homebrew/` with firmware that includes the Cupcake overlay. If you redistribute the binaries, keep this attribution with them.
 
 ## Suggested in-game credit (optional)
 

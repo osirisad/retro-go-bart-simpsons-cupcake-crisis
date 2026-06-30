@@ -8,7 +8,7 @@
 #   make cupcake-compile-check
 #
 # When assets/screen.jpg exists, runs tools/bundle_overlay_assets.py and embeds
-# art + audio (CUPCAKE_EMBEDDED_ASSETS). Otherwise SD asset fallback remains.
+# graphics in cupcake.bin; audio goes to release/cupcake_assets.dat on SD.
 
 _GNW_MK   := $(abspath $(lastword $(MAKEFILE_LIST)))
 PORT_ROOT := $(abspath $(dir $(_GNW_MK))../..)
@@ -75,10 +75,7 @@ SRCS = \
 
 ifneq ($(wildcard $(ASSETS_SCREEN)),)
 EMBED_CFLAGS := -DCUPCAKE_EMBEDDED_ASSETS
-EMBED_SRCS   := $(GNW_DIR)/cupcake_data.c $(GNW_DIR)/cupcake_adpcm.c
-ifneq ($(shell grep -c 'define CUPCAKE_GNW_ASSETS_DAT 1' $(CUPCAKE_DATA_H) 2>/dev/null),0)
-EMBED_SRCS   += $(GNW_DIR)/cupcake_assets_dat.c
-endif
+EMBED_SRCS   := $(GNW_DIR)/cupcake_data.c $(GNW_DIR)/cupcake_adpcm.c $(GNW_DIR)/cupcake_assets_dat.c
 else
 EMBED_CFLAGS :=
 EMBED_SRCS   :=
@@ -131,11 +128,7 @@ $(TARGET_ELF): $(OBJS) $(LINKER) | $(BUILD_DIR)
 $(TARGET_BIN): $(TARGET_ELF) | $(RELEASE_DIR)
 	$(OBJCOPY) -O binary --only-section=.overlay_cupcake $< $@
 	@echo "Built $@ ($(shell wc -c < $@ | tr -d ' ') bytes) — copy to /roms/homebrew/cupcake.bin"
-	@if grep -q 'define CUPCAKE_GNW_ASSETS_DAT 1' $(CUPCAKE_DATA_H) 2>/dev/null; then \
-		echo "Also copy release/cupcake_assets.dat to /roms/homebrew/cupcake_assets.dat"; \
-	else \
-		echo "Also copy release/cupcake_sd/roms/homebrew/cupcake/audio/ to /roms/homebrew/cupcake/audio/"; \
-	fi
+	@echo "Also copy release/cupcake_assets.dat to /roms/homebrew/cupcake_assets.dat"
 
 size: $(TARGET_ELF)
 	$(SIZE) $(TARGET_ELF)

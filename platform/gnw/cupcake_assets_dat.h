@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-/* Packed ADPCM archive — built by tools/bundle_overlay_assets.py (--audio-mode dat). */
+/* Packed ADPCM archive — built by tools/bundle_overlay_assets.py. */
 #define CUPCAKE_ASSETS_DAT_MAGIC 0x434b4144u /* 'CKAD' */
 
 typedef struct {
