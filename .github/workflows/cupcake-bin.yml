@@ -26,7 +26,7 @@ jobs:
       - name: Overlay size report
         run: |
           arm-none-eabi-size -A build-gnw/cupcake-overlay.elf | grep overlay_cupcake || true
-          ls -la release/cupcake.bin
+          ls -la release/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -34,7 +34,8 @@ jobs:
           name: cupcake-bin
           path: |
             release/cupcake.bin
-            docs/ATTRIBUTION.md
+            release/cupcake_assets.dat
+            release/license.txt
 
   attach-to-release:
     if: startsWith(github.ref, 'refs/tags/v')
@@ -52,6 +53,21 @@ jobs:
       - name: Attach to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          prerelease: ${{ startsWith(github.ref_name, 'v0.') }}
+          body: |
+            Early development release — expect rough edges.
+
+            ## SD install
+
+            Copy to your retro-go SD card:
+
+            | File | SD path |
+            |------|---------|
+            | `cupcake.bin` | `/roms/homebrew/cupcake.bin` |
+            | `cupcake_assets.dat` | `/roms/homebrew/cupcake_assets.dat` |
+
+            Include `license.txt` when redistributing (RetroFab CC-BY-NC-ND terms).
           files: |
             artifact/release/cupcake.bin
-            artifact/docs/ATTRIBUTION.md
+            artifact/release/cupcake_assets.dat
+            artifact/release/license.txt
