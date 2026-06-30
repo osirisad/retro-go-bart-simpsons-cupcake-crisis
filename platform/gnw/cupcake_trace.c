@@ -5,7 +5,7 @@
 
 #include "gw_firmware_abi.h"
 
-#define CUPCAKE_TRACE_DIR    "/retro-go/saves"
+#define CUPCAKE_TRACE_DIR    "/data/homebrew"
 #define CUPCAKE_BUILD_ID     "cupcake-port-full gnw-embedded"
 
 static char g_trace_path[96];

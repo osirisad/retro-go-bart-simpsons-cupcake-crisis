@@ -164,7 +164,7 @@ static void setup_hiscore_path(void)
 {
     char path[512];
 
-    snprintf(path, sizeof path, "/retro-go/saves/cupcake_hiscores.dat");
+    snprintf(path, sizeof path, "/data/homebrew/cupcake_hiscores.dat");
     cupcake_hiscore_set_path(path);
 }
 

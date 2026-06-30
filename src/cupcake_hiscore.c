@@ -35,7 +35,7 @@ void cupcake_hiscore_default_path(char *buf, size_t bufsz)
         return;
 
 #if defined(CUPCAKE_GNW)
-    snprintf(buf, bufsz, "/retro-go/saves/cupcake_hiscores.dat");
+    snprintf(buf, bufsz, "/data/homebrew/cupcake_hiscores.dat");
     return;
 #else
     const char *override;

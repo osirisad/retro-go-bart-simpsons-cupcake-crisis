@@ -100,7 +100,7 @@ No firmware source checkout. Links through **`gw_firmware_abi`** (`platform/gnw/
 /retro-go/cupcake/audio/*.wav
 ```
 
-Hi-scores use `/retro-go/saves/cupcake_hiscores.dat` (set in `main_cupcake.c`).
+Hi-scores use `/data/homebrew/cupcake_hiscores.dat` (set in `main_cupcake.c`).
 
 ---
 

@@ -135,7 +135,7 @@ Plain guide: [docs/RELEASE_CUPCAKE_BIN.md](docs/RELEASE_CUPCAKE_BIN.md).
 
 ### OV-10 Hi-scores
 
-    Code sets `/retro-go/saves/cupcake_hiscores.dat` in `main_cupcake.c`. Hardware verify pending (OV-14/17).
+    Code sets `/data/homebrew/cupcake_hiscores.dat` in `main_cupcake.c`. Hardware verify pending (OV-14/17).
 
 ---
 

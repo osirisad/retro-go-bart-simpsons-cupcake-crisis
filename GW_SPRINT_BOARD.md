@@ -236,7 +236,7 @@ Firmware (minimal PR)
 
 ### RG-20 Hi-scores
 
-    Code uses `/retro-go/saves/cupcake_hiscores.dat`. Verify read/write on hardware after RG-19.
+    Code uses `/data/homebrew/cupcake_hiscores.dat`. Verify read/write on hardware after RG-19.
 
 ### RG-21 Save states
 
