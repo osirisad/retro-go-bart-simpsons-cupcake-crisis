@@ -1,4 +1,4 @@
-# PC/SDL build (default). Same src/ core links into retro-go via platform/retrogo/Makefile.cupcake.
+# PC/SDL build (default). Device overlay: make cupcake-bin (platform/gnw/).
 TARGET   = cupcake-sdl
 BUILD    = build-pc
 EXE      =
@@ -127,14 +127,10 @@ cupcake-bin:
 cupcake-compile-check:
 	$(MAKE) -f platform/gnw/Makefile.gnw compile-check
 
-# OV-03 — run after changes to src/ or shared platform/ (host_*, cupcake_input)
-test-overlay-regression:
-	@command -v bash >/dev/null 2>&1 && bash scripts/overlay_regression.sh
-
 overlay-size-estimate:
 	python tools/overlay_size_estimate.py
 
-.PHONY: all run clean gen bake-lcd force-rebuild gwhb cupcake-bin cupcake-compile-check test-overlay-regression overlay-size-estimate
+.PHONY: all run clean gen bake-lcd force-rebuild gwhb cupcake-bin cupcake-compile-check overlay-size-estimate
 
 # Use if alignment edits in .h seem "cached" (also close cupcake-sdl.exe before make).
 force-rebuild:

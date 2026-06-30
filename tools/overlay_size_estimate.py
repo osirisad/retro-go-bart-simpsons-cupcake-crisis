@@ -44,7 +44,7 @@ def estimate_code_sources() -> int:
         if not sub.is_dir():
             continue
         for p in sub.rglob("*.c"):
-            if "stb" in p.parts or "sdl" in p.parts or "retrogo" in p.parts or "gwhb" in p.parts:
+            if "stb" in p.parts or "sdl" in p.parts or "gwhb" in p.parts:
                 continue
             if p.name == "main_cupcake.c":
                 total += file_size(p)
