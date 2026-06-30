@@ -2,6 +2,7 @@
 TARGET   = cupcake-sdl
 BUILD    = build-pc
 EXE      =
+LICENSE_TXT = assets/license.txt
 
 SRCS = \
 	src/cupcake_game.c \
@@ -57,10 +58,13 @@ CUPCAKE_HDRS = src/cupcake.h src/cupcake_port.h src/cupcake_sprites.h \
 	src/cupcake_hiscore.h \
 	platform/host_draw.h platform/sprite_blit.h
 
-all: $(BUILD)/$(TARGET)$(EXE)
+all: $(BUILD)/$(TARGET)$(EXE) $(BUILD)/license.txt
 
 $(BUILD)/$(TARGET)$(EXE): $(OBJS) | $(BUILD)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+
+$(BUILD)/license.txt: $(LICENSE_TXT) | $(BUILD)
+	cp $< $@
 
 $(BUILD)/cupcake_game.o: src/cupcake_game.c $(CUPCAKE_HDRS) | $(BUILD)
 	$(CC) $(CFLAGS) -c src/cupcake_game.c -o $@

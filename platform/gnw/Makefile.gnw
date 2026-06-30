@@ -23,6 +23,8 @@ SDK         := $(GNW_DIR)/sdk
 
 ASSETS_DIR     := $(PORT_ROOT)/assets
 ASSETS_SCREEN  := $(ASSETS_DIR)/screen.jpg
+LICENSE_TXT    := $(ASSETS_DIR)/license.txt
+RELEASE_LICENSE := $(RELEASE_DIR)/license.txt
 CUPCAKE_DATA_C := $(GNW_DIR)/cupcake_data.c
 CUPCAKE_DATA_H := $(GNW_DIR)/cupcake_data.h
 BUNDLE_PY      := $(PORT_ROOT)/tools/bundle_overlay_assets.py
@@ -108,7 +110,7 @@ LDFLAGS = $(MCU) $(SPECS) -nostdlib -T$(LINKER) -Wl,--gc-sections -lgcc
 
 .DEFAULT_GOAL := all
 
-all: $(TARGET_BIN)
+all: $(TARGET_BIN) $(RELEASE_LICENSE)
 
 compile-check: $(OBJS)
 	@echo "Compile OK ($(words $(OBJS)) objects)."
@@ -136,10 +138,14 @@ $(TARGET_ELF): $(OBJS) $(LINKER) | $(BUILD_DIR)
 	$(CC) $(OBJS) $(LDFLAGS) -o $@
 	$(SIZE) $@
 
+$(RELEASE_LICENSE): $(LICENSE_TXT) | $(RELEASE_DIR)
+	cp $< $@
+
 $(TARGET_BIN): $(TARGET_ELF) | $(RELEASE_DIR)
 	$(OBJCOPY) -O binary --only-section=.overlay_cupcake $< $@
 	@echo "Built $@ ($(shell wc -c < $@ | tr -d ' ') bytes) — copy to /roms/homebrew/cupcake.bin"
 	@echo "Also copy release/cupcake_assets.dat to /roms/homebrew/cupcake_assets.dat"
+	@echo "license.txt copied to release/ (include when redistributing builds)"
 
 size: $(TARGET_ELF)
 	$(SIZE) $(TARGET_ELF)
