@@ -10,6 +10,19 @@ Move Bart **left** and **right** to catch cupcakes from the couch. Miss one and 
 
 When Homer appears, move Bart **right** to the couch and press **Sit** to join the family for TV. The sooner Bart sits, the more points you score - but if Lisa gets there first, you lose a life. Three lives and it's game over.
 
+## Installing on Game & Watch
+
+Pre-built files are on [GitHub Releases](https://github.com/osirisad/retro-go-bart-simpsons-cupcake-crisis/releases). Download `cupcake.bin` and `cupcake_assets.dat` for the version you want, then copy them to your retro-go SD card:
+
+| File | SD path |
+|------|---------|
+| `cupcake.bin` | `/roms/homebrew/cupcake.bin` |
+| `cupcake_assets.dat` | `/roms/homebrew/cupcake_assets.dat` |
+
+Both files are required — graphics are in the `.bin`; audio is loaded from the `.dat` at runtime. The game appears in the Homebrew menu after a reboot.
+
+If you redistribute builds, include `license.txt` from the release (RetroFab CC-BY-NC-ND terms).
+
 ## Building
 
 **Requirements:** gcc, SDL2, make. On Windows use MSYS2
@@ -34,19 +47,19 @@ Output: `build-pc/cupcake-sdl` (or `cupcake-sdl.exe` on Windows).
 
 ### retro-go (device)
 
-Build the overlay binary for SD install (`/roms/homebrew/cupcake.bin`):
+Build the overlay binary locally:
 
 ```bash
 make cupcake-bin
 ```
+
+Output in `release/` — install using the same SD paths as above (`cupcake.bin` and `cupcake_assets.dat` → `/roms/homebrew/`).
 
 Optional SD session trace log for bring-up (off by default):
 
 ```bash
 make cupcake-bin CUPCAKE_TRACE_SD=1
 ```
-
-Also copy `release/cupcake_assets.dat` to `/roms/homebrew/` on the SD card.
 
 Requires `arm-none-eabi-gcc` and assets under `assets/`.
 
