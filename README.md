@@ -47,7 +47,8 @@ Output: `build-pc/cupcake-sdl` (or `cupcake-sdl.exe` on Windows).
 
 ### retro-go (device)
 
-Build the overlay binary locally:
+Build the GWHB homebrew binary locally (requires firmware with the generic
+homebrew loader, e.g. `gwhb-generic-homebrew-loader`):
 
 ```bash
 make cupcake-bin

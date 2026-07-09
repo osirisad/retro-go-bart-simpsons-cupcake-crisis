@@ -117,10 +117,7 @@ extract-audio:
 clean:
 	rm -rf $(BUILD)
 
-gwhb:
-	$(MAKE) -f platform/gwhb/Makefile.gwhb
-
-# Device overlay — standalone cupcake.bin via ABI (see docs/RELEASE_CUPCAKE_BIN.md)
+# Device overlay — standalone cupcake.bin (GWHB) via ABI
 cupcake-bin:
 	$(MAKE) -f platform/gnw/Makefile.gnw all
 
@@ -130,7 +127,7 @@ cupcake-compile-check:
 overlay-size-estimate:
 	python tools/overlay_size_estimate.py
 
-.PHONY: all run clean gen bake-lcd force-rebuild gwhb cupcake-bin cupcake-compile-check overlay-size-estimate
+.PHONY: all run clean gen bake-lcd force-rebuild cupcake-bin cupcake-compile-check overlay-size-estimate
 
 # Use if alignment edits in .h seem "cached" (also close cupcake-sdl.exe before make).
 force-rebuild:

@@ -1,37 +1,30 @@
-# Game & Watch device overlay host
+# Game & Watch GWHB device build
 
-Implements `app_main_cupcake()` for the Celeste-model RAM overlay on retro-go G&W firmware.
+`make cupcake-bin` produces **`release/cupcake.bin`** — a generic Universal
+Homebrew Header binary for the `gwhb-generic-homebrew-loader` firmware branch.
+Any filename under `/roms/homebrew/` works; dispatch is by the 512-byte header,
+not by name.
 
-## Build `cupcake.bin` (standalone — no firmware source)
+## SD install
 
-```bash
-make cupcake-bin
-# or: make -f platform/gnw/Makefile.gnw
-```
+| File | SD path |
+|------|---------|
+| `release/cupcake.bin` | `/roms/homebrew/cupcake.bin` |
+| `release/cupcake_assets.dat` | `/roms/homebrew/cupcake_assets.dat` |
 
-Output: **`release/cupcake.bin`** → copy to **`/roms/homebrew/cupcake.bin`** on SD.
+Requires **`arm-none-eabi-gcc`**. Runtime firmware calls go through
+**`gw_firmware_abi`** (`abi_stubs.c`).
 
-Requires **`arm-none-eabi-gcc`** only. Runtime firmware calls go through **`gw_firmware_abi`** (`abi_stubs.c`).
-
-Plain-language guide: [docs/RELEASE_CUPCAKE_BIN.md](../../docs/RELEASE_CUPCAKE_BIN.md).
-
-## SD assets (interim until RG-4)
-
-```
-/retro-go/cupcake/screen.jpg
-/retro-go/cupcake/sprites-color.png
-/retro-go/cupcake/audio/*.wav
-```
-
-## Files
+## Files in this directory
 
 | File | Role |
 |------|------|
-| `main_cupcake.c` | Firmware entry — game loop, LCD, input, audio |
-| `gnw_assets.c` | Load bezel + atlas from SD |
+| `main_cupcake.c` | Game loop, LCD, input, audio |
+| `gnw_assets.c` | Load bezel + atlas (embedded or SD fallback) |
 | `abi_stubs.c` | libc + retro-go shims via `gw_firmware_abi` |
 | `rg_abi.h` | ABI version check, `common_emu_state` accessor |
 | `gw_firmware_abi.h` | Vendored ABI struct (sync on version bump) |
 | `Makefile.gnw` | Standalone ARM build |
-| `overlay.ld` | RAM overlay linker layout |
 | `sdk/` | Vendored compile-time API headers |
+
+GWHB header, entry, and linker script live in [`../gwhb/`](../gwhb/).

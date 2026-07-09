@@ -23,9 +23,9 @@ jobs:
       - name: Build cupcake.bin (ABI — port repo only)
         run: make cupcake-bin
 
-      - name: Overlay size report
+      - name: GWHB image size report
         run: |
-          arm-none-eabi-size -A build-gnw/cupcake-overlay.elf | grep overlay_cupcake || true
+          arm-none-eabi-size -A build-gnw/cupcake-overlay.elf | grep -E 'gwhb_header|gwhb_entry|gwhb_load' || true
           ls -la release/
 
       - name: Upload artifact

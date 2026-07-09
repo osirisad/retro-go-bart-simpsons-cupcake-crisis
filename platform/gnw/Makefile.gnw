@@ -1,6 +1,7 @@
-# Standalone Game & Watch overlay build — port repo only.
+# Standalone Game & Watch GWHB build — port repo only.
 #
-# Produces release/cupcake.bin (copy to SD: /roms/homebrew/cupcake.bin).
+# Produces release/cupcake.bin (Universal Homebrew Header for proc's generic
+# homebrew loader). Copy to SD: /roms/homebrew/cupcake.bin (+ cupcake_assets.dat).
 # Links through gw_firmware_abi at runtime — no firmware.elf or imports file.
 #
 # Usage (from port root):
@@ -14,11 +15,13 @@
 _GNW_MK   := $(abspath $(lastword $(MAKEFILE_LIST)))
 PORT_ROOT := $(abspath $(dir $(_GNW_MK))../..)
 GNW_DIR   := $(PORT_ROOT)/platform/gnw
+GWHB_DIR  := $(PORT_ROOT)/platform/gwhb
 BUILD_DIR   := $(PORT_ROOT)/build-gnw
 RELEASE_DIR := $(PORT_ROOT)/release
 TARGET_ELF  := $(BUILD_DIR)/cupcake-overlay.elf
 TARGET_BIN  := $(RELEASE_DIR)/cupcake.bin
-LINKER      := $(GNW_DIR)/overlay.ld
+LINKER      := $(GWHB_DIR)/gwhb.ld
+PATCH_TOTAL_SIZE := $(PORT_ROOT)/tools/patch_gwhb_total_size.py
 SDK         := $(GNW_DIR)/sdk
 
 ASSETS_DIR     := $(PORT_ROOT)/assets
@@ -28,7 +31,6 @@ RELEASE_LICENSE := $(RELEASE_DIR)/license.txt
 CUPCAKE_DATA_C := $(GNW_DIR)/cupcake_data.c
 CUPCAKE_DATA_H := $(GNW_DIR)/cupcake_data.h
 BUNDLE_PY      := $(PORT_ROOT)/tools/bundle_overlay_assets.py
-# Asset bundler needs Pillow. MSYS python3 often lacks it; prefer Windows Python 3.13 if present.
 ifeq ($(wildcard C:/Python313/python.exe),C:/Python313/python.exe)
 PYTHON        ?= C:/Python313/python.exe
 else
@@ -47,7 +49,6 @@ BASE_CFLAGS = -std=c99 -Wall -Wextra -Os -g $(MCU) $(SPECS) \
 	-DSTM32H7B0xx -DUSE_HAL_DRIVER -DIS_LITTLE_ENDIAN -DTARGET_GNW \
 	-DCUPCAKE_GNW -DCUPCAKE_ABI -DCUPCAKE_AUDIO_ODROID
 
-# SD session trace log — off by default (avoids filling /data/homebrew on release builds).
 CUPCAKE_TRACE_SD ?= 0
 TRACE_CFLAGS :=
 TRACE_SRCS :=
@@ -57,6 +58,7 @@ TRACE_SRCS := $(GNW_DIR)/cupcake_trace.c
 endif
 
 INCLUDES = \
+	-I$(GWHB_DIR) \
 	-I$(GNW_DIR) \
 	-I$(SDK)/Core/Inc \
 	-I$(SDK)/Core/Inc/porting \
@@ -81,9 +83,10 @@ SRCS = \
 	$(PORT_ROOT)/platform/cupcake_input.c \
 	$(GNW_DIR)/gnw_assets.c \
 	$(GNW_DIR)/abi_stubs.c \
-	$(GNW_DIR)/cupcake_entry.c \
-	$(TRACE_SRCS) \
-	$(GNW_DIR)/main_cupcake.c
+	$(GWHB_DIR)/gwhb_header.c \
+	$(GWHB_DIR)/gwhb_entry.c \
+	$(GNW_DIR)/main_cupcake.c \
+	$(TRACE_SRCS)
 
 ifneq ($(wildcard $(ASSETS_SCREEN)),)
 EMBED_CFLAGS := -DCUPCAKE_EMBEDDED_ASSETS
@@ -100,7 +103,6 @@ OBJS    = $(addprefix $(BUILD_DIR)/,$(notdir $(SRCS:.c=.o)))
 vpath %.c $(sort $(dir $(SRCS)))
 
 ifneq ($(wildcard $(ASSETS_SCREEN)),)
-# host_audio.c / gnw_assets.c include cupcake_data.h — bundle before any compile.
 $(OBJS): | $(CUPCAKE_DATA_C)
 endif
 
@@ -116,7 +118,7 @@ compile-check: $(OBJS)
 	@echo "Compile OK ($(words $(OBJS)) objects)."
 
 help:
-	@echo "Standalone cupcake.bin (ABI — no firmware checkout)."
+	@echo "Standalone cupcake.bin (GWHB + ABI — no firmware checkout)."
 	@echo "  make cupcake-bin"
 	@echo "  make cupcake-bin CUPCAKE_TRACE_SD=1  (SD debug log — off by default)"
 
@@ -142,14 +144,15 @@ $(RELEASE_LICENSE): $(LICENSE_TXT) | $(RELEASE_DIR)
 	cp $< $@
 
 $(TARGET_BIN): $(TARGET_ELF) | $(RELEASE_DIR)
-	$(OBJCOPY) -O binary --only-section=.overlay_cupcake $< $@
+	$(OBJCOPY) -O binary -j .gwhb_header -j .gwhb_entry -j .gwhb_load $< $@
+	$(PYTHON) $(PATCH_TOTAL_SIZE) $@
 	@echo "Built $@ ($(shell wc -c < $@ | tr -d ' ') bytes) — copy to /roms/homebrew/cupcake.bin"
 	@echo "Also copy release/cupcake_assets.dat to /roms/homebrew/cupcake_assets.dat"
 	@echo "license.txt copied to release/ (include when redistributing builds)"
 
 size: $(TARGET_ELF)
 	$(SIZE) $(TARGET_ELF)
-	@echo "Load section .overlay_cupcake (max ~724 KiB RAM slot)"
+	@echo "GWHB image (max ~724 KiB RAM_EMU slot; header+entry+load in .bin, BSS excluded)"
 
 clean:
 	rm -rf $(BUILD_DIR)

@@ -3,7 +3,8 @@
 | Directory | Role |
 |-----------|------|
 | `sdl/` | PC test binary — full bezel (`screen.jpg`) + LCD sprite layer |
-| `gnw/` | Device overlay host — `app_main_cupcake()` → `cupcake.bin` on SD ([gnw/README.md](gnw/README.md)) |
+| `gnw/` | Device GWHB host — `app_main_cupcake()` → `cupcake.bin` on SD ([gnw/README.md](gnw/README.md)) |
+| `gwhb/` | GWHB header, entry, linker script ([gwhb/README.md](gwhb/README.md)) |
 | `host_draw.c` | Shared atlas → LCD blit (used by all hosts) |
 | `stb/` | stb_image for PNG/JPG without SDL_image |
 

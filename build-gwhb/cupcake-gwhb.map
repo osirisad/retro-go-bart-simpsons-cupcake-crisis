@@ -1,0 +1,2035 @@
+
+Discarded input sections
+
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .rodata.cupcake_gnw_atlas_rgb565_data_count
+                0x00000000        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .rodata.cupcake_gnw_bezel_rgb565_data_count
+                0x00000000        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gwhb_header.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gwhb_header.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gwhb_header.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .data          0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .bss           0x00000000        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .comment       0x00000000       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+RAM_EMU          0x2404b000         0x000b5000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gwhb_header.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+LOAD C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+LOAD C:/Program Files (x86)/Arm/GNU Toolchain mingw-w64-i686-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+dp/hard\libgcc.a
+                0x2404b000                        __RAM_EMU_START__ = 0x2404b000
+                0x000b5000                        __RAM_EMU_LENGTH__ = 0xb5000
+                0x24100000                        __RAM_EMU_END__ = (__RAM_EMU_START__ + __RAM_EMU_LENGTH__)
+
+.gwhb_image     0x2404b000 0x240c42ac
+                0x2404b000                        __gwhb_image_start__ = .
+ *(.gwhb_header)
+ .gwhb_header   0x2404b000      0x200 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gwhb_header.o
+                0x2404b000                g_gwhb_header
+                0x2404b200                        . = (__RAM_EMU_START__ + 0x200)
+ *fill*         0x2404b200 0x2404b000 
+                0x00000001                        ASSERT ((. == (__RAM_EMU_START__ + 0x200)), GWHB header must be exactly 512 bytes)
+ *(.cupcake_entry)
+ .cupcake_entry
+                0x48096200       0x54 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+                0x48096200                cupcake_overlay_entry
+ *(.cupcake_entry*)
+ *(.text .text*)
+ .text          0x48096254        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+ .text.gw_abi_bind_stdio
+                0x48096254       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096254                gw_abi_bind_stdio
+ .text.memcpy   0x48096278        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096278                memcpy
+ .text.memset   0x48096286        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096286                memset
+ .text.memmove  0x48096294        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096294                memmove
+ .text.malloc   0x480962a2        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480962a2                malloc
+ .text.free     0x480962b0        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480962b0                free
+ .text.realloc  0x480962be        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480962be                realloc
+ .text.calloc   0x480962cc       0x2c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480962cc                calloc
+ .text.strcmp   0x480962f8        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480962f8                strcmp
+ .text.strncmp  0x48096306        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096306                strncmp
+ .text.strlen   0x48096314        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096314                strlen
+ .text.strcpy   0x48096322       0x2a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096322                strcpy
+ .text.memcmp   0x4809634c        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4809634c                memcmp
+ .text.strtol   0x4809635a        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4809635a                strtol
+ .text.strtoul  0x48096368        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096368                strtoul
+ .text.getenv   0x48096376        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096376                getenv
+ .text.fgets    0x4809637a        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4809637a                fgets
+ .text.fgetc    0x48096388        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096388                fgetc
+ .text.ungetc   0x48096396        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096396                ungetc
+ .text.fputs    0x480963a4       0x22 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480963a4                fputs
+ .text.time     0x480963c6        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480963c6                time
+ .text.pow      0x480963d4        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480963d4                pow
+ .text.__assert_func
+                0x480963e2       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480963e2                __assert_func
+ .text.printf   0x480963f2       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480963f2                printf
+ .text.fprintf  0x48096416       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096416                fprintf
+ .text.snprintf
+                0x4809643a       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4809643a                snprintf
+ .text.fopen    0x4809645e        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4809645e                fopen
+ .text.fclose   0x4809646c        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4809646c                fclose
+ .text.fread    0x4809647a       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4809647a                fread
+ .text.fwrite   0x4809648e       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4809648e                fwrite
+ .text.fseek    0x480964a2        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480964a2                fseek
+ .text.ftell    0x480964b0        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480964b0                ftell
+ .text.lcd_swap
+                0x480964be       0x1e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480964be                lcd_swap
+ .text.lcd_get_active_buffer
+                0x480964dc        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480964dc                lcd_get_active_buffer
+ .text.lcd_clear_buffers
+                0x480964ea       0x1e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480964ea                lcd_clear_buffers
+ .text.audio_start_playing
+                0x48096508        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096508                audio_start_playing
+ *fill*         0x48096516        0x2 
+ .text.odroid_audio_submit
+                0x48096518       0x84 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096518                odroid_audio_submit
+ .text.odroid_audio_sample_rate_get
+                0x4809659c        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4809659c                odroid_audio_sample_rate_get
+ .text.odroid_system_init
+                0x480965a8       0x18 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480965a8                odroid_system_init
+ .text.odroid_system_emu_init
+                0x480965c0       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480965c0                odroid_system_emu_init
+ .text.odroid_system_emu_load_state
+                0x480965d4        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480965d4                odroid_system_emu_load_state
+ .text.odroid_input_read_gamepad
+                0x480965e2       0x22 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x480965e2                odroid_input_read_gamepad
+ .text.odroid_overlay_alert
+                0x48096604       0x48 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096604                odroid_overlay_alert
+ .text.common_emu_frame_loop
+                0x4809664c        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4809664c                common_emu_frame_loop
+ .text.common_emu_input_loop
+                0x4809665a        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4809665a                common_emu_input_loop
+ .text.common_emu_input_loop_handle_turbo
+                0x48096668        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096668                common_emu_input_loop_handle_turbo
+ .text.common_emu_sound_sync
+                0x48096676        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096676                common_emu_sound_sync
+ .text.wdog_refresh
+                0x48096684        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096684                wdog_refresh
+ .text.ram_malloc
+                0x48096692        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x48096692                ram_malloc
+ .text          0x480966a0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .text.cupcake_adpcm_stream_init
+                0x480966a0       0x54 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+                0x480966a0                cupcake_adpcm_stream_init
+ .text.cupcake_adpcm_stream_init_dat
+                0x480966f4       0x74 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+                0x480966f4                cupcake_adpcm_stream_init_dat
+ .text.cupcake_adpcm_stream_close
+                0x48096768       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+                0x48096768                cupcake_adpcm_stream_close
+ .text.cupcake_adpcm_stream_next
+                0x48096778      0x12c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+                0x48096778                cupcake_adpcm_stream_next
+ .text.cupcake_adpcm_decode
+                0x480968a4       0x3a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+                0x480968a4                cupcake_adpcm_decode
+ .text          0x480968de        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ *fill*         0x480968de        0x2 
+ .text.cupcake_assets_dat_read
+                0x480968e0       0x60 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+                0x480968e0                cupcake_assets_dat_read
+ .text.cupcake_assets_dat_shutdown
+                0x48096940       0x38 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+                0x48096940                cupcake_assets_dat_shutdown
+ .text.cupcake_assets_dat_init
+                0x48096978      0x110 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+                0x48096978                cupcake_assets_dat_init
+ .text.cupcake_assets_dat_clip_count
+                0x48096a88        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+                0x48096a88                cupcake_assets_dat_clip_count
+ .text.cupcake_assets_dat_clip
+                0x48096a94       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+                0x48096a94                cupcake_assets_dat_clip
+ .text.cupcake_assets_dat_lookup
+                0x48096ab8       0xb0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+                0x48096ab8                cupcake_assets_dat_lookup
+ .text          0x48096b68        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .text.cupcake_gnw_bezel_rgb565
+                0x48096b68        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+                0x48096b68                cupcake_gnw_bezel_rgb565
+ .text.cupcake_gnw_atlas_rgb565
+                0x48096b70        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+                0x48096b70                cupcake_gnw_atlas_rgb565
+ .text.cupcake_gnw_bezel_pixel_count
+                0x48096b78        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+                0x48096b78                cupcake_gnw_bezel_pixel_count
+ .text.cupcake_gnw_atlas_pixel_count
+                0x48096b7e        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+                0x48096b7e                cupcake_gnw_atlas_pixel_count
+ .text          0x48096b84        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+ .text          0x48096b84        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.btn_pressed
+                0x48096b84       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.sched_maggie_index_reset
+                0x48096ba8       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.couch_entity_start
+                0x48096bb8       0x6c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_couch_spawn_on_start
+                0x48096c24       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_miss_cupcake_end
+                0x48096c38       0x18 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.sched_marge_start_after_delivery
+                0x48096c50        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_bart_action_on_start
+                0x48096c5c        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_on_phase_start
+                0x48096c68       0x74 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_pause
+                0x48096cdc       0x3c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48096cdc                cupcake_pause
+ .text.cupcake_miss_sequence_begin
+                0x48096d18       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_miss_cupcake_ot
+                0x48096d3c       0x1c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.draw_sprite_auto
+                0x48096d58       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.draw_scoreboard_sprite
+                0x48096d78        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.host_sfx.isra.0
+                0x48096d7c       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_start_seq_on_start
+                0x48096d9c       0x64 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.aircake_step_pick
+                0x48096e00       0x44 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_miss_couch_end
+                0x48096e44       0x40 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_miss_couch_ot
+                0x48096e84       0x2c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_miss_cupcake_start
+                0x48096eb0       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_couch_spawn_ot
+                0x48096ee0       0x3c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_stop
+                0x48096f1c       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_sit_bonus_on_start
+                0x48096f40        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_phase_complete_start
+                0x48096f4c       0x1c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.host_sfx_hook
+                0x48096f68        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.draw_sprite_cb
+                0x48096f6c        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.marge_bonus_on_tick
+                0x48096f70       0x2c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_phase_transition_locked
+                0x48096f9c       0x34 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_play_active
+                0x48096fd0       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_resume
+                0x48096ff0       0x44 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48096ff0                cupcake_resume
+ .text.sched_phase_restart_finish
+                0x48097034       0x28 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_schedule_phase_restart_finish
+                0x4809705c       0x2c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_phase_restart_play
+                0x48097088       0x3c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_phase_complete_end
+                0x480970c4       0x38 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_run_deferred_work
+                0x480970fc       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_start_seq_on_tick
+                0x48097110       0x44 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_log_sprite_lcd
+                0x48097154        0x2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097154                cupcake_log_sprite_lcd
+ *fill*         0x48097156        0x2 
+ .text.cupcake_on_game_over
+                0x48097158       0x38 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097158                cupcake_on_game_over
+ .text.cupcake_is_paused
+                0x48097190       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097190                cupcake_is_paused
+ .text.cupcake_game_tick_rate_sec
+                0x480971a0       0x60 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480971a0                cupcake_game_tick_rate_sec
+ .text.marge_bonus_on_end
+                0x48097200       0x40 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.tmr_game_rate
+                0x48097240        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_couch_step
+                0x4809724c       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x4809724c                cupcake_couch_step
+ .text.cupcake_maggie_step
+                0x48097270       0x78 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097270                cupcake_maggie_step
+ .text.cupcake_marge_collect
+                0x480972e8       0xa4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480972e8                cupcake_marge_collect
+ .text.tmr_bart_action_on_end
+                0x4809738c       0x40 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_marge_step
+                0x480973cc       0x6c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480973cc                cupcake_marge_step
+ .text.cupcake_on_m_cupcake
+                0x48097438       0x50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097438                cupcake_on_m_cupcake
+ .text.cupcake_cupcakes_step.part.0
+                0x48097488       0x5c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_cupcakes_step
+                0x480974e4        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480974e4                cupcake_cupcakes_step
+ .text.cupcake_on_m_couch
+                0x480974ec       0x54 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480974ec                cupcake_on_m_couch
+ .text.tmr_couch_spawn_end
+                0x48097540       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_on_phase_complete
+                0x48097554       0x74 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097554                cupcake_on_phase_complete
+ .text.host_on_score_change
+                0x480975c8       0x38 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_add_points.part.0
+                0x48097600       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_on_phase_restart
+                0x48097620       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097620                cupcake_on_phase_restart
+ .text.cupcake_miss_increase
+                0x48097640       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097640                cupcake_miss_increase
+ .text.sched_on_m
+                0x48097664        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_bart_sit_bonus
+                0x48097668       0x44 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097668                cupcake_bart_sit_bonus
+ .text.cupcake_add_points
+                0x480976ac        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480976ac                cupcake_add_points
+ *fill*         0x480976b6        0x2 
+ .text.cupcake_set_threshold
+                0x480976b8       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480976b8                cupcake_set_threshold
+ .text.cupcake_set_record
+                0x480976cc       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480976cc                cupcake_set_record
+ .text.cupcake_record_mode
+                0x480976dc       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480976dc                cupcake_record_mode
+ .text.cupcake_phase_score_target
+                0x480976ec        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480976ec                cupcake_phase_score_target
+ *fill*         0x480976f6        0x2 
+ .text.cupcake_scoreboard_add_bonus
+                0x480976f8       0x44 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480976f8                cupcake_scoreboard_add_bonus
+ .text.tmr_sit_bonus_end
+                0x4809773c       0x38 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_bart_catch_cupcake
+                0x48097774       0x34 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097774                cupcake_bart_catch_cupcake
+ .text.cupcake_bart_catch_pacifier
+                0x480977a8       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480977a8                cupcake_bart_catch_pacifier
+ .text.cupcake_aircakes_land_at_lane
+                0x480977cc       0x46 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480977cc                cupcake_aircakes_land_at_lane
+ .text.aircake_step_land
+                0x48097812       0x2a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_aircakes_step.part.0
+                0x4809783c       0x94 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_aircakes_step
+                0x480978d0        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480978d0                cupcake_aircakes_step
+ .text.cupcake_pacifier_on_loop3
+                0x480978d8       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480978d8                cupcake_pacifier_on_loop3
+ .text.cupcake_pacifier_step
+                0x480978ec       0x58 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x480978ec                cupcake_pacifier_step
+ .text.tmr_game_ot
+                0x48097944       0x50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .text.cupcake_on_move
+                0x48097994      0x13c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097994                cupcake_on_move
+ .text.cupcake_set_debug_start
+                0x48097ad0       0x2c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097ad0                cupcake_set_debug_start
+ .text.cupcake_debug_start_pending
+                0x48097afc        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097afc                cupcake_debug_start_pending
+ .text.cupcake_apply_debug_start
+                0x48097b08       0x74 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097b08                cupcake_apply_debug_start
+ .text.cupcake_debug_cheat_phase
+                0x48097b7c       0x58 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097b7c                cupcake_debug_cheat_phase
+ .text.cupcake_on_start
+                0x48097bd4       0x94 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097bd4                cupcake_on_start
+ .text.cupcake_on_quick_start
+                0x48097c68       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097c68                cupcake_on_quick_start
+ .text.cupcake_set_callback
+                0x48097c98        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097c98                cupcake_set_callback
+ .text.cupcake_set_buttons
+                0x48097ca4       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097ca4                cupcake_set_buttons
+ .text.cupcake_buttons_sync
+                0x48097cb8       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097cb8                cupcake_buttons_sync
+ .text.cupcake_set_debug_pin
+                0x48097ccc        0x2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097ccc                cupcake_set_debug_pin
+ .text.cupcake_set_debug_pin_from_tune
+                0x48097cce        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097cce                cupcake_set_debug_pin_from_tune
+ .text.cupcake_set_debug_pin_solo
+                0x48097cd2        0x2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097cd2                cupcake_set_debug_pin_solo
+ .text.cupcake_init
+                0x48097cd4       0x68 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097cd4                cupcake_init
+ .text.cupcake_update
+                0x48097d3c      0x200 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097d3c                cupcake_update
+ .text.cupcake_draw
+                0x48097f3c       0x88 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097f3c                cupcake_draw
+ .text.cupcake_state_size
+                0x48097fc4        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097fc4                cupcake_state_size
+ *fill*         0x48097fca        0x2 
+ .text.cupcake_save_state
+                0x48097fcc       0x3c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48097fcc                cupcake_save_state
+ .text.cupcake_load_state
+                0x48098008      0x24c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48098008                cupcake_load_state
+ .text.cupcake_get_state
+                0x48098254        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48098254                cupcake_get_state
+ .text.cupcake_play_state
+                0x4809825c        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x4809825c                cupcake_play_state
+ .text.cupcake_timers
+                0x48098264        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                0x48098264                cupcake_timers
+ .text          0x4809826c        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .text.cupcake_hiscore_default_path
+                0x4809826c       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+                0x4809826c                cupcake_hiscore_default_path
+ .text.cupcake_hiscore_set_path
+                0x4809827c       0x34 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+                0x4809827c                cupcake_hiscore_set_path
+ .text.cupcake_hiscore_attract
+                0x480982b0        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+                0x480982b0                cupcake_hiscore_attract
+ *fill*         0x480982be        0x2 
+ .text.cupcake_hiscore_sync_from_play
+                0x480982c0       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+                0x480982c0                cupcake_hiscore_sync_from_play
+ .text.cupcake_hiscore_load
+                0x480982d4       0x94 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+                0x480982d4                cupcake_hiscore_load
+ .text.cupcake_hiscore_save
+                0x48098368       0x70 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+                0x48098368                cupcake_hiscore_save
+ .text.cupcake_hiscore_on_score_change
+                0x480983d8       0x3c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+                0x480983d8                cupcake_hiscore_on_score_change
+ .text          0x48098414        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+ .text.cupcake_input_from_odroid
+                0x48098414       0x50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+                0x48098414                cupcake_input_from_odroid
+ .text          0x48098464        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .text.rng_next_u32
+                0x48098464       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .text.cupcake_rng_seed
+                0x48098488       0x1c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+                0x48098488                cupcake_rng_seed
+ .text.cupcake_rng_get_state
+                0x480984a4        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+                0x480984a4                cupcake_rng_get_state
+ .text.cupcake_rng_set_state
+                0x480984b0       0x18 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+                0x480984b0                cupcake_rng_set_state
+ .text.cupcake_rng_init
+                0x480984c8       0x18 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+                0x480984c8                cupcake_rng_init
+ .text.cupcake_rand
+                0x480984e0       0x3c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+                0x480984e0                cupcake_rand
+ .text.cupcake_rand_pick
+                0x4809851c       0x1a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+                0x4809851c                cupcake_rand_pick
+ .text.cupcake_rand_span
+                0x48098536       0x12 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+                0x48098536                cupcake_rand_span
+ .text          0x48098548        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .text.tmr_scoreboard_bonus_end
+                0x48098548       0x34 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .text.cupcake_scoreboard_slot_digit
+                0x4809857c       0x8c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x4809857c                cupcake_scoreboard_slot_digit
+ .text.cupcake_scoreboard_digit_sprite
+                0x48098608       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x48098608                cupcake_scoreboard_digit_sprite
+ .text.cupcake_scoreboard_draw_segments
+                0x48098628       0x38 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x48098628                cupcake_scoreboard_draw_segments
+ .text.cupcake_scoreboard_draw_slot
+                0x48098660       0x28 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x48098660                cupcake_scoreboard_draw_slot
+ .text.cupcake_scoreboard_draw_digits
+                0x48098688       0x3a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x48098688                cupcake_scoreboard_draw_digits
+ *fill*         0x480986c2        0x2 
+ .text.cupcake_scoreboard_draw_text
+                0x480986c4      0x104 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x480986c4                cupcake_scoreboard_draw_text
+ .text.draw_level_overlay
+                0x480987c8       0x2c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .text.cupcake_scoreboard_set_phase
+                0x480987f4       0x18 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x480987f4                cupcake_scoreboard_set_phase
+ .text.cupcake_scoreboard_set_level
+                0x4809880c       0x2a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x4809880c                cupcake_scoreboard_set_level
+ .text.cupcake_scoreboard_show_value
+                0x48098836        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x48098836                cupcake_scoreboard_show_value
+ .text.cupcake_scoreboard_show_run_score
+                0x48098842        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x48098842                cupcake_scoreboard_show_run_score
+ .text.tmr_scoreboard_bonus_ot
+                0x4809884c       0x7c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .text.cupcake_scoreboard_draw
+                0x480988c8       0xbc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x480988c8                cupcake_scoreboard_draw
+ .text.cupcake_scoreboard_draw_demo_level
+                0x48098984       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x48098984                cupcake_scoreboard_draw_demo_level
+ .text.cupcake_scoreboard_draw_demo_hiscore
+                0x480989a4       0x28 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x480989a4                cupcake_scoreboard_draw_demo_hiscore
+ .text.cupcake_scoreboard_set_host
+                0x480989cc       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x480989cc                cupcake_scoreboard_set_host
+ .text.cupcake_scoreboard_add_bonus_ex
+                0x480989ec       0xa4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x480989ec                cupcake_scoreboard_add_bonus_ex
+ .text.cupcake_scoreboard_timers_restore
+                0x48098a90       0x28 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                0x48098a90                cupcake_scoreboard_timers_restore
+ .text          0x48098ab8        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .text.cupcake_grid_clear
+                0x48098ab8        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098ab8                cupcake_grid_clear
+ .text.cupcake_grid_set_visible
+                0x48098ac2       0x32 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098ac2                cupcake_grid_set_visible
+ .text.cupcake_grid_is_visible
+                0x48098af4       0x2a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098af4                cupcake_grid_is_visible
+ *fill*         0x48098b1e        0x2 
+ .text.cupcake_grid_sprite_name
+                0x48098b20       0x54 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098b20                cupcake_grid_sprite_name
+ .text.cupcake_grid_draw_visible
+                0x48098b74       0x4e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098b74                cupcake_grid_draw_visible
+ .text.cupcake_aircakes_clear
+                0x48098bc2        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098bc2                cupcake_aircakes_clear
+ .text.cupcake_aircake_set_visible
+                0x48098bcc       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098bcc                cupcake_aircake_set_visible
+ .text.cupcake_aircake_is_visible
+                0x48098bf0       0x1a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098bf0                cupcake_aircake_is_visible
+ *fill*         0x48098c0a        0x2 
+ .text.cupcake_aircake_sprite_name
+                0x48098c0c       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098c0c                cupcake_aircake_sprite_name
+ .text.cupcake_aircakes_draw_visible
+                0x48098c2c       0x42 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098c2c                cupcake_aircakes_draw_visible
+ .text.cupcake_play_state_reset
+                0x48098c6e       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098c6e                cupcake_play_state_reset
+ .text.cupcake_play_state_start_demo
+                0x48098c9e       0x1e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098c9e                cupcake_play_state_start_demo
+ .text.cupcake_phase_clamp
+                0x48098cbc        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098cbc                cupcake_phase_clamp
+ .text.cupcake_bart_stack_lane
+                0x48098cca       0x12 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098cca                cupcake_bart_stack_lane
+ .text.cupcake_bart_position_layers
+                0x48098cdc       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098cdc                cupcake_bart_position_layers
+ .text.cupcake_bart_set_position
+                0x48098cf0       0x62 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098cf0                cupcake_bart_set_position
+ .text.cupcake_bart_material_visible
+                0x48098d52       0x1a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098d52                cupcake_bart_material_visible
+ .text.cupcake_bart_set_miss_pose
+                0x48098d6c       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098d6c                cupcake_bart_set_miss_pose
+ .text.cupcake_bart_clear_miss_pose
+                0x48098d80       0x18 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098d80                cupcake_bart_clear_miss_pose
+ .text.cupcake_bart_miss_index
+                0x48098d98        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098d98                cupcake_bart_miss_index
+ .text.cupcake_bart_start
+                0x48098da6       0x1c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098da6                cupcake_bart_start
+ .text.cupcake_maggie_start
+                0x48098dc2        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098dc2                cupcake_maggie_start
+ .text.cupcake_miss_start
+                0x48098dce        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098dce                cupcake_miss_start
+ .text.cupcake_miss_decrease
+                0x48098dda       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098dda                cupcake_miss_decrease
+ .text.cupcake_cupcakes_start
+                0x48098dea        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098dea                cupcake_cupcakes_start
+ .text.cupcake_aircakes_start
+                0x48098df4        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098df4                cupcake_aircakes_start
+ .text.cupcake_pacifier_start
+                0x48098dfe       0x26 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098dfe                cupcake_pacifier_start
+ .text.cupcake_marge_start
+                0x48098e24        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098e24                cupcake_marge_start
+ .text.cupcake_couch_start
+                0x48098e32       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098e32                cupcake_couch_start
+ .text.cupcake_play_state_start_phase
+                0x48098e56       0x3a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098e56                cupcake_play_state_start_phase
+ .text.cupcake_couch_sit_bonus_ticks
+                0x48098e90       0x1c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098e90                cupcake_couch_sit_bonus_ticks
+ .text.cupcake_couch_set_frame_visible
+                0x48098eac       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098eac                cupcake_couch_set_frame_visible
+ .text.cupcake_maggie_sprite_name
+                0x48098ecc       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098ecc                cupcake_maggie_sprite_name
+ .text.cupcake_maggie_draw_visible
+                0x48098eec       0x3c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098eec                cupcake_maggie_draw_visible
+ .text.cupcake_couch_draw_visible
+                0x48098f28       0x40 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098f28                cupcake_couch_draw_visible
+ .text.cupcake_marge_draw_visible
+                0x48098f68       0x18 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098f68                cupcake_marge_draw_visible
+ .text.cupcake_pacifier_draw_visible
+                0x48098f80       0x34 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098f80                cupcake_pacifier_draw_visible
+ .text.cupcake_miss_draw_visible
+                0x48098fb4       0x3c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098fb4                cupcake_miss_draw_visible
+ .text.cupcake_bart_draw_visible
+                0x48098ff0       0x38 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48098ff0                cupcake_bart_draw_visible
+ .text.cupcake_play_draw_visible
+                0x48099028       0x76 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48099028                cupcake_play_draw_visible
+ .text.cupcake_timer_export
+                0x4809909e       0x50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x4809909e                cupcake_timer_export
+ .text.cupcake_timer_import
+                0x480990ee       0x44 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x480990ee                cupcake_timer_import
+ .text.cupcake_timers_export
+                0x48099132       0x4c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x48099132                cupcake_timers_export
+ .text.cupcake_timers_import
+                0x4809917e       0x50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                0x4809917e                cupcake_timers_import
+ .text          0x480991ce        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .text.timer_fire
+                0x480991ce       0x62 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .text.timer_update_one
+                0x48099230       0xc0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .text.cupcake_timers_in_callback
+                0x480992f0       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x480992f0                cupcake_timers_in_callback
+ .text.cupcake_timers_set_post_update
+                0x48099304        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x48099304                cupcake_timers_set_post_update
+ .text.cupcake_timers_init
+                0x48099310        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x48099310                cupcake_timers_init
+ *fill*         0x4809931a        0x2 
+ .text.cupcake_timers_update
+                0x4809931c       0x78 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x4809931c                cupcake_timers_update
+ .text.cupcake_timer_start_rate
+                0x48099394       0x9c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x48099394                cupcake_timer_start_rate
+ .text.cupcake_timer_start
+                0x48099430        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x48099430                cupcake_timer_start
+ .text.cupcake_timer_pause
+                0x4809943c       0x12 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x4809943c                cupcake_timer_pause
+ .text.cupcake_timer_resume
+                0x4809944e       0x12 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x4809944e                cupcake_timer_resume
+ .text.cupcake_timer_stop
+                0x48099460       0x18 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x48099460                cupcake_timer_stop
+ .text.cupcake_timers_pause
+                0x48099478        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x48099478                cupcake_timers_pause
+ .text.cupcake_timers_resume
+                0x48099482        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x48099482                cupcake_timers_resume
+ .text.cupcake_timers_stop
+                0x4809948c       0x4a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x4809948c                cupcake_timers_stop
+ *fill*         0x480994d6        0x2 
+ .text.cupcake_timers_schedule
+                0x480994d8       0xc4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x480994d8                cupcake_timers_schedule
+ .text.cupcake_timer_active
+                0x4809959c       0x1a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x4809959c                cupcake_timer_active
+ .text.cupcake_timer_tick
+                0x480995b6       0x12 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x480995b6                cupcake_timer_tick
+ .text.cupcake_timer_is_paused
+                0x480995c8       0x1a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                0x480995c8                cupcake_timer_is_paused
+ .text          0x480995e2        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+ .text.gnw_assets_base
+                0x480995e2        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+                0x480995e2                gnw_assets_base
+ .text.gnw_assets_load
+                0x480995e6       0x6e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+                0x480995e6                gnw_assets_load
+ .text.gnw_assets_free
+                0x48099654        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+                0x48099654                gnw_assets_free
+ .text          0x48099660        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gwhb_header.o
+ .text          0x48099660        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .text.adpcm_voice_release
+                0x48099660       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .text.host_audio_init
+                0x48099684       0x4c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+                0x48099684                host_audio_init
+ .text.host_audio_shutdown
+                0x480996d0       0x4c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+                0x480996d0                host_audio_shutdown
+ .text.host_audio_play
+                0x4809971c      0x1f0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+                0x4809971c                host_audio_play
+ .text.host_audio_pump
+                0x4809990c      0x10c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+                0x4809990c                host_audio_pump
+ .text.host_audio_toggle_mute
+                0x48099a18       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+                0x48099a18                host_audio_toggle_mute
+ .text.host_audio_is_muted
+                0x48099a38        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+                0x48099a38                host_audio_is_muted
+ .text          0x48099a44        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+ .text.host_sfx_catalog_find
+                0x48099a44       0x38 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+                0x48099a44                host_sfx_catalog_find
+ .text          0x48099a7c        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .text.cupcake_sprite_by_name
+                0x48099a7c       0x40 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .text.cupcake_sprite_lcd_by_name
+                0x48099abc       0x40 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .text.cupcake_sprite_mask_by_name
+                0x48099afc       0x40 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .text.cupcake_sprite_lcd_resolve_y
+                0x48099b3c       0x4a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .text.cupcake_sprite_mask_get
+                0x48099b86       0x38 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .text.host_sprite_rect_ok
+                0x48099bbe       0x28 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+                0x48099bbe                host_sprite_rect_ok
+ .text.host_clear_lcd
+                0x48099be6       0x38 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+                0x48099be6                host_clear_lcd
+ .text.host_clear_lcd_transparent
+                0x48099c1e        0xe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+                0x48099c1e                host_clear_lcd_transparent
+ .text.host_draw_sprite
+                0x48099c2c      0x13a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+                0x48099c2c                host_draw_sprite
+ *fill*         0x48099d66        0x2 
+ .text.host_draw_sprite_rgb565_fb
+                0x48099d68      0x1f0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+                0x48099d68                host_draw_sprite_rgb565_fb
+ .text.host_lcd_rect_for_framebuffer
+                0x48099f58       0x90 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+                0x48099f58                host_lcd_rect_for_framebuffer
+ .text.host_bezel_blit_rgb565
+                0x48099fe8      0x108 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+                0x48099fe8                host_bezel_blit_rgb565
+ .text.host_lcd_blit_rgb565
+                0x4809a0f0      0x134 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+                0x4809a0f0                host_lcd_blit_rgb565
+ .text          0x4809a224        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .text.cupcake_sprite_by_name
+                0x4809a224       0x40 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .text.SaveState
+                0x4809a264       0x48 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .text.LoadState
+                0x4809a2ac       0x4c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .text.setup_hiscore_path
+                0x4809a2f8       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .text.blit_frame
+                0x4809a318       0x1c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .text.cupcake_cb_wrap
+                0x4809a334      0x100 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .text.app_main_cupcake
+                0x4809a434      0x224 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+                0x4809a434                app_main_cupcake
+ *(.text .text*)
+ *(.rodata .rodata*)
+ .rodata.index_table
+                0x4809a658       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .rodata.step_table
+                0x4809a668       0xb2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .rodata.cupcake_assets_dat_init.str1.1
+                0x4809a71a      0x523 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+                                  0x3 (size before relaxing)
+ .rodata.cupcake_assets_dat_lookup.str1.1
+                0x4809ac3d        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+                                  0x3 (size before relaxing)
+ *fill*         0x4809ac3d        0x1 
+ .rodata.cupcake_gnw_atlas_rgb565_data
+                0x4809ac3e    0x32000 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+                0x4809ac3e                cupcake_gnw_atlas_rgb565_data
+ .rodata.cupcake_gnw_bezel_rgb565_data
+                0x480ccc3e    0x25800 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+                0x480ccc3e                cupcake_gnw_bezel_rgb565_data
+ .rodata.tmr_start_seq_on_start.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x6 (size before relaxing)
+ .rodata.aircake_step_pick.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x5 (size before relaxing)
+ .rodata.tmr_miss_couch_end.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x5 (size before relaxing)
+ .rodata.tmr_miss_couch_ot.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x5 (size before relaxing)
+ .rodata.tmr_miss_cupcake_start.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x5 (size before relaxing)
+ .rodata.tmr_couch_spawn_ot.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x6 (size before relaxing)
+ .rodata.cupcake_stop.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x5 (size before relaxing)
+ .rodata.tmr_sit_bonus_on_start.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x6 (size before relaxing)
+ .rodata.tmr_phase_complete_start.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x6 (size before relaxing)
+ .rodata.cupcake_on_game_over.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x5 (size before relaxing)
+ .rodata.cupcake_maggie_step.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x6 (size before relaxing)
+ .rodata.cupcake_marge_collect.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x8 (size before relaxing)
+ .rodata.cupcake_marge_step.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x6 (size before relaxing)
+ .rodata.cupcake_bart_catch_cupcake.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0x8 (size before relaxing)
+ .rodata.cupcake_bart_catch_pacifier.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0xa (size before relaxing)
+ .rodata.cupcake_pacifier_step.str1.1
+                0x480f243e        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                  0xa (size before relaxing)
+ *fill*         0x480f243e        0x2 
+ .rodata.cake8_late.0
+                0x480f2440       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cake8_early.1
+                0x480f2450        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cake7_next.2
+                0x480f245c        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cake6_next.3
+                0x480f2468        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.level1.4
+                0x480f2470       0x1c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.level2.5
+                0x480f248c       0x1c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_frames
+                0x480f24a8      0x518 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_162
+                0x480f29c0        0x2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_161
+                0x480f29c2        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_160
+                0x480f29c5        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_159
+                0x480f29c8        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_158
+                0x480f29cb        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_157
+                0x480f29ce        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_156
+                0x480f29d1        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_155
+                0x480f29d9        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_154
+                0x480f29e1        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_153
+                0x480f29e9        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_152
+                0x480f29f1        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_151
+                0x480f29f9        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_150
+                0x480f2a01        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_149
+                0x480f2a09        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_148
+                0x480f2a11        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_147
+                0x480f2a19        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_146
+                0x480f2a21        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_145
+                0x480f2a29        0x9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_144
+                0x480f2a32        0x9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_143
+                0x480f2a3b        0x9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_142
+                0x480f2a44        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_141
+                0x480f2a4a        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_140
+                0x480f2a50        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_139
+                0x480f2a56        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_138
+                0x480f2a5c        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_137
+                0x480f2a62        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_136
+                0x480f2a69        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_135
+                0x480f2a70        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_134
+                0x480f2a78        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_133
+                0x480f2a7f        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_132
+                0x480f2a86        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_131
+                0x480f2a8d        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_130
+                0x480f2a94        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_129
+                0x480f2a9b        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_128
+                0x480f2aa2        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_127
+                0x480f2aac        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_126
+                0x480f2ab6        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_125
+                0x480f2ac0        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_124
+                0x480f2aca        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_123
+                0x480f2ad4        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_122
+                0x480f2ade        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_121
+                0x480f2ae8        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_120
+                0x480f2af2        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_119
+                0x480f2afc        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_118
+                0x480f2b06        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_117
+                0x480f2b10        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_116
+                0x480f2b1a        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_115
+                0x480f2b24        0x9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_114
+                0x480f2b2d        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_113
+                0x480f2b35        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_112
+                0x480f2b3d        0x9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_111
+                0x480f2b46        0x9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_110
+                0x480f2b4f        0x9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_109
+                0x480f2b58        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_108
+                0x480f2b62        0x9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_107
+                0x480f2b6b        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_106
+                0x480f2b73        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_105
+                0x480f2b7a        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_104
+                0x480f2b81        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_103
+                0x480f2b88        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_102
+                0x480f2b8f        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_101
+                0x480f2b96        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_100
+                0x480f2b9d        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_99
+                0x480f2ba4        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_98
+                0x480f2bab        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_97
+                0x480f2baf        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_96
+                0x480f2bb3        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_95
+                0x480f2bb7        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_94
+                0x480f2bbb        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_93
+                0x480f2bbf        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_92
+                0x480f2bc4        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_91
+                0x480f2bc9        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_90
+                0x480f2bce        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_89
+                0x480f2bd2        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_88
+                0x480f2bd6        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_87
+                0x480f2bda        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_86
+                0x480f2bde        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_85
+                0x480f2be2        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_84
+                0x480f2be6        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_83
+                0x480f2bea        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_82
+                0x480f2bef        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_81
+                0x480f2bf3        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_80
+                0x480f2bf7        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_79
+                0x480f2bfb        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_78
+                0x480f2bff        0x9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_77
+                0x480f2c08        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_76
+                0x480f2c12        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_75
+                0x480f2c1c        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_74
+                0x480f2c26        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_73
+                0x480f2c2e        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_72
+                0x480f2c36        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_71
+                0x480f2c3e        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_70
+                0x480f2c46        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_69
+                0x480f2c4e        0x9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_68
+                0x480f2c57        0x9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_67
+                0x480f2c60        0x9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_66
+                0x480f2c69        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_65
+                0x480f2c70        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_64
+                0x480f2c77        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_63
+                0x480f2c7f        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_62
+                0x480f2c87        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_61
+                0x480f2c8d        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_60
+                0x480f2c94        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_59
+                0x480f2c9b        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_58
+                0x480f2ca2        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_57
+                0x480f2ca8        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_56
+                0x480f2cae        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_55
+                0x480f2cb4        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_54
+                0x480f2cba        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_53
+                0x480f2cc0        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_52
+                0x480f2cc6        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_51
+                0x480f2ccc        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_50
+                0x480f2cd2        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_49
+                0x480f2cd7        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_48
+                0x480f2cdc        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_47
+                0x480f2ce2        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_46
+                0x480f2ce8        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_45
+                0x480f2cee        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_44
+                0x480f2cf5        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_43
+                0x480f2cfb        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_42
+                0x480f2d01        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_41
+                0x480f2d06        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_40
+                0x480f2d0b        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_39
+                0x480f2d10        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_38
+                0x480f2d15        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_37
+                0x480f2d1a        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_36
+                0x480f2d1f        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_35
+                0x480f2d24        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_34
+                0x480f2d29        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_33
+                0x480f2d2d        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_32
+                0x480f2d32        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_31
+                0x480f2d37        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_30
+                0x480f2d3b        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_29
+                0x480f2d3f        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_28
+                0x480f2d44        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_27
+                0x480f2d49        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_26
+                0x480f2d4e        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_25
+                0x480f2d52        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_24
+                0x480f2d56        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_23
+                0x480f2d5a        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_22
+                0x480f2d5e        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_21
+                0x480f2d62        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_20
+                0x480f2d66        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_19
+                0x480f2d6a        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_18
+                0x480f2d6e        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_17
+                0x480f2d71        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_16
+                0x480f2d74        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_15
+                0x480f2d77        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_14
+                0x480f2d7a        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_13
+                0x480f2d7d        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_12
+                0x480f2d81        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_11
+                0x480f2d85        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_10
+                0x480f2d89        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_9
+                0x480f2d8c        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_8
+                0x480f2d8f        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_7
+                0x480f2d92        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_6
+                0x480f2d95        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_5
+                0x480f2d98        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_4
+                0x480f2d9b        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_3
+                0x480f2d9e        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_2
+                0x480f2da1        0x2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_1
+                0x480f2da3        0x2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_demo_ids_0
+                0x480f2da5        0x2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.str1.1
+                0x480f2da7        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                                0x122 (size before relaxing)
+ *fill*         0x480f2da7        0x1 
+ .rodata.cupcake_demo_name_table
+                0x480f2da8       0xb4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata        0x480f2e5c       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .rodata.cupcake_hiscore_default_path.str1.1
+                0x480f2e6c        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+                                 0x24 (size before relaxing)
+ .rodata.cupcake_hiscore_set_path.str1.1
+                0x480f2e6c        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+                                  0x3 (size before relaxing)
+ .rodata.cupcake_hiscore_load.str1.1
+                0x480f2e6c        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+                                  0x3 (size before relaxing)
+ .rodata.cupcake_hiscore_save.str1.1
+                0x480f2e6c        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+                                  0x3 (size before relaxing)
+ .rodata.cupcake_scoreboard_slot_digit.str1.1
+                0x480f2e6c        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                                  0x6 (size before relaxing)
+ .rodata.cupcake_scoreboard_digit_sprite.str1.1
+                0x480f2e6c        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                                  0xa (size before relaxing)
+ .rodata.draw_level_overlay.str1.1
+                0x480f2e6c        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                                  0x5 (size before relaxing)
+ .rodata.tmr_scoreboard_bonus_ot.str1.1
+                0x480f2e6c        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                                  0xc (size before relaxing)
+ .rodata.cupcake_scoreboard_draw.str1.1
+                0x480f2e6c        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                                  0x9 (size before relaxing)
+ .rodata.segs_dash
+                0x480f2e6c        0x1 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_L
+                0x480f2e6d        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_P
+                0x480f2e70        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_N
+                0x480f2e75        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_O
+                0x480f2e7a        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_C
+                0x480f2e80        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.digit_segment_count
+                0x480f2e84        0xa C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ *fill*         0x480f2e8e        0x2 
+ .rodata.digit_segments
+                0x480f2e90       0x28 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_9
+                0x480f2eb8        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_8
+                0x480f2ebe        0x7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_7
+                0x480f2ec5        0x3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_6
+                0x480f2ec8        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_5
+                0x480f2ece        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_4
+                0x480f2ed3        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_3
+                0x480f2ed7        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_2
+                0x480f2edc        0x5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_1
+                0x480f2ee1        0x2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.segs_0
+                0x480f2ee3        0x6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .rodata.cupcake_grid_sprite_name.str1.1
+                0x480f2ee9        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                                  0x3 (size before relaxing)
+ .rodata.cupcake_aircake_sprite_name.str1.1
+                0x480f2ee9        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                                  0x7 (size before relaxing)
+ .rodata.cupcake_maggie_sprite_name.str1.1
+                0x480f2ee9        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                                  0x9 (size before relaxing)
+ .rodata.cupcake_maggie_draw_visible.str1.1
+                0x480f2ee9        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                                  0x8 (size before relaxing)
+ .rodata.cupcake_couch_draw_visible.str1.1
+                0x480f2ee9        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                                  0x8 (size before relaxing)
+ .rodata.cupcake_marge_draw_visible.str1.1
+                0x480f2ee9        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                                  0x7 (size before relaxing)
+ .rodata.cupcake_pacifier_draw_visible.str1.1
+                0x480f2ee9        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                                  0xb (size before relaxing)
+ .rodata.cupcake_miss_draw_visible.str1.1
+                0x480f2ee9        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                                  0x7 (size before relaxing)
+ .rodata.str1.1
+                0x480f2ee9        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                                 0xeb (size before relaxing)
+ *fill*         0x480f2ee9        0x3 
+ .rodata.names.0
+                0x480f2eec       0x28 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .rodata.masks.1
+                0x480f2f14        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .rodata.row.2  0x480f2f20       0x50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .rodata.row5.3
+                0x480f2f70       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .rodata.host_audio_init.str1.1
+                0x480f2f84        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+                                 0x22 (size before relaxing)
+ .rodata.host_audio_play.str1.1
+                0x480f2f84        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+                                  0x5 (size before relaxing)
+ .rodata.str1.1
+                0x480f2f84        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+                                0x11e (size before relaxing)
+ .rodata.host_sfx_catalog
+                0x480f2f84       0xcc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+                0x480f2f84                host_sfx_catalog
+ .rodata.str1.1
+                0x480f3050        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+                                0x29f (size before relaxing)
+ .rodata.cupcake_sprite_masks
+                0x480f3050      0x45c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_pacifier2
+                0x480f34ac      0x370 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_pacifier1
+                0x480f381c      0x3e8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_miss3
+                0x480f3c04      0xc18 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_miss2
+                0x480f481c      0x390 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_miss1
+                0x480f4bac      0x39c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_marge1
+                0x480f4f48     0x339c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_maggie3
+                0x480f82e4      0x535 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_maggie2
+                0x480f8819      0x3f4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_maggie1
+                0x480f8c0d       0xe8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_maggie0
+                0x480f8cf5     0x1217 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit46
+                0x480f9f0c       0x5a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit45
+                0x480f9f66       0x61 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit44
+                0x480f9fc7       0x67 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit43
+                0x480fa02e       0x53 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit42
+                0x480fa081       0x4f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit41
+                0x480fa0d0       0x57 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit40
+                0x480fa127       0x6f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit36
+                0x480fa196       0x5f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit35
+                0x480fa1f5       0x61 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit34
+                0x480fa256       0x67 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit33
+                0x480fa2bd       0x4f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit32
+                0x480fa30c       0x4f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit31
+                0x480fa35b       0x53 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit30
+                0x480fa3ae       0x6c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit26
+                0x480fa41a       0x5d C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit25
+                0x480fa477       0x5c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit24
+                0x480fa4d3       0x64 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit23
+                0x480fa537       0x53 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit22
+                0x480fa58a       0x4d C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit21
+                0x480fa5d7       0x57 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit20
+                0x480fa62e       0x6c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit16
+                0x480fa69a       0x5f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit15
+                0x480fa6f9       0x61 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit14
+                0x480fa75a       0x67 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit13
+                0x480fa7c1       0x53 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit11
+                0x480fa814       0x57 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit10
+                0x480fa86b       0x6f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit06
+                0x480fa8da       0x5f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit05
+                0x480fa939       0x61 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit04
+                0x480fa99a       0x64 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit03
+                0x480fa9fe       0x4f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit01
+                0x480faa4d       0x53 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_digit00
+                0x480faaa0       0x6c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_couch4
+                0x480fab0c      0xaea C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_couch3
+                0x480fb5f6      0x7f3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_couch2
+                0x480fbde9     0x228c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_couch1
+                0x480fe075     0x282a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_couch0
+                0x4810089f      0xf50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake9
+                0x481017ef      0x311 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake8
+                0x48101b00       0xf8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake7
+                0x48101bf8       0xf8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake6
+                0x48101cf0       0xfd C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake5
+                0x48101ded       0xfd C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake45
+                0x48101eea       0xf2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake44
+                0x48101fdc      0x103 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake43
+                0x481020df      0x11a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake42
+                0x481021f9      0x126 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake41
+                0x4810231f       0xe7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake4
+                0x48102406       0xed C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake35
+                0x481024f3      0x114 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake34
+                0x48102607       0xed C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake33
+                0x481026f4       0xf2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake32
+                0x481027e6       0xfe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake31
+                0x481028e4       0xed C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake3
+                0x481029d1      0x109 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake25
+                0x48102ada      0x103 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake24
+                0x48102bdd      0x10e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake23
+                0x48102ceb       0xf2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake22
+                0x48102ddd       0xf8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake21
+                0x48102ed5      0x120 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake2
+                0x48102ff5       0xfe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake15
+                0x481030f3      0x103 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake14
+                0x481031f6       0xed C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake13
+                0x481032e3       0xed C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake12
+                0x481033d0       0xf2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake11
+                0x481034c2       0xfe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake1
+                0x481035c0      0x114 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake05
+                0x481036d4       0xc3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake04
+                0x48103797       0xd8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake03
+                0x4810386f       0xbe C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake02
+                0x4810392d       0xc8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake01
+                0x481039f5       0xc3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_cake0
+                0x48103ab8      0x308 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_bart9
+                0x48103dc0      0xedf C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_bart8
+                0x48104c9f      0x252 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_bart7
+                0x48104ef1      0x3b0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_bart6
+                0x481052a1     0x3015 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_bart5
+                0x481082b6     0x12dd C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_bart4
+                0x48109593      0xe57 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_bart3
+                0x4810a3ea     0x12f0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_bart2
+                0x4810b6da     0x100e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_bart1
+                0x4810c6e8     0x1053 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_mask_bart0
+                0x4810d73b      0x417 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ *fill*         0x4810db52        0x2 
+ .rodata.cupcake_sprite_lcd
+                0x4810db54      0x45c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.cupcake_sprites
+                0x4810dfb0      0x744 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .rodata.SaveState.str1.1
+                0x4810e6f4        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+                                  0x3 (size before relaxing)
+ .rodata.LoadState.str1.1
+                0x4810e6f4        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+                                  0x3 (size before relaxing)
+ .rodata.setup_hiscore_path.str1.1
+                0x4810e6f4        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+                                 0x24 (size before relaxing)
+ .rodata.app_main_cupcake.str1.1
+                0x4810e6f4        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+                                 0xdf (size before relaxing)
+ .rodata.str1.1
+                0x4810e6f4        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+                                0x2a4 (size before relaxing)
+ .rodata.cupcake_sprite_lcd
+                0x4810e6f4      0x45c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .rodata.cupcake_sprites
+                0x4810eb50      0x744 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .rodata        0x4810f294       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ *(.data .data*)
+ .data.g_abi_sample_rate
+                0x4810f2a8        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4810f2ac                        . = ALIGN (0x4)
+                0x4810f2ac                        _OVERLAY_CUPCAKE_LOAD_END = .
+                0x2404b000                        _OVERLAY_CUPCAKE_LOAD_START = LOADADDR (.gwhb_image)
+                0x240c42ac                        _OVERLAY_CUPCAKE_SIZE = SIZEOF (.gwhb_image)
+
+.glue_7         0x4810f2ac        0x0
+ .glue_7        0x4810f2ac        0x0 linker stubs
+
+.glue_7t        0x4810f2ac        0x0
+ .glue_7t       0x4810f2ac        0x0 linker stubs
+
+.vfp11_veneer   0x4810f2ac        0x0
+ .vfp11_veneer  0x4810f2ac        0x0 linker stubs
+
+.v4_bx          0x4810f2ac        0x0
+ .v4_bx         0x4810f2ac        0x0 linker stubs
+
+.iplt           0x4810f2ac        0x0
+ .iplt          0x4810f2ac        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+
+.igot.plt       0x4810f2ac        0x0
+ .igot.plt      0x4810f2ac        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+
+.rel.dyn        0x4810f2ac        0x0
+ .rel.iplt      0x4810f2ac        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+
+.overlay_cupcake_bss
+                0x4810f2ac    0x38ebc
+                0x4810f2ac                        _OVERLAY_CUPCAKE_BSS_START = .
+ *(.bss .bss*)
+ .bss._impure_ptr
+                0x4810f2ac        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                0x4810f2ac                _impure_ptr
+ .bss.g_dat_io_lock
+                0x4810f2b0        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .bss.g_clip_count
+                0x4810f2b4        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .bss.g_clips   0x4810f2b8      0x600 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .bss.g_dat_fp  0x4810f8b8        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .bss.g_marge_bonus_ctx
+                0x4810f8bc        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .bss.g_pending_phase_restart_finish
+                0x4810f8c0        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .bss.g_miss_cupcake_lane
+                0x4810f8c4        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .bss.g_debug_start
+                0x4810f8c8       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .bss.g_start_ctx
+                0x4810f8d8        0x8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .bss.g_cb      0x4810f8e0        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .bss.g_buttons_prev
+                0x4810f8e4        0x2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .bss.g_buttons
+                0x4810f8e6        0x2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .bss.g_timers  0x4810f8e8      0x444 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .bss.g         0x4810fd2c      0x290 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .bss.g_path_set
+                0x4810ffbc        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .bss.g_path    0x4810ffc0      0x200 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .bss.g_hiscores
+                0x481101c0        0xc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .bss.g_rng_state
+                0x481101cc        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .bss.g_bonus_cfg
+                0x481101d0       0x1c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .bss.g_bonus_play
+                0x481101ec        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .bss.g_scoreboard_host
+                0x481101f0       0x10 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .bss.g_timers_post_update
+                0x48110200        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .bss.g_timer_update_depth
+                0x48110204        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .bss.g_device_rate
+                0x48110208        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .bss.g_ready   0x4811020c        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .bss.g_adpcm_voices
+                0x48110210     0x1c50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .bss.g_pcm     0x48111e60      0x110 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .bss.g_dat_sfx_slot_used
+                0x48111f70        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .bss.g_dat_sfx_bufs
+                0x48111f74    0x109a0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .bss.g_muted   0x48122914        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .bss.s_spr_log.0
+                0x48122918        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .bss.s_last_buttons.1
+                0x4812291c        0x2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ *fill*         0x4812291e        0x2 
+ .bss.s_frame_log.2
+                0x48122920        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .bss.g_bezel_h
+                0x48122924        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .bss.g_bezel_w
+                0x48122928        0x4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .bss.g_bezel   0x4812292c       0x14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .bss.g_host    0x48122940       0x24 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .bss.g_fb_data
+                0x48122964    0x25800 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ .bss.g_buttons
+                0x48148164        0x2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+ *(COMMON)
+                0x48148168                        . = ALIGN (0x4)
+ *fill*         0x48148166        0x2 
+                0x48148168                        __ram_emu_cupcake_end__ = .
+                0x48148168                        _OVERLAY_CUPCAKE_BSS_END = .
+                0x00000000                        ASSERT ((ABSOLUTE (_OVERLAY_CUPCAKE_BSS_END) < __RAM_EMU_END__), Error: CUPCAKE BSS overflow)
+                0x00038ebc                        _OVERLAY_CUPCAKE_BSS_SIZE = SIZEOF (.overlay_cupcake_bss)
+
+/DISCARD/
+ *(.comment)
+ *(.note*)
+OUTPUT(c:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake-gwhb.elf elf32-littlearm)
+LOAD linker stubs
+
+.ARM.attributes
+                0x00000000       0x30
+ .ARM.attributes
+                0x00000000       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+ .ARM.attributes
+                0x00000030       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .ARM.attributes
+                0x00000060       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .ARM.attributes
+                0x00000090       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .ARM.attributes
+                0x000000c0       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+ .ARM.attributes
+                0x000000f0       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .ARM.attributes
+                0x00000120       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .ARM.attributes
+                0x00000150       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+ .ARM.attributes
+                0x00000180       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .ARM.attributes
+                0x000001b0       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .ARM.attributes
+                0x000001e0       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .ARM.attributes
+                0x00000210       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .ARM.attributes
+                0x00000240       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+ .ARM.attributes
+                0x00000270       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gwhb_header.o
+ .ARM.attributes
+                0x000002a0       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .ARM.attributes
+                0x000002d0       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+ .ARM.attributes
+                0x00000300       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .ARM.attributes
+                0x00000330       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+
+.debug_info     0x00000000    0x1836e
+ .debug_info    0x00000000     0x3435 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+ .debug_info    0x00003435      0x85b C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .debug_info    0x00003c90      0xe26 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .debug_info    0x00004ab6      0x17a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .debug_info    0x00004c30     0x1ad7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+ .debug_info    0x00006707     0x5c29 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .debug_info    0x0000c330     0x122f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .debug_info    0x0000d55f      0x1e8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+ .debug_info    0x0000d747      0x2f1 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .debug_info    0x0000da38     0x1c99 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .debug_info    0x0000f6d1     0x1fca C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .debug_info    0x0001169b      0xbcf C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .debug_info    0x0001226a      0x422 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+ .debug_info    0x0001268c      0x1b9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gwhb_header.o
+ .debug_info    0x00012845      0xd05 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .debug_info    0x0001354a      0x16a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+ .debug_info    0x000136b4     0x2023 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .debug_info    0x000156d7     0x2c97 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+
+.debug_abbrev   0x00000000     0x386f
+ .debug_abbrev  0x00000000      0x4f5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+ .debug_abbrev  0x000004f5      0x2ea C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .debug_abbrev  0x000007df      0x36c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .debug_abbrev  0x00000b4b       0x9f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .debug_abbrev  0x00000bea      0x2a7 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+ .debug_abbrev  0x00000e91      0x644 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .debug_abbrev  0x000014d5      0x345 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .debug_abbrev  0x0000181a       0xf5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+ .debug_abbrev  0x0000190f      0x1b1 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .debug_abbrev  0x00001ac0      0x4eb C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .debug_abbrev  0x00001fab      0x50f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .debug_abbrev  0x000024ba      0x35e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .debug_abbrev  0x00002818      0x1bb C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+ .debug_abbrev  0x000029d3       0x9e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gwhb_header.o
+ .debug_abbrev  0x00002a71      0x37d C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .debug_abbrev  0x00002dee      0x125 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+ .debug_abbrev  0x00002f13      0x435 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .debug_abbrev  0x00003348      0x527 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+
+.debug_loclists
+                0x00000000     0x74f4
+ .debug_loclists
+                0x00000000      0xd3d C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+ .debug_loclists
+                0x00000d3d      0x38a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .debug_loclists
+                0x000010c7      0x31a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .debug_loclists
+                0x000013e1       0xd6 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+ .debug_loclists
+                0x000014b7     0x19e1 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .debug_loclists
+                0x00002e98      0x27a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .debug_loclists
+                0x00003112       0x21 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+ .debug_loclists
+                0x00003133      0x13a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .debug_loclists
+                0x0000326d     0x100d C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .debug_loclists
+                0x0000427a      0xed8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .debug_loclists
+                0x00005152      0x820 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .debug_loclists
+                0x00005972      0x184 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+ .debug_loclists
+                0x00005af6      0x468 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .debug_loclists
+                0x00005f5e       0x5b C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+ .debug_loclists
+                0x00005fb9     0x108e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .debug_loclists
+                0x00007047      0x4ad C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+
+.debug_aranges  0x00000000      0xab8
+ .debug_aranges
+                0x00000000      0x1a0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+ .debug_aranges
+                0x000001a0       0x40 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .debug_aranges
+                0x000001e0       0x48 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .debug_aranges
+                0x00000228       0x38 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .debug_aranges
+                0x00000260       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+ .debug_aranges
+                0x00000280      0x318 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .debug_aranges
+                0x00000598       0x50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .debug_aranges
+                0x000005e8       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+ .debug_aranges
+                0x00000608       0x58 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .debug_aranges
+                0x00000660       0xb0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .debug_aranges
+                0x00000710      0x178 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .debug_aranges
+                0x00000888       0xa8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .debug_aranges
+                0x00000930       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+ .debug_aranges
+                0x00000960       0x18 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gwhb_header.o
+ .debug_aranges
+                0x00000978       0x50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .debug_aranges
+                0x000009c8       0x20 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+ .debug_aranges
+                0x000009e8       0x80 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .debug_aranges
+                0x00000a68       0x50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+
+.debug_rnglists
+                0x00000000      0xe93
+ .debug_rnglists
+                0x00000000      0x1e2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+ .debug_rnglists
+                0x000001e2       0x89 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .debug_rnglists
+                0x0000026b       0x4e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .debug_rnglists
+                0x000002b9       0x25 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .debug_rnglists
+                0x000002de       0x22 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+ .debug_rnglists
+                0x00000300      0x3d0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .debug_rnglists
+                0x000006d0       0x47 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .debug_rnglists
+                0x00000717       0x13 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+ .debug_rnglists
+                0x0000072a       0x58 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .debug_rnglists
+                0x00000782       0xe9 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .debug_rnglists
+                0x0000086b      0x160 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .debug_rnglists
+                0x000009cb       0xd8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .debug_rnglists
+                0x00000aa3       0x1f C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+ .debug_rnglists
+                0x00000ac2       0xa2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .debug_rnglists
+                0x00000b64       0x13 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+ .debug_rnglists
+                0x00000b77      0x22a C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .debug_rnglists
+                0x00000da1       0xf2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+
+.debug_line     0x00000000     0xa887
+ .debug_line    0x00000000     0x129d C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+ .debug_line    0x0000129d      0x6ab C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .debug_line    0x00001948      0x638 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .debug_line    0x00001f80      0x1e3 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .debug_line    0x00002163      0x559 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+ .debug_line    0x000026bc     0x242c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .debug_line    0x00004ae8      0x559 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .debug_line    0x00005041      0x2eb C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+ .debug_line    0x0000532c      0x345 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .debug_line    0x00005671      0xadd C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .debug_line    0x0000614e     0x10a5 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .debug_line    0x000071f3      0x8c2 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .debug_line    0x00007ab5      0x411 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+ .debug_line    0x00007ec6      0x209 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gwhb_header.o
+ .debug_line    0x000080cf      0x9cb C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .debug_line    0x00008a9a      0x16e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+ .debug_line    0x00008c08      0xf71 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .debug_line    0x00009b79      0xd0e C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+
+.debug_str      0x00000000     0x58e0
+ .debug_str     0x00000000     0x58e0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+                               0x13d4 (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+                                0x47a (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+                                0x737 (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+                                0x32a (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+                               0x118d (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+                               0x28c5 (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+                                0xa4b (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+                                0x42c (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+                                0x30a (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+                                0xc98 (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+                                0xce7 (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+                                0x656 (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+                                0x3ad (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gwhb_header.o
+                                0x3dd (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+                                0x6d0 (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+                                0x266 (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+                                0xe0f (size before relaxing)
+ .debug_str     0x000058e0        0x0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o
+                               0x18fd (size before relaxing)
+
+.debug_frame    0x00000000     0x1e40
+ .debug_frame   0x00000000      0x41c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\abi_stubs.o
+ .debug_frame   0x0000041c       0xa4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_adpcm.o
+ .debug_frame   0x000004c0       0xc4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_assets_dat.o
+ .debug_frame   0x00000584       0x50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_data.o
+ .debug_frame   0x000005d4       0x3c C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_entry.o
+ .debug_frame   0x00000610      0xa14 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_game.o
+ .debug_frame   0x00001024       0xbc C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_hiscore.o
+ .debug_frame   0x000010e0       0x28 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_input.o
+ .debug_frame   0x00001108       0xb0 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_rng.o
+ .debug_frame   0x000011b8      0x254 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_scoreboard.o
+ .debug_frame   0x0000140c      0x424 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_state.o
+ .debug_frame   0x00001830      0x1f4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\cupcake_timer.o
+ .debug_frame   0x00001a24       0x50 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\gnw_assets.o
+ .debug_frame   0x00001a74       0xd4 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio.o
+ .debug_frame   0x00001b48       0x30 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_audio_catalog.o
+ .debug_frame   0x00001b78      0x1c8 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\host_draw.o
+ .debug_frame   0x00001d40      0x100 C:\Projects\bsccc\retrofab-acclaim-cupcake-crisis-0.9.10\bart_simpson_cupcake_crisis_port\build-gwhb\main_cupcake.o

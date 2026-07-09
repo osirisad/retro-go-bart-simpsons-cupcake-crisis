@@ -1,7 +1,6 @@
 # Build outputs
 build-pc/
 build-cupcake/
-build-gwhb/
 build-gnw/
 release/
 platform/gnw/cupcake_data.c
