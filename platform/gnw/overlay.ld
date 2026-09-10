@@ -20,6 +20,7 @@ SECTIONS
     __ram_emu_cupcake_start__ = .;
     KEEP(*(.cupcake_entry))
     KEEP(*(.cupcake_entry*))
+    KEEP(*(.gw_core_bridge_probe))
     KEEP(*(.text .text*))
     *(.text .text*)
     *(.rodata .rodata*)
@@ -30,6 +31,7 @@ SECTIONS
 
   _OVERLAY_CUPCAKE_LOAD_START = LOADADDR(.overlay_cupcake);
   _OVERLAY_CUPCAKE_SIZE = SIZEOF(.overlay_cupcake);
+  __CORE_CODE_END__ = _OVERLAY_CUPCAKE_LOAD_END;
 
   .overlay_cupcake_bss _OVERLAY_CUPCAKE_LOAD_END : {
     _OVERLAY_CUPCAKE_BSS_START = .;
@@ -42,6 +44,7 @@ SECTIONS
   } > RAM_EMU
 
   _OVERLAY_CUPCAKE_BSS_SIZE = SIZEOF(.overlay_cupcake_bss);
+  __CORE_BSS_END__ = _OVERLAY_CUPCAKE_BSS_END;
 
   /DISCARD/ : {
     *(.comment)

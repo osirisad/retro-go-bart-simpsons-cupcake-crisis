@@ -18,6 +18,12 @@ static int g_abi_sample_rate = 22050;
 
 struct _reent *_impure_ptr;
 
+__attribute__((used, section(".gw_core_bridge_probe")))
+const uint32_t GW_CORE_BUILT_ABI_VERSION = GW_FIRMWARE_ABI_VERSION;
+
+__attribute__((used, section(".gw_core_bridge_probe")))
+const uint32_t GW_CORE_BUILT_ABI_SIZE = sizeof(gw_firmware_abi_t);
+
 void gw_abi_bind_stdio(void)
 {
     if (A->impure_ptr_ptr)

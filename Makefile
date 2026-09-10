@@ -118,7 +118,7 @@ clean:
 	rm -rf $(BUILD)
 
 gwhb:
-	$(MAKE) -f platform/gwhb/Makefile.gwhb
+	$(MAKE) -f platform/gnw/Makefile.gnw all
 
 # Device overlay — standalone cupcake.bin via ABI (see docs/RELEASE_CUPCAKE_BIN.md)
 cupcake-bin:
