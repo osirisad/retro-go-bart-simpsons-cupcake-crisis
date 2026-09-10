@@ -141,7 +141,8 @@ $(TARGET_ELF): $(OBJS) $(LINKER) | $(BUILD_DIR)
 $(RELEASE_LICENSE): $(LICENSE_TXT) | $(RELEASE_DIR)
 	cp $< $@
 
-PACK_HOMEBREW ?= $(PORT_ROOT)/.sdcode/game-and-watch-retro-go-sd/tools/pack_homebrew.py
+PACK_HOMEBREW ?= $(firstword $(wildcard $(PORT_ROOT)/tools/pack_homebrew.py $(PORT_ROOT)/.sdcode/game-and-watch-retro-go-sd/tools/pack_homebrew.py))
+CUPCAKE_VERSION ?= $(strip $(shell cat $(PORT_ROOT)/VERSION 2>/dev/null || echo 1.1.0))
 
 $(TARGET_BIN): $(TARGET_ELF) | $(RELEASE_DIR)
 	$(OBJCOPY) -O binary --only-section=.overlay_cupcake $< $(BUILD_DIR)/cupcake-raw.bin
@@ -149,10 +150,10 @@ $(TARGET_BIN): $(TARGET_ELF) | $(RELEASE_DIR)
 		--elf $(TARGET_ELF) \
 		--bin $(BUILD_DIR)/cupcake-raw.bin \
 		--name "Bart Simpson's Cupcake Crisis" \
-		--version 1.0.0 \
+		--version "$(CUPCAKE_VERSION)" \
 		$(if $(wildcard $(ASSETS_SCREEN)),--cover $(ASSETS_SCREEN)) \
 		--out $@
-	@echo "Built $@ ($(shell wc -c < $@ | tr -d ' ') bytes) with GWHB header — copy to /roms/homebrew/cupcake.bin"
+	@echo "Built $@ with GWHB header (v$(CUPCAKE_VERSION)) — copy to /roms/homebrew/cupcake.bin"
 	@echo "Also copy release/cupcake_assets.dat to /roms/homebrew/cupcake_assets.dat"
 	@echo "license.txt copied to release/ (include when redistributing builds)"
 
