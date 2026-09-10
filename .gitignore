@@ -29,3 +29,5 @@ ignore/
 
 # game saves
 *.sav
+
+.sdcode/
