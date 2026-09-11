@@ -1,5 +1,19 @@
 # Changelog
 
+## [v1.3.1] - 2026-09-11
+
+### Changed
+
+- Ship as a Retro-Go SD GWHB homebrew: single `Cupcake.bin` in `/homebrews/`
+  (graphics + ADPCM embedded; no `cupcake_assets.dat`).
+- Pause + d-pad shows the firmware volume/brightness HUD.
+
+### Install
+
+- Copy `Cupcake.bin` to `/homebrews/Cupcake.bin` (or unzip the release
+  archive onto the SD card root).
+- Requires Retro-Go SD firmware that loads GWHB homebrews (ABI v2+).
+
 ## [v0.0.1]
 
 ### Added
