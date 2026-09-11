@@ -26,11 +26,11 @@ xmin, xmax = min(xs), max(xs)
 ymin, ymax = min(ys), max(ys)
 ext = collect_mesh_lcd_extents(data, xmin, xmax, ymin, ymax, 1024, 800)
 
-text = (ROOT / "src/cupcake_sprite_lcd.h").read_text()
+text = (ROOT / "src/cupcake/cupcake_sprite_lcd.h").read_text()
 lcd = {m.group(1): (int(m.group(2)), int(m.group(3))) for m in re.finditer(r'"([^"]+)", (\d+), (\d+)', text)}
 spr = {
     m.group(1): (int(m.group(2)), int(m.group(3)), int(m.group(4)), int(m.group(5)))
-    for m in re.finditer(r'"([^"]+)", (\d+), (\d+), (\d+), (\d+)', (ROOT / "src/cupcake_sprites.h").read_text())
+    for m in re.finditer(r'"([^"]+)", (\d+), (\d+), (\d+), (\d+)', (ROOT / "src/cupcake/cupcake_sprites.h").read_text())
 }
 
 for name in ["bart2", "maggie0", "cake31", "cake32", "cake33", "bart3"]:

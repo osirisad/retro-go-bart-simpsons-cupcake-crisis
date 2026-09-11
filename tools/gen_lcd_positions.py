@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate src/cupcake_sprite_lcd.h — mesh centroid -> LCD top-left (sprites.json)."""
+"""Generate src/cupcake/cupcake_sprite_lcd.h — mesh centroid -> LCD top-left (sprites.json)."""
 from __future__ import annotations
 
 import json
@@ -22,8 +22,8 @@ ROOT = os.path.join(os.path.dirname(__file__), "..")
 SPRITES_JSON = os.path.join(
     ROOT, "ignore", "har_extracted", "sim-acclaim-cupcakecrisis", "game", "sprites.json"
 )
-SPRITES_H = os.path.join(ROOT, "src", "cupcake_sprites.h")
-OUT_H = os.path.join(ROOT, "src", "cupcake_sprite_lcd.h")
+SPRITES_H = os.path.join(ROOT, "src", "cupcake", "cupcake_sprites.h")
+OUT_H = os.path.join(ROOT, "src", "cupcake", "cupcake_sprite_lcd.h")
 TUNE_TXT = os.path.join(ROOT, "assets", "lcd_tune.txt")
 
 LCD_W = 1024

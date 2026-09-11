@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bake assets/lcd_tune.txt into src/cupcake_sprite_lcd.h (no PIL required)."""
+"""Bake assets/lcd_tune.txt into src/cupcake/cupcake_sprite_lcd.h (no PIL required)."""
 from __future__ import annotations
 
 import re
@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-HDR = ROOT / "src" / "cupcake_sprite_lcd.h"
+HDR = ROOT / "src" / "cupcake" / "cupcake_sprite_lcd.h"
 TUNE = ROOT / "assets" / "lcd_tune.txt"
 
 

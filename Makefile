@@ -1,142 +1,208 @@
-# PC/SDL build (default). Device overlay: make cupcake-bin (platform/gnw/).
-TARGET   = cupcake-sdl
-BUILD    = build-pc
-EXE      =
-LICENSE_TXT = assets/license.txt
+# Retro-Go SD — Bart Simpson's Cupcake Crisis (GWHB homebrew)
+#
+#   make                          # PROJECT_KIND=homebrew (default)
+#   make docker
+#   make CUPCAKE_TRACE_SD=1       # optional SD session trace log
+#
+# Upstream game: https://github.com/osirisad/retro-go-bart-simpsons-cupcake-crisis
+# Verbose compiler lines: make V=
 
-SRCS = \
-	src/cupcake_game.c \
-	src/cupcake_scoreboard.c \
-	src/cupcake_hiscore.c \
-	src/cupcake_timer.c \
-	src/cupcake_rng.c \
-	src/cupcake_state.c \
-	platform/cupcake_input.c \
-	platform/sdl/main.c \
-	platform/host_draw.c \
-	platform/host_audio.c \
-	platform/host_audio_catalog.c \
-	platform/stb/stb_image_impl.c
+#######################################
+# Project identity
+#######################################
+PROJECT_KIND ?= homebrew
 
-CC       ?= gcc
-CFLAGS   ?= -std=c99 -Wall -Wextra -O2 -g -MMD -MP -DCUPCAKE_DEBUG_CHEATS
-INCLUDES = -Isrc -Iplatform -Iplatform/stb
-LDFLAGS  ?= -lm
+CORE_NAME  := cupcake
+CORE_ENTRY := app_main
 
-SDL2_CFLAGS ?= $(shell pkg-config --cflags sdl2 2>/dev/null)
-SDL2_LIBS   ?= $(shell pkg-config --libs sdl2 2>/dev/null)
+GNW_CORE_SDK ?= sdk
+BUILD_DIR ?= build/$(PROJECT_KIND)
 
-SDL2_MIXER_CFLAGS ?= $(shell pkg-config --cflags SDL2_mixer 2>/dev/null)
-SDL2_MIXER_LIBS   ?= $(shell pkg-config --libs SDL2_mixer 2>/dev/null)
+# Generated embedded RGB565 + ADPCM archive (from tools/bundle_assets.py).
+CUPCAKE_DATA_C := $(BUILD_DIR)/cupcake_data.c
+CUPCAKE_DATA_H := $(BUILD_DIR)/cupcake_data.h
+ASSETS_DAT     := $(BUILD_DIR)/cupcake_assets.dat
+BUNDLE_PY      := tools/bundle_assets.py
+ASSETS_DIR     := assets
+COVER_SRC      := assets/screen.jpg
+LICENSE_TXT    := assets/license.txt
 
-ifeq ($(SDL2_LIBS),)
-  SDL2_CFLAGS := -IC:/msys64/mingw64/include/SDL2 -Dmain=SDL_main
-  SDL2_LIBS   := -LC:/msys64/mingw64/lib -lSDL2main -lSDL2
+CUPCAKE_TRACE_SD ?= 0
+
+CORE_C_SOURCES := \
+src/main.c \
+src/gnw/main_cupcake.c \
+src/gnw/gnw_assets.c \
+src/gnw/cupcake_adpcm.c \
+src/gnw/cupcake_assets_dat.c \
+src/gnw/cupcake_compat.c \
+src/cupcake/cupcake_game.c \
+src/cupcake/cupcake_scoreboard.c \
+src/cupcake/cupcake_hiscore.c \
+src/cupcake/cupcake_timer.c \
+src/cupcake/cupcake_rng.c \
+src/cupcake/cupcake_state.c \
+src/platform/host_draw.c \
+src/platform/host_audio.c \
+src/platform/host_audio_catalog.c \
+src/platform/cupcake_input.c \
+$(CUPCAKE_DATA_C)
+
+ifeq ($(CUPCAKE_TRACE_SD),1)
+CORE_C_SOURCES += src/gnw/cupcake_trace.c
 endif
 
-# pkg-config on MSYS2 often omits cflags for SDL2_mixer while still returning -lSDL2_mixer
-ifeq ($(SDL2_MIXER_CFLAGS),)
-  SDL2_MIXER_CFLAGS := -IC:/msys64/mingw64/include/SDL2
+CORE_C_INCLUDES := \
+-Isrc/cupcake \
+-Isrc/platform \
+-Isrc/gnw \
+-I$(BUILD_DIR)
+
+#######################################
+# Kind-specific compile defs + packing
+#######################################
+ifeq ($(PROJECT_KIND),core)
+$(error This project is homebrew-only — use PROJECT_KIND=homebrew)
+
+else ifeq ($(PROJECT_KIND),homebrew)
+CORE_C_DEFS := \
+-DPROJECT_KIND_HOMEBREW=1 \
+-DTARGET_GNW \
+-DCUPCAKE_GNW \
+-DCUPCAKE_ABI \
+-DCUPCAKE_AUDIO_ODROID \
+-DCUPCAKE_EMBEDDED_ASSETS
+
+ifeq ($(CUPCAKE_TRACE_SD),1)
+CORE_C_DEFS += -DCUPCAKE_TRACE_SD
 endif
-ifeq ($(SDL2_MIXER_LIBS),)
-  SDL2_MIXER_LIBS := -LC:/msys64/mingw64/lib -lSDL2_mixer
+
+PACKED_BIN := Cupcake.bin
+HB_NAME    := Cupcake Crisis
+COVER_JPG  := $(BUILD_DIR)/cover.jpg
+COVER_WIDTH  ?= 128
+COVER_HEIGHT ?= 96
+
+else
+$(error PROJECT_KIND must be 'homebrew' (got '$(PROJECT_KIND)'))
 endif
 
-CFLAGS  += $(SDL2_CFLAGS) $(SDL2_MIXER_CFLAGS) $(INCLUDES)
-LDFLAGS += $(SDL2_LIBS) $(SDL2_MIXER_LIBS)
+include $(GNW_CORE_SDK)/Makefile
 
-OBJS = $(addprefix $(BUILD)/,$(notdir $(SRCS:.c=.o)))
+PACK_HOMEBREW := $(GNW_CORE_SDK)/tools/pack_homebrew.py
 
-vpath %.c src platform platform/sdl platform/stb
+#######################################
+# Packed header version
+#######################################
+CORE_VERSION ?= $(shell cat VERSION 2>/dev/null || git describe --tags --dirty 2>/dev/null || echo NOTAG)
 
-# Rebuild when generated headers change (make has no automatic .h deps otherwise).
-CUPCAKE_HDRS = src/cupcake.h src/cupcake_port.h src/cupcake_sprites.h \
-	src/cupcake_sprite_lcd.h src/cupcake_sprite_masks.h src/cupcake_demo.h \
-	src/cupcake_timer.h \
-	src/cupcake_rng.h \
-	src/cupcake_state.h \
-	src/cupcake_hiscore.h \
-	platform/host_draw.h platform/sprite_blit.h
+#######################################
+# Asset bundle (RGB565 + ADPCM embedded in cupcake_data.c)
+#######################################
+.PHONY: bundle-assets
 
-all: $(BUILD)/$(TARGET)$(EXE) $(BUILD)/license.txt
+bundle-assets: $(CUPCAKE_DATA_C)
 
-$(BUILD)/$(TARGET)$(EXE): $(OBJS) | $(BUILD)
-	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+$(CUPCAKE_DATA_C) $(CUPCAKE_DATA_H) $(ASSETS_DAT): $(BUNDLE_PY) \
+		$(ASSETS_DIR)/screen.jpg $(ASSETS_DIR)/sprites-color.png \
+		src/platform/host_audio_catalog.c \
+		$(wildcard $(ASSETS_DIR)/audio/*.wav)
+	$(V)$(ECHO) [ BUNDLE ] embedded graphics + audio → $(CUPCAKE_DATA_C)
+	$(V)mkdir -p $(BUILD_DIR)
+	$(V)python3 $(BUNDLE_PY) \
+		--assets $(ASSETS_DIR) \
+		--catalog src/platform/host_audio_catalog.c \
+		--out-h $(CUPCAKE_DATA_H) \
+		--out-c $(CUPCAKE_DATA_C) \
+		--export-assets-dat $(ASSETS_DAT)
 
-$(BUILD)/license.txt: $(LICENSE_TXT) | $(BUILD)
-	cp $< $@
+# cupcake_data.c is listed in CORE_C_SOURCES; force bundle before compile.
+$(C_OBJECTS): | $(CUPCAKE_DATA_C)
 
-$(BUILD)/cupcake_game.o: src/cupcake_game.c $(CUPCAKE_HDRS) | $(BUILD)
-	$(CC) $(CFLAGS) -c src/cupcake_game.c -o $@
+#######################################
+# Pack
+#######################################
+.PHONY: pack cover
 
-$(BUILD)/cupcake_timer.o: src/cupcake_timer.c src/cupcake_timer.h | $(BUILD)
-	$(CC) $(CFLAGS) -c src/cupcake_timer.c -o $@
+cover: $(COVER_JPG)
 
-$(BUILD)/cupcake_rng.o: src/cupcake_rng.c src/cupcake_rng.h | $(BUILD)
-	$(CC) $(CFLAGS) -c src/cupcake_rng.c -o $@
+# Homebrew cover: ≤186×100 and ≤10 KiB (gui.c COVER_* limits).
+$(COVER_JPG): $(COVER_SRC)
+	$(V)$(ECHO) "[ COVER ] $(COVER_JPG) $(COVER_WIDTH)x$(COVER_HEIGHT)"
+	$(V)mkdir -p $(BUILD_DIR)
+	$(V)python3 -c "from pathlib import Path; from PIL import Image; \
+img=Image.open('$(COVER_SRC)').convert('RGB'); \
+img.thumbnail(($(COVER_WIDTH),$(COVER_HEIGHT))); \
+canvas=Image.new('RGB', ($(COVER_WIDTH),$(COVER_HEIGHT)), (8,16,24)); \
+x=($(COVER_WIDTH)-img.width)//2; y=($(COVER_HEIGHT)-img.height)//2; \
+canvas.paste(img, (x,y)); \
+canvas.save('$(COVER_JPG)', 'JPEG', quality=75, optimize=True); \
+sz=Path('$(COVER_JPG)').stat().st_size; \
+assert sz <= 10*1024, f'cover too big: {sz}'"
 
-$(BUILD)/cupcake_state.o: src/cupcake_state.c src/cupcake_state.h | $(BUILD)
-	$(CC) $(CFLAGS) -c src/cupcake_state.c -o $@
+pack: $(TARGET_BIN) $(COVER_JPG) $(LICENSE_TXT)
+	$(V)$(ECHO) [ PACK GWHB ] $(PACKED_BIN) version=$(CORE_VERSION)
+	$(V)python3 $(PACK_HOMEBREW) \
+		--elf $(TARGET_ELF) --bin $(TARGET_BIN) \
+		--name "$(HB_NAME)" --version "$(CORE_VERSION)" \
+		--cover $(COVER_JPG) \
+		--out $(PACKED_BIN)
+	$(V)$(ECHO) "Install: $(PACKED_BIN) → /homebrews/ (audio embedded)"
+	$(V)$(ECHO) "Include $(LICENSE_TXT) when redistributing (RetroFab CC-BY-NC-ND)."
 
-$(BUILD)/main.o: platform/sdl/main.c $(CUPCAKE_HDRS) | $(BUILD)
-	$(CC) $(CFLAGS) -c platform/sdl/main.c -o $@
+all: pack
 
-$(BUILD)/host_draw.o: platform/host_draw.c $(CUPCAKE_HDRS) | $(BUILD)
-	$(CC) $(CFLAGS) -c platform/host_draw.c -o $@
+# Read-only helpers for CI / scripts.
+.PHONY: print-PROJECT_KIND print-PACKED_BIN print-CORE_NAME print-DOCKER_IMAGE \
+	print-TARGET_ELF print-TARGET_MAP print-CORE_VERSION
+print-PROJECT_KIND:
+	@echo $(PROJECT_KIND)
+print-PACKED_BIN:
+	@echo $(PACKED_BIN)
+print-CORE_NAME:
+	@echo $(CORE_NAME)
+print-DOCKER_IMAGE:
+	@echo $(DOCKER_IMAGE)
+print-TARGET_ELF:
+	@echo $(TARGET_ELF)
+print-TARGET_MAP:
+	@echo $(BUILD_DIR)/$(CORE_NAME)_core.map
+print-CORE_VERSION:
+	@echo $(CORE_VERSION)
 
-$(BUILD)/cupcake_input.o: platform/cupcake_input.c platform/cupcake_input.h src/cupcake.h | $(BUILD)
-	$(CC) $(CFLAGS) -c platform/cupcake_input.c -o $@
+clean::
+	$(V)rm -f $(PACKED_BIN) $(COVER_JPG)
+	$(V)rm -f $(CUPCAKE_DATA_C) $(CUPCAKE_DATA_H) $(ASSETS_DAT)
 
-$(BUILD)/stb_image_impl.o: platform/stb/stb_image_impl.c | $(BUILD)
-	$(CC) $(CFLAGS) -c platform/stb/stb_image_impl.c -o $@
+#######################################
+# Docker
+#######################################
+.PHONY: docker docker_pull docker_shell
 
-$(BUILD)/%.o: %.c | $(BUILD)
-	$(CC) $(CFLAGS) -c $< -o $@
+RELEASE_VERSION ?= v1.5
+DOCKER_REPOSITORY ?= sylverb/retro-go-sd-builder
+DOCKER_IMAGE ?= $(DOCKER_REPOSITORY):$(RELEASE_VERSION)
 
--include $(wildcard $(BUILD)/*.d)
+DOCKER_TTY_FLAG := $(shell if [ -t 0 ]; then echo -it; else echo; fi)
+DOCKER_USER := $(shell id -u):$(shell id -g)
+DOCKER_RUN := docker run --rm $(DOCKER_TTY_FLAG) \
+	--user $(DOCKER_USER) \
+	-v "$(CURDIR):/opt/workdir" \
+	-w /opt/workdir \
+	$(DOCKER_IMAGE)
 
-$(BUILD):
-	mkdir -p $(BUILD)
+docker:
+	$(V)$(ECHO) "[ DOCKER ]" $(DOCKER_IMAGE) "PROJECT_KIND=$(PROJECT_KIND)"
+	$(V)$(DOCKER_RUN) make --no-print-directory -j$$(nproc) PROJECT_KIND=$(PROJECT_KIND)
 
-run: all
-	CUPCAKE_ASSETS=assets $(BUILD)/$(TARGET)$(EXE)
+docker_pull:
+	$(V)$(ECHO) "[ PULL ]" $(DOCKER_IMAGE)
+	$(V)docker pull $(DOCKER_IMAGE)
 
-gen:
-	python tools/gen_sprites.py
-	python tools/gen_lcd_positions.py
-	python tools/gen_demo_data.py
+docker_shell:
+	$(DOCKER_RUN) bash
 
-# Bake assets/lcd_tune.txt -> src/cupcake_sprite_lcd.h (no PIL; safe after alignment edits).
-bake-lcd:
-	python tools/bake_lcd_tune.py
-
-# Audio from itch HAR (assets/audio/ — gitignored). Auto-builds id.wav when ffmpeg is on PATH.
-extract-audio:
-	python tools/extract_audio.py
-
-clean:
-	rm -rf $(BUILD)
-
-gwhb:
-	$(MAKE) -f platform/gnw/Makefile.gnw all
-
-# Device overlay — standalone cupcake.bin via ABI (see docs/RELEASE_CUPCAKE_BIN.md)
-cupcake-bin:
-	$(MAKE) -f platform/gnw/Makefile.gnw all
-
-cupcake-compile-check:
-	$(MAKE) -f platform/gnw/Makefile.gnw compile-check
-
-overlay-size-estimate:
-	python tools/overlay_size_estimate.py
-
-.PHONY: all run clean gen bake-lcd force-rebuild gwhb cupcake-bin cupcake-compile-check overlay-size-estimate
-
-# Use if alignment edits in .h seem "cached" (also close cupcake-sdl.exe before make).
-force-rebuild:
-	rm -f $(OBJS) $(BUILD)/$(TARGET)$(EXE)
-	$(MAKE)
-
-ifeq ($(OS),Windows_NT)
-  EXE := .exe
-endif
+#######################################
+# Host SDL (same app_main + embedded assets as device)
+#######################################
+include host/Makefile.host

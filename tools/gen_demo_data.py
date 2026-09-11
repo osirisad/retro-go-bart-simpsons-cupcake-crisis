@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate src/cupcake_demo.h from game/demo.model gameplay array."""
+"""Generate src/cupcake/cupcake_demo.h from game/demo.model gameplay array."""
 from __future__ import annotations
 
 import json
@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEMO_MODEL = ROOT / "ignore" / "har_extracted" / "sim-acclaim-cupcakecrisis" / "game" / "demo.model"
-OUT_H = ROOT / "src" / "cupcake_demo.h"
+OUT_H = ROOT / "src" / "cupcake" / "cupcake_demo.h"
 
 
 def main() -> None:

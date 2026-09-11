@@ -7,7 +7,7 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-HDR = ROOT / "src" / "cupcake_sprites.h"
+HDR = ROOT / "src" / "cupcake" / "cupcake_sprites.h"
 
 
 def main() -> None:

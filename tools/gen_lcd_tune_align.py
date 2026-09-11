@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-HDR = ROOT / "src" / "cupcake_sprite_lcd.h"
+HDR = ROOT / "src" / "cupcake" / "cupcake_sprite_lcd.h"
 OUT = ROOT / "assets" / "lcd_tune.txt"
 
 # (group header, [(comment, sprite_name), ...])
