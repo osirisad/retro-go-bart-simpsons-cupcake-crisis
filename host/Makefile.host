@@ -1,0 +1,104 @@
+# Host (Linux/macOS) SDL build — included from the project Makefile.
+#
+#   make host                     # SDL2 → ./cupcake_host
+#   make host HOST_SDL=3          # SDL3
+#   ./cupcake_host                # Esc / close window to quit
+#
+# Uses the same app_main / embedded assets as the device GWHB build.
+# Requires: pkg-config + libsdl2-dev / sdl2 (or sdl3).
+
+HOST_SDL   ?= 2
+HOST_SCALE ?= 2
+HOST_CC    ?= cc
+
+HOST_BUILD_DIR := build/host/$(PROJECT_KIND)_sdl$(HOST_SDL)
+HOST_BIN := $(CORE_NAME)_host
+
+ifeq ($(HOST_SDL),3)
+HOST_SDL_PC := sdl3
+else ifeq ($(HOST_SDL),2)
+HOST_SDL_PC := sdl2
+else
+$(error HOST_SDL must be 2 or 3 (got '$(HOST_SDL)'))
+endif
+
+HOST_PKG_CFLAGS := $(shell pkg-config --cflags $(HOST_SDL_PC) 2>/dev/null)
+HOST_PKG_LIBS   := $(shell pkg-config --libs $(HOST_SDL_PC) 2>/dev/null)
+HOST_PKG_LIBS   := $(filter-out -lSDL2main,$(HOST_PKG_LIBS))
+ifeq ($(HOST_PKG_LIBS),)
+$(warning pkg-config $(HOST_SDL_PC) not found — host link may fail. Install SDL$(HOST_SDL) devel package.)
+endif
+
+HOST_INC_ROOT := $(GNW_CORE_SDK)/include
+
+HOST_DEFS := \
+	-DHOST_BUILD=1 \
+	-DHOST_SDL=$(HOST_SDL) \
+	-DHOST_SCALE=$(HOST_SCALE) \
+	-DSDL_MAIN_HANDLED=1 \
+	-DIS_LITTLE_ENDIAN \
+	-DGNW_DISABLE_COMPRESSION \
+	$(CORE_C_DEFS)
+
+HOST_INCLUDES := \
+	-Ihost \
+	-Ihost/stubs \
+	-I$(GNW_CORE_SDK)/src \
+	-I$(HOST_INC_ROOT)/Core/Inc \
+	-I$(HOST_INC_ROOT)/Core/Inc/retro-go \
+	-I$(HOST_INC_ROOT)/Core/Inc/porting \
+	-I$(HOST_INC_ROOT)/Core/Src/porting/lib \
+	-I$(HOST_INC_ROOT)/Core/Src/porting/lib/FatFs \
+	$(CORE_C_INCLUDES) \
+	$(HOST_PKG_CFLAGS)
+
+HOST_CFLAGS := -O2 -g -Wall -Wextra -std=c11 \
+	-Wno-unused-variable \
+	-Wno-unused-function \
+	-include host/stubs/config.h \
+	$(HOST_DEFS) $(HOST_INCLUDES)
+
+HOST_SRCS := \
+	$(CORE_C_SOURCES) \
+	host/crc32.c \
+	host/host_main.c \
+	host/host_platform.c \
+	host/host_emu.c \
+	host/host_i18n.c
+
+HOST_OBJS := $(addprefix $(HOST_BUILD_DIR)/,$(HOST_SRCS:.c=.o))
+HOST_DEPS := $(HOST_OBJS:.o=.d)
+
+.PHONY: host host_clean
+
+host: $(CUPCAKE_DATA_C) $(HOST_BIN)
+	$(V)$(ECHO) "[ HOST ]" $(HOST_BIN) "(SDL$(HOST_SDL), PROJECT_KIND=$(PROJECT_KIND))"
+
+$(HOST_BIN): $(HOST_OBJS)
+	$(V)$(ECHO) [ LD HOST ] $@
+	$(V)$(HOST_CC) -o $@ $(HOST_OBJS) $(HOST_PKG_LIBS)
+
+# Explicit patterns under HOST_BUILD_DIR only (do not collide with sdk ARM rules).
+$(HOST_BUILD_DIR)/src/%.o: src/%.c
+	$(V)mkdir -p $(dir $@)
+	$(V)$(ECHO) [ CC HOST ] $<
+	$(V)$(HOST_CC) $(HOST_CFLAGS) -MMD -MP -MF"$(@:%.o=%.d)" -c $< -o $@
+
+$(HOST_BUILD_DIR)/host/%.o: host/%.c
+	$(V)mkdir -p $(dir $@)
+	$(V)$(ECHO) [ CC HOST ] $<
+	$(V)$(HOST_CC) $(HOST_CFLAGS) -MMD -MP -MF"$(@:%.o=%.d)" -c $< -o $@
+
+# Generated cupcake_data.c lives under build/homebrew/.
+$(HOST_BUILD_DIR)/$(BUILD_DIR)/%.o: $(BUILD_DIR)/%.c
+	$(V)mkdir -p $(dir $@)
+	$(V)$(ECHO) [ CC HOST ] $<
+	$(V)$(HOST_CC) $(HOST_CFLAGS) -MMD -MP -MF"$(@:%.o=%.d)" -c $< -o $@
+
+host_clean:
+	$(V)rm -rf build/host
+	$(V)rm -f $(HOST_BIN)
+
+clean:: host_clean
+
+-include $(HOST_DEPS)

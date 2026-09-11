@@ -2,7 +2,7 @@
 
 """
 
-Generate src/cupcake_sprites.h and src/cupcake_sprite_masks.h from sprites.json.
+Generate src/cupcake/cupcake_sprites.h and src/cupcake/cupcake_sprite_masks.h from sprites.json.
 
 
 
@@ -52,9 +52,9 @@ SPRITES_JSON = os.path.join(
 
 )
 
-OUT_H = os.path.join(ROOT, "src", "cupcake_sprites.h")
+OUT_H = os.path.join(ROOT, "src", "cupcake", "cupcake_sprites.h")
 
-OUT_MASK_H = os.path.join(ROOT, "src", "cupcake_sprite_masks.h")
+OUT_MASK_H = os.path.join(ROOT, "src", "cupcake", "cupcake_sprite_masks.h")
 
 ATLAS_PNG = os.path.join(ROOT, "assets", "sprites-color.png")
 

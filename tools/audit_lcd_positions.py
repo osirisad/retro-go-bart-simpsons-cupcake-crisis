@@ -20,8 +20,8 @@ from sprite_raster import (
 ROOT = Path(__file__).resolve().parents[1]
 SPRITES_JSON = ROOT / "ignore/har_extracted/sim-acclaim-cupcakecrisis/game/sprites.json"
 DEMO_MODEL = ROOT / "ignore/har_extracted/sim-acclaim-cupcakecrisis/game/demo.model"
-LCD_HDR = ROOT / "src/cupcake_sprite_lcd.h"
-SPR_HDR = ROOT / "src/cupcake_sprites.h"
+LCD_HDR = ROOT / "src/cupcake/cupcake_sprite_lcd.h"
+SPR_HDR = ROOT / "src/cupcake/cupcake_sprites.h"
 ATLAS = ROOT / "assets/sprites-color.png"
 TUNE = ROOT / "assets/lcd_tune.txt"
 

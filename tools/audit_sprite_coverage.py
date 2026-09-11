@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SPRITES_JSON = ROOT / "ignore/har_extracted/sim-acclaim-cupcakecrisis/game/sprites.json"
-SPR_HDR = ROOT / "src/cupcake_sprites.h"
+SPR_HDR = ROOT / "src/cupcake/cupcake_sprites.h"
 
 # Materials in JSON that are not gameplay atlas sprites.
 EXCLUDE = {
