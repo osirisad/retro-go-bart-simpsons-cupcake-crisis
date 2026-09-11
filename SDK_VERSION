@@ -1,0 +1,4 @@
+# Snapshot metadata for this SDK tree (informational).
+FIRMWARE_ABI_VERSION=2
+SOURCE=https://github.com/sylverb/game-and-watch-retro-go-sd
+SYNC_DATE=2026-09-07T19:26:21Z
